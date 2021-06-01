@@ -1,4 +1,4 @@
-name: CI/CD
+name: CICD
 
 # Trigger everytime a push occurs
 on:
