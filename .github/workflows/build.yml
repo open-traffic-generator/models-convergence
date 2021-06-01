@@ -1,0 +1,57 @@
+name: CI/CD
+
+# Trigger everytime a push occurs
+on:
+  push:
+  workflow_dispatch:
+    paths:
+    - '!artifacts/**'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+        with:
+          ref: ${{ github.head_ref }}
+
+      - name: Setup Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.x'
+
+      - name: Install python requirements
+        run: |
+          python -m pip install --upgrade -r requirements.txt
+
+      - name: Generate artifacts
+        run: |
+          python build.py
+
+      - name: Upload artifacts
+        # upload all files in the artifacts directory
+        # the artifact zip is available using the following github API 
+        # curl https://api.github.com/repos/open-traffic-generator/models/actions/artifacts
+        # the artifact is only available for the amount of time dictated by the 
+        # repo settings which is defaulted to 90 days
+        uses: actions/upload-artifact@v2
+        with:
+          path: artifacts
+
+      - name: Commit auto generated content
+        id: commit_generated
+        run: |
+          git config user.name "Github Actions Bot"
+          git config user.email "actions@github.com"
+          git add --force artifacts/openapi.*
+          git add --force artifacts/*.proto
+          if git status --porcelain | grep .
+            then
+              git commit -m "Update auto generated content" 
+              git push
+            else
+              echo "No changed auto generated content"
+          fi
+

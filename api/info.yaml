@@ -1,0 +1,27 @@
+openapi: 3.0.3
+
+info:
+  title: Open Traffic Generator Convergence API
+  description: |-
+    The Open Traffic Generator Convergence API consists of convergence 
+    measurements and data such as:
+    - control plane convergence
+    - data plane convergence
+    - service interruption
+    - convergence events
+
+    Contributions can be made in the following ways:
+    - [open an issue](https://github.com/open-traffic-generator/models-convergence/issues) in the models repository
+    - [fork the models repository](https://github.com/open-traffic-generator/models-convergence) and submit a PR
+  version: 0.1.0
+  contact:
+    url: https://github.com/open-traffic-generator/models-convergence/issues
+  license:
+    name: MIT
+    url: https://raw.githubusercontent.com/open-traffic-generator/models-convergence/main/LICENSE
+  x-model-guide: https://github.com/open-traffic-generator/models/blob/master/MODEL-GUIDE.md
+
+servers: 
+  - url: /
+
+paths: {}

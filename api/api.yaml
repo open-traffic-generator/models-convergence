@@ -1,0 +1,45 @@
+paths:
+  /convergence/config:
+    post:
+      tags: ['Config']
+      operationId: set_convergence
+      description: |-
+        An advanced API that retrieves convergence measurements.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '../config/config.yaml#/components/schemas/Convergence.Config'
+      responses:
+        '200':
+          $ref: '../models/result/request.yaml#/components/responses/Success'
+        '400':
+          $ref: '../models/result/request.yaml#/components/responses/BadRequest'
+        '500':
+          $ref: '../models/result/request.yaml#/components/responses/InternalServerError'
+  /convergence/results:
+    post:
+      tags: ['Metrics']
+      operationId: get_convergence
+      description: |-
+        An advanced API that retrieves convergence measurements.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '../result/request.yaml#/components/schemas/Convergence.Request'
+      responses:
+        '200':
+          description: |-
+            Convergence measurements response
+          content:
+            application/json:
+              schema:
+                $ref: '../result/response.yaml#/components/schemas/Convergence.Response'
+        '400':
+          $ref: '../models/result/request.yaml#/components/responses/BadRequest'
+        '500':
+          $ref: '../models/result/request.yaml#/components/responses/InternalServerError'
+

@@ -1,0 +1,31 @@
+components:
+  schemas:
+    Convergence.Config:
+      description: |-
+        The container for configuration of convergence measurements.
+
+        These options may affect the resultant packet payload due to 
+        additional instrumentation data.
+      type: object
+      properties:
+        config:
+          description: |-
+            The core open traffic generator configuration
+          $ref: '../models/config/config.yaml#/components/schemas/Config'
+        event_location:
+          description: |-
+            The location from which events will be generated. 
+          type: boolean
+          default: false
+        rx_rate_threshold:
+          description: |-
+            Convergence will be calculated when the rx rate of a flow passes 
+            below then above the threshold value. 
+          type: number
+          default: 95
+        convergence_event:
+          description: |-
+            Convergence will be measured when this event occurs.
+          type: string
+          enum: [link_up_down, route_advertise_withdraw]
+          default: route_advertise_withdraw

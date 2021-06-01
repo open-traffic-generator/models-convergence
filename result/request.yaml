@@ -1,0 +1,22 @@
+components:
+  schemas:
+    Convergence.Request:
+      description: >-
+        The request container for convergence measurements.
+      type: object
+      properties:
+        flow_names:
+          description: |-
+            Flow metrics will be retrieved for these flow names.
+            If no flow names are specified then all flows will be returned.
+          type: array
+          items: 
+            type: string
+          x-constraint:
+          - "/components/schemas/Flow/properties/name"
+        metric_groups:
+          description: >-
+            A list of metric groups used to disaggregate flows.
+            A metric group that does not exist for a flow group MUST return
+            an error.
+          $ref: '../models/result/flow.yaml#/components/schemas/Flow.MetricGroup.Request'
