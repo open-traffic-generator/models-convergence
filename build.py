@@ -12,6 +12,7 @@ openapiart.OpenApiArt(
         './api/info.yaml',
         './api/api.yaml'
     ], 
+    python_module_name='otg-convergence',
     protobuf_file_name='otg-convergence', 
     output_dir='./artifacts'
 )
