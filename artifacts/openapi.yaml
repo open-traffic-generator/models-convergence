@@ -100,8 +100,8 @@ components:
           $ref: '#/components/schemas/Config'
         event_location:
           description: "The location from which events will be generated. "
-          type: boolean
-          default: false
+          type: string
+          default: ''
         rx_rate_threshold:
           description: "Convergence will be calculated when the rx rate of a flow\
             \ passes \nbelow then above the threshold value. "
