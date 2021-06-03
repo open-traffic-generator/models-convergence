@@ -12859,7 +12859,7 @@ message GetConvergenceRequest {
 
 message GetConvergenceResponse {
   message StatusCode200 {
-    Convergence.Response convergence.response = 1;
+    ConvergenceResponse convergenceresponse = 1;
   }
   message StatusCode400 {
   }
