@@ -23,7 +23,7 @@
 
 syntax = "proto3";
 
-package otg-convergence;
+package None;
 
 import "google/protobuf/descriptor.proto";
 import "google/protobuf/empty.proto";
@@ -3762,9 +3762,43 @@ message ConvergenceFlow {
     (fld_meta).description = "Service interruption time is the flow_rx_rate_above_threshold minus \nthe flow_rx_rate_below_threshold."
   ];
 
-  repeated Event events = 8 [
+  repeated ConvergenceEvent events = 8 [
     (fld_meta).required = false,
     (fld_meta).description = "The events that were used to determine the convergence analytics."
+  ];
+}
+
+message ConvergenceEvent {
+  option (msg_meta).description = "A container for an event that has occurred in the system.";
+
+  message Type {
+    enum Enum {
+      LINK_DOWN = 0;
+      LINK_UP = 1;
+      ROUTE_WITHDRAW = 2;
+      ROUTE_ADVERTISE = 3;
+      FLOW_RX_RATE_ABOVE_THRESHOLD = 4;
+      FLOW_RX_RATE_BELOW_THRESHOLD = 5;
+    }
+  }
+  Type.Enum type = 1 [
+    (fld_meta).required = false,
+    (fld_meta).description = "The type of event that occurred."
+  ];
+
+  string source = 2 [
+    (fld_meta).required = false,
+    (fld_meta).description = "The source of the event. \nThe source MUST be the value of one of the x-constraint paths,\nwhich means the source MUST be a unique name in the configuration. \n\nx-constraint:\n- /components/schemas/Port/properties/name\n- /components/schemas/Flow/properties/name\n- /components/schemas/Device.Bgpv4Route/properties/name\n- /components/schemas/Device.Bgpv6Route/properties/name\n"
+  ];
+
+  double begin_timestamp_ns = 3 [
+    (fld_meta).required = false,
+    (fld_meta).description = "The time in nanoseconds at which the event began"
+  ];
+
+  double end_timestamp_ns = 4 [
+    (fld_meta).required = false,
+    (fld_meta).description = "The time in nanoseconds at which the event ended"
   ];
 }
 
@@ -4331,7 +4365,7 @@ message PatternFlowVxlanFlagsCounter {
 }
 
 message PatternFlowVxlanFlags {
-  option (msg_meta).description = "Flags field with a bit format of RRRRIRRR. The I flag MUST be set to 1 for a valid vxlan network id (VNI).   The other 7 bits (designated "R") are reserved fields and MUST be  set to zero on transmission and ignored on receipt.";
+  option (msg_meta).description = "Flags field with a bit format of RRRRIRRR. The I flag MUST be set to 1 for a valid vxlan network id (VNI).   The other 7 bits (designated R) are reserved fields and MUST be  set to zero on transmission and ignored on receipt.";
 
   message Choice {
     enum Enum {
@@ -12802,7 +12836,7 @@ message PatternFlowIgmpv1GroupAddress {
 }
 
 message SetConvergenceRequest {
-  Convergence.Config convergence.config = 1;
+  ConvergenceConfig convergenceconfig = 1;
 }
 
 message SetConvergenceResponse {
@@ -12820,7 +12854,7 @@ message SetConvergenceResponse {
 }
 
 message GetConvergenceRequest {
-  Convergence.Request convergence.request = 1;
+  ConvergenceRequest convergencerequest = 1;
 }
 
 message GetConvergenceResponse {
