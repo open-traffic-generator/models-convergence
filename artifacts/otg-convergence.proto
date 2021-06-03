@@ -1984,7 +1984,7 @@ message Flow {
 
   repeated FlowHeader packet = 2 [
     (fld_meta).required = false,
-    (fld_meta).description = "The header is a list of traffic protocol headers.\nThe order of traffic protocol headers assigned to the list is the\norder they will appear on the wire."
+    (fld_meta).description = "The header is a list of traffic protocol headers.\n\nThe order of traffic protocol headers assigned to the list is the\norder they will appear on the wire.\n\nIn the case of an empty list the keyword/value of minItems: 1 \nindicates that an implementation MUST provide at least one \nFlow.Header object.\n\nThe default value for the Flow.Header choice property is ethernet \nwhich will result in an implementation by default providing at least \none ethernet packet header."
   ];
 
   FlowSize size = 3 [
@@ -2105,8 +2105,8 @@ message FlowHeader {
   }
   Choice.Enum choice = 1 [
     (fld_meta).default = "Choice.Enum.ETHERNET",
-    (fld_meta).required = true,
-    (fld_meta).description = "Description missing in models"
+    (fld_meta).required = false,
+    (fld_meta).description = "The available types of flow headers. If one is not provided the \ndefault ethernet packet header MUST be provided."
   ];
 
   FlowCustom custom = 2 [
