@@ -8,3 +8,7 @@
 This repository is a collaborative effort to develop agnostic data 
 models and APIs for convergence measurements. 
 The artifacts produced by this repository present an approach to convergence measurements.
+
+### Submodules
+- git submodule sync --recursive
+- git submodule update --init --recursive

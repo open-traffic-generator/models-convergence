@@ -1,0 +1,17 @@
+components:
+  schemas:
+    Convergence.State:
+      description: |-
+        Container to specify a convergence trigger.
+      type: object
+      properties:
+        choice:
+          description: |-
+            The type of convergence to trigger.
+          type: string
+          enum: [link, route]
+          default: link
+        link:
+          $ref: '../models/control/control.yaml#/components/schemas/Link.State'
+        route:
+          $ref: '../models/control/control.yaml#/components/schemas/Route.State'

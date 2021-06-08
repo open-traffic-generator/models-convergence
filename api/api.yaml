@@ -18,6 +18,27 @@ paths:
           $ref: '../models/result/request.yaml#/components/responses/BadRequest'
         '500':
           $ref: '../models/result/request.yaml#/components/responses/InternalServerError'
+
+  /control/routes:
+    post:
+      tags: ['Control']
+      operationId: set_convergence_state
+      description: >-
+        Updates the state of configuration resources on the traffic generator.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '../control/control.yaml#/components/schemas/Convergence.State'
+      responses:
+        '200':
+          $ref: '../models/result/request.yaml#/components/responses/Success'
+        '400':
+          $ref: '../models/result/request.yaml#/components/responses/BadRequest'
+        '500':
+          $ref: '../models/result/request.yaml#/components/responses/InternalServerError'
+          
   /convergence/results:
     post:
       tags: ['Metrics']
