@@ -37,6 +37,26 @@ paths:
           $ref: '#/components/responses/BadRequest'
         '500':
           $ref: '#/components/responses/InternalServerError'
+  /control/routes:
+    post:
+      tags:
+      - Control
+      operationId: set_convergence_state
+      description: |-
+        Updates the state of configuration resources on the traffic generator.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Convergence.State'
+      responses:
+        '200':
+          $ref: '#/components/responses/Success'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
   /convergence/results:
     post:
       tags:
@@ -93,6 +113,8 @@ components:
         \nThese options may affect the resultant packet payload due to \nadditional\
         \ instrumentation data."
       type: object
+      required:
+      - config
       properties:
         config:
           description: |-
@@ -2882,6 +2904,127 @@ components:
           type: array
           items:
             type: string
+    Convergence.State:
+      description: |-
+        Container to specify a convergence trigger.
+      type: object
+      properties:
+        choice:
+          description: |-
+            The type of convergence to trigger.
+          type: string
+          enum:
+          - link
+          - route
+          default: link
+        link:
+          $ref: '#/components/schemas/Link.State'
+        route:
+          $ref: '#/components/schemas/Route.State'
+    Link.State:
+      description: |-
+        Port link state.
+      type: object
+      required:
+      - state
+      properties:
+        port_names:
+          description: |
+            The names of port objects to. An empty or null list will control all port objects.
+
+            x-constraint:
+            - /components/schemas/Port/properties/name
+          type: array
+          items:
+            type: string
+          x-constraint:
+          - /components/schemas/Port/properties/name
+        state:
+          description: |-
+            The link state.
+          type: string
+          enum:
+          - up
+          - down
+    Transmit.State:
+      description: |-
+        Control the transmit state of flows.
+      type: object
+      required:
+      - state
+      properties:
+        flow_names:
+          description: |
+            The names of flows to which the transmit state will be applied to. If the list of flow_names is empty or null the state will be applied to all configured flows.
+
+            x-constraint:
+            - /components/schemas/Flow/properties/name
+          type: array
+          items:
+            type: string
+          x-constraint:
+          - /components/schemas/Flow/properties/name
+        state:
+          description: |-
+            The transmit state.
+          type: string
+          enum:
+          - start
+          - stop
+          - pause
+          default: start
+    Capture.State:
+      description: |-
+        Control port capture state
+      type: object
+      required:
+      - state
+      properties:
+        port_names:
+          description: |
+            The name of ports to start capturing packets on. An empty or null list will control all port objects.
+
+            x-constraint:
+            - /components/schemas/Port/properties/name
+          type: array
+          items:
+            type: string
+          x-constraint:
+          - /components/schemas/Port/properties/name
+        state:
+          description: |-
+            The capture state.
+          type: string
+          enum:
+          - start
+          - stop
+    Route.State:
+      description: |-
+        Sets the device route state
+      type: object
+      required:
+      - state
+      properties:
+        names:
+          description: |
+            The names of device route objects to control. If no names are specified then all route objects that match the x-constraint will be affected.
+
+            x-constraint:
+            - /components/schemas/Device.Bgpv4Route/properties/name
+            - /components/schemas/Device.Bgpv6Route/properties/name
+          type: array
+          items:
+            type: string
+          x-constraint:
+          - /components/schemas/Device.Bgpv4Route/properties/name
+          - /components/schemas/Device.Bgpv6Route/properties/name
+        state:
+          description: |-
+            Route specific states
+          type: string
+          enum:
+          - withdraw
+          - advertise
     Convergence.Request:
       description: |-
         The request container for convergence measurements.
