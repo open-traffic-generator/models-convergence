@@ -62,7 +62,7 @@ message ConvergenceConfig {
   option (msg_meta).description = "The container for configuration of convergence measurements.\n\nThese options may affect the resultant packet payload due to \nadditional instrumentation data.";
 
   Config config = 1 [
-    (fld_meta).required = false,
+    (fld_meta).required = true,
     (fld_meta).description = "The core open traffic generator configuration"
   ];
 
@@ -3517,6 +3517,114 @@ message ResponseWarning {
   repeated string warnings = 1 [
     (fld_meta).required = false,
     (fld_meta).description = "A list of any system specific warnings that have occurred while \nexecuting the request."
+  ];
+}
+
+message ConvergenceState {
+  option (msg_meta).description = "Container to specify a convergence trigger.";
+
+  message Choice {
+    enum Enum {
+      LINK = 0;
+      ROUTE = 1;
+    }
+  }
+  Choice.Enum choice = 1 [
+    (fld_meta).default = "Choice.Enum.LINK",
+    (fld_meta).required = false,
+    (fld_meta).description = "The type of convergence to trigger."
+  ];
+
+  LinkState link = 2 [
+    (fld_meta).required = false,
+    (fld_meta).description = "Description missing in models"
+  ];
+
+  RouteState route = 3 [
+    (fld_meta).required = false,
+    (fld_meta).description = "Description missing in models"
+  ];
+}
+
+message LinkState {
+  option (msg_meta).description = "Port link state.";
+
+  repeated string port_names = 1 [
+    (fld_meta).required = false,
+    (fld_meta).description = "The names of port objects to. An empty or null list will control all port objects.\n\nx-constraint:\n- /components/schemas/Port/properties/name\n"
+  ];
+
+  message State {
+    enum Enum {
+      UP = 0;
+      DOWN = 1;
+    }
+  }
+  State.Enum state = 2 [
+    (fld_meta).required = true,
+    (fld_meta).description = "The link state."
+  ];
+}
+
+message TransmitState {
+  option (msg_meta).description = "Control the transmit state of flows.";
+
+  repeated string flow_names = 1 [
+    (fld_meta).required = false,
+    (fld_meta).description = "The names of flows to which the transmit state will be applied to. If the list of flow_names is empty or null the state will be applied to all configured flows.\n\nx-constraint:\n- /components/schemas/Flow/properties/name\n"
+  ];
+
+  message State {
+    enum Enum {
+      START = 0;
+      STOP = 1;
+      PAUSE = 2;
+    }
+  }
+  State.Enum state = 2 [
+    (fld_meta).default = "State.Enum.START",
+    (fld_meta).required = true,
+    (fld_meta).description = "The transmit state."
+  ];
+}
+
+message CaptureState {
+  option (msg_meta).description = "Control port capture state";
+
+  repeated string port_names = 1 [
+    (fld_meta).required = false,
+    (fld_meta).description = "The name of ports to start capturing packets on. An empty or null list will control all port objects.\n\nx-constraint:\n- /components/schemas/Port/properties/name\n"
+  ];
+
+  message State {
+    enum Enum {
+      START = 0;
+      STOP = 1;
+    }
+  }
+  State.Enum state = 2 [
+    (fld_meta).required = true,
+    (fld_meta).description = "The capture state."
+  ];
+}
+
+message RouteState {
+  option (msg_meta).description = "Sets the device route state";
+
+  repeated string names = 1 [
+    (fld_meta).required = false,
+    (fld_meta).description = "The names of device route objects to control. If no names are specified then all route objects that match the x-constraint will be affected.\n\nx-constraint:\n- /components/schemas/Device.Bgpv4Route/properties/name\n- /components/schemas/Device.Bgpv6Route/properties/name\n"
+  ];
+
+  message State {
+    enum Enum {
+      WITHDRAW = 0;
+      ADVERTISE = 1;
+    }
+  }
+  State.Enum state = 2 [
+    (fld_meta).required = true,
+    (fld_meta).description = "Route specific states"
   ];
 }
 
@@ -12853,6 +12961,24 @@ message SetConvergenceResponse {
   }
 }
 
+message SetConvergenceStateRequest {
+  ConvergenceState convergencestate = 1;
+}
+
+message SetConvergenceStateResponse {
+  message StatusCode200 {
+  }
+  message StatusCode400 {
+  }
+  message StatusCode500 {
+  }
+  oneof statuscode {
+    StatusCode200 statuscode200 = 1;
+    StatusCode400 statuscode400 = 2;
+    StatusCode500 statuscode500 = 3;
+  }
+}
+
 message GetConvergenceRequest {
   ConvergenceRequest convergencerequest = 1;
 }
@@ -12877,6 +13003,9 @@ service Openapi {
 
   rpc SetConvergence(SetConvergenceRequest) returns (SetConvergenceResponse) {
     option (rpc_meta).description = "An advanced API that retrieves convergence measurements.";
+  }
+  rpc SetConvergenceState(SetConvergenceStateRequest) returns (SetConvergenceStateResponse) {
+    option (rpc_meta).description = "Updates the state of configuration resources on the traffic generator.";
   }
   rpc GetConvergence(GetConvergenceRequest) returns (GetConvergenceResponse) {
     option (rpc_meta).description = "An advanced API that retrieves convergence measurements.";
