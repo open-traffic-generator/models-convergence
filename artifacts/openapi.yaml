@@ -17,13 +17,13 @@ info:
 servers:
 - url: /
 paths:
-  /convergence/config:
+  /config:
     post:
       tags:
       - Config
-      operationId: set_convergence
+      operationId: set_config
       description: |-
-        An advanced API that retrieves convergence measurements.
+        Sets the configuration of a traffic generator for convergence measurements.
       requestBody:
         required: true
         content:
@@ -41,9 +41,9 @@ paths:
     post:
       tags:
       - Control
-      operationId: set_convergence_state
+      operationId: set_state
       description: |-
-        Updates the state of configuration resources on the traffic generator.
+        Updates the state of the traffic generator.
       requestBody:
         required: true
         content:
@@ -57,13 +57,13 @@ paths:
           $ref: '#/components/responses/BadRequest'
         '500':
           $ref: '#/components/responses/InternalServerError'
-  /convergence/results:
+  /results:
     post:
       tags:
-      - Metrics
-      operationId: get_convergence
+      - Results
+      operationId: get_results
       description: |-
-        An advanced API that retrieves convergence measurements.
+        Request flow metrics or flow convergence measurements.
       requestBody:
         required: true
         content:
@@ -73,7 +73,7 @@ paths:
       responses:
         '200':
           description: |-
-            Convergence measurements response
+            Returns flow metrics or flow convergence measurements response.
           content:
             application/json:
               schema:
@@ -2906,17 +2906,20 @@ components:
             type: string
     Convergence.State:
       description: |-
-        Container to specify a convergence trigger.
+        Container to specify convergence states.
       type: object
       properties:
         choice:
           description: |-
-            The type of convergence to trigger.
+            The state to set on the traffic generator.
           type: string
           enum:
+          - transmit
           - link
           - route
-          default: link
+          default: transmit
+        transmit:
+          $ref: '#/components/schemas/Transmit.State'
         link:
           $ref: '#/components/schemas/Link.State'
         route:
@@ -3027,7 +3030,22 @@ components:
           - advertise
     Convergence.Request:
       description: |-
-        The request container for convergence measurements.
+        The request container for flow metrics or flow convergence measurements.
+      type: object
+      properties:
+        choice:
+          type: string
+          enum:
+          - metrics
+          - convergence
+          default: metrics
+        metrics:
+          $ref: '#/components/schemas/Flow.Metrics.Request'
+        convergence:
+          $ref: '#/components/schemas/Convergence.Flow.Request'
+    Convergence.Flow.Request:
+      description: |-
+        The container for a flow measurement request.
       type: object
       properties:
         flow_names:
@@ -3229,12 +3247,24 @@ components:
           type: number
           format: double
     Convergence.Response:
-      type: array
-      items:
-        $ref: '#/components/schemas/Convergence.Flow'
+      type: object
+      properties:
+        choice:
+          type: string
+          enum:
+          - flow_metric
+          - flow_convergence
+        flow_metric:
+          type: array
+          items:
+            $ref: '#/components/schemas/Flow.Metric'
+        flow_convergence:
+          type: array
+          items:
+            $ref: '#/components/schemas/Convergence.Flow'
     Convergence.Flow:
       description: |-
-        The container for advanced analytics
+        The container for convergence measurements
       type: object
       properties:
         name:

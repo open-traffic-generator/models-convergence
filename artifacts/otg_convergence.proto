@@ -3521,26 +3521,32 @@ message ResponseWarning {
 }
 
 message ConvergenceState {
-  option (msg_meta).description = "Container to specify a convergence trigger.";
+  option (msg_meta).description = "Container to specify convergence states.";
 
   message Choice {
     enum Enum {
-      LINK = 0;
-      ROUTE = 1;
+      TRANSMIT = 0;
+      LINK = 1;
+      ROUTE = 2;
     }
   }
   Choice.Enum choice = 1 [
-    (fld_meta).default = "Choice.Enum.LINK",
+    (fld_meta).default = "Choice.Enum.TRANSMIT",
     (fld_meta).required = false,
-    (fld_meta).description = "The type of convergence to trigger."
+    (fld_meta).description = "The state to set on the traffic generator."
   ];
 
-  LinkState link = 2 [
+  TransmitState transmit = 2 [
     (fld_meta).required = false,
     (fld_meta).description = "Description missing in models"
   ];
 
-  RouteState route = 3 [
+  LinkState link = 3 [
+    (fld_meta).required = false,
+    (fld_meta).description = "Description missing in models"
+  ];
+
+  RouteState route = 4 [
     (fld_meta).required = false,
     (fld_meta).description = "Description missing in models"
   ];
@@ -3629,7 +3635,33 @@ message RouteState {
 }
 
 message ConvergenceRequest {
-  option (msg_meta).description = "The request container for convergence measurements.";
+  option (msg_meta).description = "The request container for flow metrics or flow convergence measurements.";
+
+  message Choice {
+    enum Enum {
+      METRICS = 0;
+      CONVERGENCE = 1;
+    }
+  }
+  Choice.Enum choice = 1 [
+    (fld_meta).default = "Choice.Enum.METRICS",
+    (fld_meta).required = false,
+    (fld_meta).description = "Description missing in models"
+  ];
+
+  FlowMetricsRequest metrics = 2 [
+    (fld_meta).required = false,
+    (fld_meta).description = "Description missing in models"
+  ];
+
+  ConvergenceFlowRequest convergence = 3 [
+    (fld_meta).required = false,
+    (fld_meta).description = "Description missing in models"
+  ];
+}
+
+message ConvergenceFlowRequest {
+  option (msg_meta).description = "The container for a flow measurement request.";
 
   repeated string flow_names = 1 [
     (fld_meta).required = false,
@@ -3830,10 +3862,31 @@ message MetricLatency {
 
 message ConvergenceResponse {
   option (msg_meta).description = "Description missing in models";
+
+  message Choice {
+    enum Enum {
+      FLOW_METRIC = 0;
+      FLOW_CONVERGENCE = 1;
+    }
+  }
+  Choice.Enum choice = 1 [
+    (fld_meta).required = false,
+    (fld_meta).description = "Description missing in models"
+  ];
+
+  repeated FlowMetric flow_metric = 2 [
+    (fld_meta).required = false,
+    (fld_meta).description = "Description missing in models"
+  ];
+
+  repeated ConvergenceFlow flow_convergence = 3 [
+    (fld_meta).required = false,
+    (fld_meta).description = "Description missing in models"
+  ];
 }
 
 message ConvergenceFlow {
-  option (msg_meta).description = "The container for advanced analytics";
+  option (msg_meta).description = "The container for convergence measurements";
 
   string name = 1 [
     (fld_meta).required = false,
@@ -12943,11 +12996,11 @@ message PatternFlowIgmpv1GroupAddress {
   ];
 }
 
-message SetConvergenceRequest {
+message SetConfigRequest {
   ConvergenceConfig convergenceconfig = 1;
 }
 
-message SetConvergenceResponse {
+message SetConfigResponse {
   message StatusCode200 {
   }
   message StatusCode400 {
@@ -12961,11 +13014,11 @@ message SetConvergenceResponse {
   }
 }
 
-message SetConvergenceStateRequest {
+message SetStateRequest {
   ConvergenceState convergencestate = 1;
 }
 
-message SetConvergenceStateResponse {
+message SetStateResponse {
   message StatusCode200 {
   }
   message StatusCode400 {
@@ -12979,11 +13032,11 @@ message SetConvergenceStateResponse {
   }
 }
 
-message GetConvergenceRequest {
+message GetResultsRequest {
   ConvergenceRequest convergencerequest = 1;
 }
 
-message GetConvergenceResponse {
+message GetResultsResponse {
   message StatusCode200 {
     ConvergenceResponse convergenceresponse = 1;
   }
@@ -13001,13 +13054,13 @@ message GetConvergenceResponse {
 service Openapi {
   option (svc_meta).description = "Description missing in models";
 
-  rpc SetConvergence(SetConvergenceRequest) returns (SetConvergenceResponse) {
-    option (rpc_meta).description = "An advanced API that retrieves convergence measurements.";
+  rpc SetConfig(SetConfigRequest) returns (SetConfigResponse) {
+    option (rpc_meta).description = "Sets the configuration of a traffic generator for convergence measurements.";
   }
-  rpc SetConvergenceState(SetConvergenceStateRequest) returns (SetConvergenceStateResponse) {
-    option (rpc_meta).description = "Updates the state of configuration resources on the traffic generator.";
+  rpc SetState(SetStateRequest) returns (SetStateResponse) {
+    option (rpc_meta).description = "Updates the state of the traffic generator.";
   }
-  rpc GetConvergence(GetConvergenceRequest) returns (GetConvergenceResponse) {
-    option (rpc_meta).description = "An advanced API that retrieves convergence measurements.";
+  rpc GetResults(GetResultsRequest) returns (GetResultsResponse) {
+    option (rpc_meta).description = "Request flow metrics or flow convergence measurements.";
   }
 }
