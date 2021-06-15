@@ -1,10 +1,10 @@
 paths:
-  /convergence/config:
+  /config:
     post:
       tags: ['Config']
-      operationId: set_convergence
+      operationId: set_config
       description: |-
-        An advanced API that retrieves convergence measurements.
+        Sets the configuration of a traffic generator for convergence measurements.
       requestBody:
         required: true
         content:
@@ -22,9 +22,9 @@ paths:
   /control/routes:
     post:
       tags: ['Control']
-      operationId: set_convergence_state
+      operationId: set_state
       description: >-
-        Updates the state of configuration resources on the traffic generator.
+        Updates the state of the traffic generator.
       requestBody:
         required: true
         content:
@@ -39,12 +39,12 @@ paths:
         '500':
           $ref: '../models/result/request.yaml#/components/responses/InternalServerError'
           
-  /convergence/results:
+  /results:
     post:
-      tags: ['Metrics']
-      operationId: get_convergence
+      tags: ['Results']
+      operationId: get_results
       description: |-
-        An advanced API that retrieves convergence measurements.
+        Request flow metrics or flow convergence measurements.
       requestBody:
         required: true
         content:
@@ -54,7 +54,7 @@ paths:
       responses:
         '200':
           description: |-
-            Convergence measurements response
+            Returns flow metrics or flow convergence measurements response.
           content:
             application/json:
               schema:

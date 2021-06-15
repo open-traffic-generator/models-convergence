@@ -2,7 +2,21 @@ components:
   schemas:
     Convergence.Request:
       description: >-
-        The request container for convergence measurements.
+        The request container for flow metrics or flow convergence measurements.
+      type: object
+      properties:
+        choice:
+          type: string
+          enum: [metrics, convergence]
+          default: metrics
+        metrics:
+          $ref: '../models/result/flow.yaml#/components/schemas/Flow.Metrics.Request'
+        convergence:
+          $ref: '#/components/schemas/Convergence.Flow.Request'
+
+    Convergence.Flow.Request:
+      description: |-
+        The container for a flow measurement request.
       type: object
       properties:
         flow_names:

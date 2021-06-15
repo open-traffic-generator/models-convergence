@@ -2,15 +2,17 @@ components:
   schemas:
     Convergence.State:
       description: |-
-        Container to specify a convergence trigger.
+        Container to specify convergence states.
       type: object
       properties:
         choice:
           description: |-
-            The type of convergence to trigger.
+            The state to set on the traffic generator.
           type: string
-          enum: [link, route]
-          default: link
+          enum: [transmit, link, route]
+          default: transmit
+        transmit:
+          $ref: '../models/control/control.yaml#/components/schemas/Transmit.State'
         link:
           $ref: '../models/control/control.yaml#/components/schemas/Link.State'
         route:

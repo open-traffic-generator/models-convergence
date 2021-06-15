@@ -1,13 +1,23 @@
 components:
   schemas:
     Convergence.Response:
-      type: array
-      items:
-        $ref: '#/components/schemas/Convergence.Flow'
+      type: object
+      properties:
+        choice:
+          type: string
+          enum: [flow_metric, flow_convergence]
+        flow_metric:
+          type: array
+          items:
+            $ref: '../models/result/flow.yaml#/components/schemas/Flow.Metric'
+        flow_convergence:
+          type: array
+          items:
+            $ref: '#/components/schemas/Convergence.Flow'
 
     Convergence.Flow:
       description: |-
-        The container for advanced analytics
+        The container for convergence measurements
       type: object
       properties:
         name:
