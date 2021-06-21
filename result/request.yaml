@@ -7,12 +7,17 @@ components:
       properties:
         choice:
           type: string
-          enum: [metrics, convergence]
+          enum: [metrics, convergence, bgpv4, bgpv6]
           default: metrics
         metrics:
           $ref: '../models/result/flow.yaml#/components/schemas/Flow.Metrics.Request'
         convergence:
           $ref: '#/components/schemas/Convergence.Flow.Request'
+        bgpv4:
+          $ref: '../models/result/bgpv4.yaml#/components/schemas/Bgpv4.Metrics.Request'
+        bgpv6:
+          $ref: '../models/result/bgpv6.yaml#/components/schemas/Bgpv6.Metrics.Request'
+        
 
     Convergence.Flow.Request:
       description: |-
