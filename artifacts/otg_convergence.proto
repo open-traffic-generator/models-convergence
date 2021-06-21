@@ -3641,6 +3641,8 @@ message ConvergenceRequest {
     enum Enum {
       METRICS = 0;
       CONVERGENCE = 1;
+      BGPV4 = 2;
+      BGPV6 = 3;
     }
   }
   Choice.Enum choice = 1 [
@@ -3655,6 +3657,16 @@ message ConvergenceRequest {
   ];
 
   ConvergenceFlowRequest convergence = 3 [
+    (fld_meta).required = false,
+    (fld_meta).description = "Description missing in models"
+  ];
+
+  Bgpv4MetricsRequest bgpv4 = 4 [
+    (fld_meta).required = false,
+    (fld_meta).description = "Description missing in models"
+  ];
+
+  Bgpv6MetricsRequest bgpv6 = 5 [
     (fld_meta).required = false,
     (fld_meta).description = "Description missing in models"
   ];
@@ -3860,6 +3872,132 @@ message MetricLatency {
   ];
 }
 
+message Bgpv4MetricsRequest {
+  option (msg_meta).description = "The request to retrieve BGPv4 Router statistics and learned routing information";
+
+  repeated string device_names = 1 [
+    (fld_meta).required = false,
+    (fld_meta).description = "The names of BGPv4 device to return results for. An empty list will return results for all BGPv4 devices.\n\nx-constraint:\n- /components/schemas/Device.Bgpv4/properties/name\n"
+  ];
+
+  message Column_names {
+    enum Enum {
+      SESSIONS_TOTAL = 0;
+      SESSIONS_UP = 1;
+      SESSIONS_DOWN = 2;
+      SESSIONS_NOT_STARTED = 3;
+      ROUTES_ADVERTISED = 4;
+      ROUTES_WITHDRAWN = 5;
+    }
+  }
+  repeated Column_names.Enum column_names = 2 [
+    (fld_meta).required = false,
+    (fld_meta).description = "The list of column names that the returned result set will contain. If the list is empty then all columns will be returned except for any result_groups. The name of the BGPv4 device cannot be excluded."
+  ];
+}
+
+message Bgpv4Metric {
+  option (msg_meta).description = "BGPv4 Router statistics and learned routing information";
+
+  string name = 1 [
+    (fld_meta).required = false,
+    (fld_meta).description = "The name of a configured BGPv4 device."
+  ];
+
+  int32 sessions_total = 2 [
+    (fld_meta).required = false,
+    (fld_meta).description = "Total number of session"
+  ];
+
+  int32 sessions_up = 3 [
+    (fld_meta).required = false,
+    (fld_meta).description = "Sessions are in active state"
+  ];
+
+  int32 sessions_down = 4 [
+    (fld_meta).required = false,
+    (fld_meta).description = "Sessions are not active state"
+  ];
+
+  int32 sessions_not_started = 5 [
+    (fld_meta).required = false,
+    (fld_meta).description = "Sessions not able to start due to some internal issue"
+  ];
+
+  int32 routes_advertised = 6 [
+    (fld_meta).required = false,
+    (fld_meta).description = "Number of advertised routes sent"
+  ];
+
+  int32 routes_withdrawn = 7 [
+    (fld_meta).required = false,
+    (fld_meta).description = "Number of routes withdrawn"
+  ];
+}
+
+message Bgpv6MetricsRequest {
+  option (msg_meta).description = "The request to retrieve BGPv6 Router statistics and learned routing information";
+
+  repeated string device_names = 1 [
+    (fld_meta).required = false,
+    (fld_meta).description = "The names of BGPv6 device to return results for. An empty list will return results for all BGPv6 devices.\n\nx-constraint:\n- /components/schemas/Device.Bgpv6/properties/name\n"
+  ];
+
+  message Column_names {
+    enum Enum {
+      SESSIONS_TOTAL = 0;
+      SESSIONS_UP = 1;
+      SESSIONS_DOWN = 2;
+      SESSIONS_NOT_STARTED = 3;
+      ROUTES_ADVERTISED = 4;
+      ROUTES_WITHDRAWN = 5;
+    }
+  }
+  repeated Column_names.Enum column_names = 2 [
+    (fld_meta).required = false,
+    (fld_meta).description = "The list of column names that the returned result set will contain. If the list is empty then all columns will be returned except for any result_groups. The name of the BGPv6 device cannot be excluded."
+  ];
+}
+
+message Bgpv6Metric {
+  option (msg_meta).description = "BGPv6 Router statistics and learned routing information";
+
+  string name = 1 [
+    (fld_meta).required = false,
+    (fld_meta).description = "The name of a configured BGPv6 device."
+  ];
+
+  int32 sessions_total = 2 [
+    (fld_meta).required = false,
+    (fld_meta).description = "Total number of session"
+  ];
+
+  int32 sessions_up = 3 [
+    (fld_meta).required = false,
+    (fld_meta).description = "Sessions are in active state"
+  ];
+
+  int32 sessions_down = 4 [
+    (fld_meta).required = false,
+    (fld_meta).description = "Sessions are not active state"
+  ];
+
+  int32 sessions_not_started = 5 [
+    (fld_meta).required = false,
+    (fld_meta).description = "Sessions not started yet or sessions not able to start due to some internal issue"
+  ];
+
+  int32 routes_advertised = 6 [
+    (fld_meta).required = false,
+    (fld_meta).description = "Number of advertised routes sent"
+  ];
+
+  int32 routes_withdrawn = 7 [
+    (fld_meta).required = false,
+    (fld_meta).description = "Number of routes withdrawn"
+  ];
+}
+
 message ConvergenceResponse {
   option (msg_meta).description = "Description missing in models";
 
@@ -3867,6 +4005,8 @@ message ConvergenceResponse {
     enum Enum {
       FLOW_METRIC = 0;
       FLOW_CONVERGENCE = 1;
+      BGPV4_METRICS = 2;
+      BGPV6_METRICS = 3;
     }
   }
   Choice.Enum choice = 1 [
@@ -3880,6 +4020,16 @@ message ConvergenceResponse {
   ];
 
   repeated ConvergenceFlow flow_convergence = 3 [
+    (fld_meta).required = false,
+    (fld_meta).description = "Description missing in models"
+  ];
+
+  repeated Bgpv4Metric bgpv4_metrics = 4 [
+    (fld_meta).required = false,
+    (fld_meta).description = "Description missing in models"
+  ];
+
+  repeated Bgpv6Metric bgpv6_metrics = 5 [
     (fld_meta).required = false,
     (fld_meta).description = "Description missing in models"
   ];
