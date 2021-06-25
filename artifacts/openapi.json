@@ -321,9 +321,6 @@
             },
             "Lag.Protocol": {
                 "type": "object",
-                "required": [
-                    "choice"
-                ],
                 "properties": {
                     "choice": {
                         "description": "The type of LAG protocol.",
@@ -431,12 +428,15 @@
             "Device.EthernetBase": {
                 "description": "Base ethernet interface",
                 "type": "object",
+                "required": [
+                    "mac",
+                    "name"
+                ],
                 "properties": {
                     "mac": {
                         "description": "Media access control address",
                         "type": "string",
-                        "format": "mac",
-                        "default": "00:00:00:00:00:00"
+                        "format": "mac"
                     },
                     "mtu": {
                         "description": "Maximum transmission unit",
@@ -457,10 +457,7 @@
                         "type": "string",
                         "pattern": "^[\\sa-zA-Z0-9-_()><\\[\\]]+$"
                     }
-                },
-                "required": [
-                    "name"
-                ]
+                }
             },
             "Device.Ethernet": {
                 "description": "An ethernet interface with an IPv4 and IPv6 interface stack\nBase ethernet interface",
@@ -475,8 +472,7 @@
                     "mac": {
                         "description": "Media access control address",
                         "type": "string",
-                        "format": "mac",
-                        "default": "00:00:00:00:00:00"
+                        "format": "mac"
                     },
                     "mtu": {
                         "description": "Maximum transmission unit",
@@ -499,6 +495,7 @@
                     }
                 },
                 "required": [
+                    "mac",
                     "name"
                 ]
             },
@@ -545,18 +542,21 @@
             "Device.Ipv4": {
                 "description": "An IPv4 interface with gateway\nA base IPv4 interface",
                 "type": "object",
+                "required": [
+                    "gateway",
+                    "address",
+                    "name"
+                ],
                 "properties": {
                     "gateway": {
                         "description": "The IPv4 address of the gateway",
                         "type": "string",
-                        "format": "ipv4",
-                        "default": "0.0.0.0"
+                        "format": "ipv4"
                     },
                     "address": {
                         "description": "The IPv4 address",
                         "type": "string",
-                        "format": "ipv4",
-                        "default": "0.0.0.0"
+                        "format": "ipv4"
                     },
                     "prefix": {
                         "description": "The prefix of the IPv4 address",
@@ -573,27 +573,29 @@
                         "type": "string",
                         "pattern": "^[\\sa-zA-Z0-9-_()><\\[\\]]+$"
                     }
-                },
-                "required": [
-                    "name"
-                ]
+                }
             },
             "Device.Bgpv4": {
                 "x-status": "under-review",
                 "description": "Container for emulated BGPv4 peers and routes.\nContainer for basic emulated BGP peer settings.",
                 "type": "object",
+                "required": [
+                    "local_address",
+                    "dut_address",
+                    "as_type",
+                    "as_number",
+                    "name"
+                ],
                 "properties": {
                     "local_address": {
                         "description": "Local IPv4 address of the emulated router",
                         "type": "string",
-                        "format": "ipv4",
-                        "default": "0.0.0.0"
+                        "format": "ipv4"
                     },
                     "dut_address": {
                         "description": "IPv4 address of the BGP peer for the session",
                         "type": "string",
-                        "format": "ipv4",
-                        "default": "0.0.0.0"
+                        "format": "ipv4"
                     },
                     "router_id": {
                         "description": "The BGP router ID is a unique identifier used by routing protocols. It is a 32-bit value that is often represented by an IPv4 address.",
@@ -607,13 +609,11 @@
                         "enum": [
                             "ibgp",
                             "ebgp"
-                        ],
-                        "default": "ibgp"
+                        ]
                     },
                     "as_number": {
                         "description": "Autonomous System Number (AS number or ASN)",
-                        "type": "integer",
-                        "default": 1
+                        "type": "integer"
                     },
                     "as_number_width": {
                         "description": "The width in bytes of the as_number values. Any as_number values that exceed the width MUST result in an error",
@@ -674,10 +674,7 @@
                         "type": "boolean",
                         "default": true
                     }
-                },
-                "required": [
-                    "name"
-                ]
+                }
             },
             "Device.BgpAdvanced": {
                 "x-status": "under-review",
@@ -1300,12 +1297,14 @@
             "Device.Bgpv4RouteAddress": {
                 "description": "A container for BGPv4 route addresses",
                 "type": "object",
+                "required": [
+                    "address"
+                ],
                 "properties": {
                     "address": {
                         "description": "The starting address of the network",
                         "type": "string",
-                        "format": "ipv4",
-                        "default": "0.0.0.0"
+                        "format": "ipv4"
                     },
                     "prefix": {
                         "description": "The IPv4 network prefix to be applied to the address. ",
@@ -1316,14 +1315,12 @@
                     },
                     "count": {
                         "description": "The total number of addresses in the range",
-                        "type": "string",
-                        "format": "integer",
+                        "type": "integer",
                         "default": 1
                     },
                     "step": {
                         "description": "The amount to increase each address by",
-                        "type": "string",
-                        "format": "integer",
+                        "type": "integer",
                         "default": 1
                     }
                 }
@@ -1396,12 +1393,14 @@
             "Device.Bgpv6RouteAddress": {
                 "description": "A container for BGPv6 route addressses",
                 "type": "object",
+                "required": [
+                    "address"
+                ],
                 "properties": {
                     "address": {
                         "description": "The starting address of the network",
                         "type": "string",
-                        "format": "ipv6",
-                        "default": "::0"
+                        "format": "ipv6"
                     },
                     "prefix": {
                         "description": "The IPv6 network prefix to be applied to the address",
@@ -1412,14 +1411,12 @@
                     },
                     "count": {
                         "description": "The total number of addresses in the range",
-                        "type": "string",
-                        "format": "integer",
+                        "type": "integer",
                         "default": 1
                     },
                     "step": {
                         "description": "The amount to increase each address by",
-                        "type": "string",
-                        "format": "integer",
+                        "type": "integer",
                         "default": 1
                     }
                 }
@@ -1427,18 +1424,21 @@
             "Device.Ipv6": {
                 "description": "An IPv6 interface with gateway\nA base IPv6 interface",
                 "type": "object",
+                "required": [
+                    "gateway",
+                    "address",
+                    "name"
+                ],
                 "properties": {
                     "gateway": {
                         "description": "The IPv6 gateway address",
                         "type": "string",
-                        "format": "ipv6",
-                        "default": "::0"
+                        "format": "ipv6"
                     },
                     "address": {
                         "description": "The IPv6 address.",
                         "type": "string",
-                        "format": "ipv6",
-                        "default": "::0"
+                        "format": "ipv6"
                     },
                     "prefix": {
                         "description": "The network prefix.",
@@ -1456,27 +1456,29 @@
                         "pattern": "^[\\sa-zA-Z0-9-_()><\\[\\]]+$"
                     }
                 },
-                "x-status": "under-review",
-                "required": [
-                    "name"
-                ]
+                "x-status": "under-review"
             },
             "Device.Bgpv6": {
                 "x-status": "under-review",
                 "description": "Container for BGPv6 peer settings and routes.\nContainer for basic emulated BGP peer settings.",
                 "type": "object",
+                "required": [
+                    "local_address",
+                    "dut_address",
+                    "as_type",
+                    "as_number",
+                    "name"
+                ],
                 "properties": {
                     "local_address": {
                         "description": "Local IPv6 address of the emulated router",
                         "type": "string",
-                        "format": "ipv6",
-                        "default": "::0"
+                        "format": "ipv6"
                     },
                     "dut_address": {
                         "description": "IPv6 address of the BGP peer for the session",
                         "type": "string",
-                        "format": "ipv6",
-                        "default": "::0"
+                        "format": "ipv6"
                     },
                     "segment_routing": {
                         "$ref": "#/components/schemas/Device.Bgpv6SegmentRouting"
@@ -1493,13 +1495,11 @@
                         "enum": [
                             "ibgp",
                             "ebgp"
-                        ],
-                        "default": "ibgp"
+                        ]
                     },
                     "as_number": {
                         "description": "Autonomous System Number (AS number or ASN)",
-                        "type": "integer",
-                        "default": 1
+                        "type": "integer"
                     },
                     "as_number_width": {
                         "description": "The width in bytes of the as_number values. Any as_number values that exceed the width MUST result in an error",
@@ -1560,10 +1560,7 @@
                         "type": "boolean",
                         "default": true
                     }
-                },
-                "required": [
-                    "name"
-                ]
+                }
             },
             "Device.Bgpv6SegmentRouting": {
                 "x-status": "under-review",
@@ -1621,7 +1618,7 @@
                 ],
                 "properties": {
                     "port_names": {
-                        "description": "A list of unique names of port objects that will share the choice settings. \n\nx-constraint:\n- /components/schemas/Port/properties/name\n",
+                        "description": "A list of unique names of port objects that will share the\nchoice settings. \n\nx-constraint:\n- /components/schemas/Port/properties/name\n",
                         "type": "array",
                         "items": {
                             "type": "string"
@@ -1655,7 +1652,8 @@
                             "copper",
                             "fiber",
                             "sgmii"
-                        ]
+                        ],
+                        "default": "copper"
                     },
                     "promiscuous": {
                         "description": "Enable promiscuous mode if supported.",
@@ -1668,7 +1666,7 @@
                         "default": 1500
                     },
                     "ieee_media_defaults": {
-                        "description": "Set to true to override the auto_negotiate, link_training and rs_fec settings for gigabit ethernet interfaces.",
+                        "description": "Set to true to override the auto_negotiate, link_training\nand rs_fec settings for gigabit ethernet interfaces.",
                         "type": "boolean",
                         "default": true
                     },
@@ -1695,27 +1693,27 @@
                 "type": "object",
                 "properties": {
                     "advertise_1000_mbps": {
-                        "description": "If auto_negotiate is true and the interface supports this option then this speed will be advertised.",
+                        "description": "If auto_negotiate is true and the interface supports this option\nthen this speed will be advertised.",
                         "type": "boolean",
                         "default": true
                     },
                     "advertise_100_fd_mbps": {
-                        "description": "If auto_negotiate is true and the interface supports this option then this speed will be advertised.",
+                        "description": "If auto_negotiate is true and the interface supports this option\nthen this speed will be advertised.",
                         "type": "boolean",
                         "default": true
                     },
                     "advertise_100_hd_mbps": {
-                        "description": "If auto_negotiate is true and the interface supports this option then this speed will be advertised.",
+                        "description": "If auto_negotiate is true and the interface supports this option\nthen this speed will be advertised.",
                         "type": "boolean",
                         "default": true
                     },
                     "advertise_10_fd_mbps": {
-                        "description": "If auto_negotiate is true and the interface supports this option then this speed will be advertised.",
+                        "description": "If auto_negotiate is true and the interface supports this option\nthen this speed will be advertised.",
                         "type": "boolean",
                         "default": true
                     },
                     "advertise_10_hd_mbps": {
-                        "description": "If auto_negotiate is true and the interface supports this option then this speed will be advertised.",
+                        "description": "If auto_negotiate is true and the interface supports this option\nthen this speed will be advertised.",
                         "type": "boolean",
                         "default": true
                     },
@@ -1732,11 +1730,11 @@
                 }
             },
             "Layer1.FlowControl": {
-                "description": "A container for layer1 receive flow control settings. To enable flow control settings on ports this object must be a valid object not a null value.",
+                "description": "A container for layer1 receive flow control settings.\nTo enable flow control settings on ports this object must be a valid\nobject not a null value.",
                 "type": "object",
                 "properties": {
                     "directed_address": {
-                        "description": "The 48bit mac address that the layer1 port names will listen on for a directed pause.  ",
+                        "description": "The 48bit mac address that the layer1 port names will listen on\nfor a directed pause.  ",
                         "type": "string",
                         "default": "0180C2000001"
                     },
@@ -1746,7 +1744,8 @@
                         "enum": [
                             "ieee_802_1qbb",
                             "ieee_802_3x"
-                        ]
+                        ],
+                        "default": "ieee_802_1qbb"
                     },
                     "ieee_802_1qbb": {
                         "$ref": "#/components/schemas/Layer1.Ieee8021qbb"
@@ -1761,44 +1760,53 @@
                 "type": "object"
             },
             "Layer1.Ieee8021qbb": {
-                "description": "These settings enhance the existing 802.3x pause priority capabilities  to enable flow control based on 802.1p priorities (classes of service). ",
+                "description": "These settings enhance the existing 802.3x pause priority capabilities \nto enable flow control based on 802.1p priorities (classes of service). ",
                 "type": "object",
                 "properties": {
                     "pfc_delay": {
-                        "description": "The upper limit on the transmit time of a queue after receiving a  message to pause a specified priority. A value of 0 or null indicates that pfc delay will not be enabled. ",
-                        "type": "integer"
+                        "description": "The upper limit on the transmit time of a queue after receiving a \nmessage to pause a specified priority.\nA value of 0 or null indicates that pfc delay will not be enabled. ",
+                        "type": "integer",
+                        "default": 0
                     },
                     "pfc_class_0": {
-                        "description": "The valid values are null, 0 - 7. A null value indicates there is no setting for this pfc class.",
-                        "type": "integer"
+                        "description": "The valid values are null, 0 - 7.\nA null value indicates there is no setting for this pfc class.",
+                        "type": "integer",
+                        "default": 0
                     },
                     "pfc_class_1": {
-                        "description": "The valid values are null, 0 - 7. A null value indicates there is no setting for this pfc class.",
-                        "type": "integer"
+                        "description": "The valid values are null, 0 - 7.\nA null value indicates there is no setting for this pfc class.",
+                        "type": "integer",
+                        "default": 1
                     },
                     "pfc_class_2": {
-                        "description": "The valid values are null, 0 - 7. A null value indicates there is no setting for this pfc class.",
-                        "type": "integer"
+                        "description": "The valid values are null, 0 - 7.\nA null value indicates there is no setting for this pfc class.",
+                        "type": "integer",
+                        "default": 2
                     },
                     "pfc_class_3": {
-                        "description": "The valid values are null, 0 - 7. A null value indicates there is no setting for this pfc class.",
-                        "type": "integer"
+                        "description": "The valid values are null, 0 - 7.\nA null value indicates there is no setting for this pfc class.",
+                        "type": "integer",
+                        "default": 3
                     },
                     "pfc_class_4": {
-                        "description": "The valid values are null, 0 - 7. A null value indicates there is no setting for this pfc class.",
-                        "type": "integer"
+                        "description": "The valid values are null, 0 - 7.\nA null value indicates there is no setting for this pfc class.",
+                        "type": "integer",
+                        "default": 4
                     },
                     "pfc_class_5": {
-                        "description": "The valid values are null, 0 - 7. A null value indicates there is no setting for this pfc class.",
-                        "type": "integer"
+                        "description": "The valid values are null, 0 - 7.\nA null value indicates there is no setting for this pfc class.",
+                        "type": "integer",
+                        "default": 5
                     },
                     "pfc_class_6": {
-                        "description": "The valid values are null, 0 - 7. A null value indicates there is no setting for this pfc class.",
-                        "type": "integer"
+                        "description": "The valid values are null, 0 - 7.\nA null value indicates there is no setting for this pfc class.",
+                        "type": "integer",
+                        "default": 6
                     },
                     "pfc_class_7": {
-                        "description": "The valid values are null, 0 - 7. A null value indicates there is no setting for this pfc class.",
-                        "type": "integer"
+                        "description": "The valid values are null, 0 - 7.\nA null value indicates there is no setting for this pfc class.",
+                        "type": "integer",
+                        "default": 7
                     }
                 }
             },
@@ -1807,6 +1815,7 @@
                 "description": "Container for capture settings.",
                 "type": "object",
                 "required": [
+                    "port_names",
                     "name"
                 ],
                 "properties": {
@@ -1855,18 +1864,17 @@
             "Capture.Filter": {
                 "description": "Container for capture filters",
                 "type": "object",
-                "required": [
-                    "choice"
-                ],
                 "properties": {
                     "choice": {
+                        "description": "The type of capture filter.",
                         "type": "string",
                         "enum": [
                             "custom",
                             "ethernet",
                             "vlan",
                             "ipv4"
-                        ]
+                        ],
+                        "default": "custom"
                     },
                     "custom": {
                         "description": "Offset from last filter in the list. If no filters are present it is offset from position 0. Multiple custom filters can be present, the length of each custom filter is the length of the value being filtered.",
@@ -1886,16 +1894,24 @@
             "Capture.Custom": {
                 "properties": {
                     "offset": {
-                        "description": "The byte offset to filter on",
-                        "type": "integer"
+                        "description": "The byte offset of field to filter on",
+                        "type": "integer",
+                        "default": 0
+                    },
+                    "bit_length": {
+                        "description": "The bit length of field to filter on",
+                        "type": "integer",
+                        "default": 8
                     },
                     "value": {
                         "type": "string",
-                        "format": "hex"
+                        "format": "hex",
+                        "default": "00"
                     },
                     "mask": {
                         "type": "string",
-                        "format": "hex"
+                        "format": "hex",
+                        "default": "00"
                     },
                     "negate": {
                         "type": "boolean",
@@ -1909,11 +1925,13 @@
                 "properties": {
                     "value": {
                         "type": "string",
-                        "format": "hex"
+                        "format": "hex",
+                        "default": "00"
                     },
                     "mask": {
                         "type": "string",
-                        "format": "hex"
+                        "format": "hex",
+                        "default": "00"
                     },
                     "negate": {
                         "type": "boolean",
@@ -2074,11 +2092,8 @@
                 }
             },
             "Flow.TxRx": {
-                "description": "A container for different types of transmit and receive  endpoint containers.",
+                "description": "A container for different types of transmit and receive \nendpoint containers.",
                 "type": "object",
-                "required": [
-                    "choice"
-                ],
                 "properties": {
                     "choice": {
                         "description": "The type of transmit and receive container used by the flow.",
@@ -2086,7 +2101,8 @@
                         "enum": [
                             "port",
                             "device"
-                        ]
+                        ],
+                        "default": "port"
                     },
                     "port": {
                         "$ref": "#/components/schemas/Flow.Port"
@@ -2097,7 +2113,7 @@
                 }
             },
             "Flow.Port": {
-                "description": "A container for a transmit port and 0..n intended receive ports. When assigning this container to a flow the flows's  packet headers will not be populated with any address resolution  information such as source and/or destination addresses.  For example Flow.Ethernet dst mac address values will be defaulted to 0.  For full control over the Flow.properties.packet header contents use this  container. ",
+                "description": "A container for a transmit port and 0..n intended receive ports.\nWhen assigning this container to a flow the flows's \npacket headers will not be populated with any address resolution \ninformation such as source and/or destination addresses. \nFor example Flow.Ethernet dst mac address values will be defaulted to 0. \nFor full control over the Flow.properties.packet header contents use this \ncontainer. ",
                 "type": "object",
                 "required": [
                     "tx_name"
@@ -2122,16 +2138,15 @@
                 }
             },
             "Flow.Device": {
-                "description": "A container for declaring a map of 1..n transmit devices to 1..n receive devices. This allows for a single flow to have  different tx to rx device flows such as a single one to one map or a  many to many map.",
+                "description": "A container for declaring a map of 1..n transmit devices\nto 1..n receive devices. This allows for a single flow to have \ndifferent tx to rx device flows such as a single one to one map or a \nmany to many map.",
                 "type": "object",
                 "required": [
-                    "mode",
                     "tx_names",
                     "rx_names"
                 ],
                 "properties": {
                     "mode": {
-                        "description": "Determines the mapping of tx_names to rx_names.\nThe mesh mode creates traffic between each value in tx_names to every value in rx_names except in the case where the individual  tx_names value is equal to rx_names value which will be ignored. Identical values in tx_names or rx_names MUST raise an error.\nThe one_to_one mode creates traffic between each value pair in  of tx_names and rx_names by index. The length of tx_names and rx_name MUST be the same. Identical values in tx_names or rx_names MUST raise an error.",
+                        "description": "Determines the mapping of tx_names to rx_names.\n\nThe mesh mode creates traffic between each value in tx_names to\nevery value in rx_names except in the case where the individual \ntx_names value is equal to rx_names value which will be ignored.\nIdentical values in tx_names or rx_names MUST raise an error.\n\nThe one_to_one mode creates traffic between each value pair in \nof tx_names and rx_names by index.\nThe length of tx_names and rx_name MUST be the same.\nIdentical values in tx_names or rx_names MUST raise an error.",
                         "type": "string",
                         "enum": [
                             "mesh",
@@ -2384,9 +2399,6 @@
             "Flow.Ipv4.Priority": {
                 "description": "A container for ipv4 raw, tos, dscp ip priorities.",
                 "type": "object",
-                "required": [
-                    "choice"
-                ],
                 "properties": {
                     "choice": {
                         "type": "string",
@@ -2394,7 +2406,8 @@
                             "raw",
                             "tos",
                             "dscp"
-                        ]
+                        ],
+                        "default": "dscp"
                     },
                     "raw": {
                         "$ref": "#/components/schemas/Pattern.Flow.Ipv4.Priority.Raw"
@@ -2764,15 +2777,13 @@
             "Flow.Icmp": {
                 "description": "ICMP packet header",
                 "type": "object",
-                "required": [
-                    "choice"
-                ],
                 "properties": {
                     "choice": {
                         "type": "string",
                         "enum": [
                             "echo"
-                        ]
+                        ],
+                        "default": "echo"
                     },
                     "echo": {
                         "$ref": "#/components/schemas/Flow.Icmp.Echo"
@@ -2803,15 +2814,13 @@
             "Flow.Icmpv6": {
                 "description": "ICMPv6 packet header",
                 "type": "object",
-                "required": [
-                    "choice"
-                ],
                 "properties": {
                     "choice": {
                         "type": "string",
                         "enum": [
                             "echo"
-                        ]
+                        ],
+                        "default": "echo"
                     },
                     "echo": {
                         "$ref": "#/components/schemas/Flow.Icmpv6.Echo"
@@ -2878,9 +2887,6 @@
             "Flow.Size": {
                 "description": "The frame size which overrides the total length of the packet",
                 "type": "object",
-                "required": [
-                    "choice"
-                ],
                 "properties": {
                     "choice": {
                         "type": "string",
@@ -2888,7 +2894,8 @@
                             "fixed",
                             "increment",
                             "random"
-                        ]
+                        ],
+                        "default": "fixed"
                     },
                     "fixed": {
                         "type": "integer",
@@ -2904,12 +2911,7 @@
             },
             "Flow.SizeIncrement": {
                 "type": "object",
-                "description": "Frame size that increments from a starting size to  an ending size incrementing by a step size.",
-                "required": [
-                    "start",
-                    "end",
-                    "step"
-                ],
+                "description": "Frame size that increments from a starting size to \nan ending size incrementing by a step size.",
                 "properties": {
                     "start": {
                         "description": "Starting frame size in bytes",
@@ -2933,10 +2935,6 @@
             "Flow.SizeRandom": {
                 "type": "object",
                 "description": "Random frame size from a min value to a max value.",
-                "required": [
-                    "min",
-                    "max"
-                ],
                 "properties": {
                     "min": {
                         "type": "integer",
@@ -2951,11 +2949,9 @@
             "Flow.Rate": {
                 "type": "object",
                 "description": "The rate of packet transmission",
-                "required": [
-                    "choice"
-                ],
                 "properties": {
                     "choice": {
+                        "description": "The available types of flow rate.",
                         "type": "string",
                         "enum": [
                             "pps",
@@ -2970,23 +2966,32 @@
                     "pps": {
                         "description": "Packets per second.",
                         "type": "integer",
+                        "format": "int64",
                         "default": 1000
                     },
                     "bps": {
-                        "description": "Bits per second. Default is maximum supported speed.",
-                        "type": "integer"
+                        "description": "Bits per second.",
+                        "type": "integer",
+                        "format": "int64",
+                        "default": 1000000000
                     },
                     "kbps": {
-                        "description": "Kilobits per second. Default is maximum supported speed.",
-                        "type": "number"
+                        "description": "Kilobits per second.",
+                        "type": "integer",
+                        "format": "int64",
+                        "default": 1000000
                     },
                     "mbps": {
-                        "description": "Megabits per second.  Default is maximum supported speed.",
-                        "type": "number"
+                        "description": "Megabits per second. ",
+                        "type": "integer",
+                        "format": "int64",
+                        "default": 1000
                     },
                     "gbps": {
-                        "description": "Gigabits per second. Default is maximum supported speed.",
-                        "type": "number"
+                        "description": "Gigabits per second.",
+                        "type": "integer",
+                        "format": "int32",
+                        "default": 1
                     },
                     "percentage": {
                         "description": "The percentage of a port location's available bandwidth.",
@@ -2998,9 +3003,6 @@
             "Flow.Duration": {
                 "description": "A container for different transmit durations. ",
                 "type": "object",
-                "required": [
-                    "choice"
-                ],
                 "properties": {
                     "choice": {
                         "description": "A choice used to determine the type of duration.",
@@ -3010,7 +3012,8 @@
                             "fixed_seconds",
                             "burst",
                             "continuous"
-                        ]
+                        ],
+                        "default": "continuous"
                     },
                     "fixed_packets": {
                         "$ref": "#/components/schemas/Flow.FixedPackets"
@@ -3041,11 +3044,8 @@
                 }
             },
             "Flow.Delay": {
-                "description": "The optional container to specify the delay before starting  transmission of packets.",
+                "description": "The optional container to specify the delay before starting \ntransmission of packets.",
                 "type": "object",
-                "required": [
-                    "choice"
-                ],
                 "properties": {
                     "choice": {
                         "type": "string",
@@ -3053,22 +3053,23 @@
                             "bytes",
                             "nanoseconds",
                             "microseconds"
-                        ]
+                        ],
+                        "default": "bytes"
                     },
                     "bytes": {
-                        "description": "The delay before starting transmission of packets. A value of 0 indicates no delay.",
+                        "description": "The delay before starting transmission of packets.\nA value of 0 indicates no delay.",
                         "type": "number",
                         "format": "float",
                         "default": 0
                     },
                     "nanoseconds": {
-                        "description": "The delay before starting transmission of packets. A value of 0 indicates no delay.",
+                        "description": "The delay before starting transmission of packets.\nA value of 0 indicates no delay.",
                         "type": "number",
                         "format": "float",
                         "default": 0
                     },
                     "microseconds": {
-                        "description": "The delay before starting transmission of packets. A value of 0 indicates no delay.",
+                        "description": "The delay before starting transmission of packets.\nA value of 0 indicates no delay.",
                         "type": "number",
                         "format": "float",
                         "default": 0
@@ -3114,11 +3115,11 @@
                 }
             },
             "Flow.Burst": {
-                "description": "Transmits continuous or fixed burst of packets.  For continuous burst of packets, it will not automatically stop. For fixed burst of packets, it will stop after transmitting fixed number of bursts.      ",
+                "description": "Transmits continuous or fixed burst of packets. \nFor continuous burst of packets, it will not automatically stop.\nFor fixed burst of packets, it will stop after transmitting fixed number of bursts.      ",
                 "type": "object",
                 "properties": {
                     "bursts": {
-                        "description": "The number of packet bursts transmitted per flow. A value of 0 implies continuous burst of packets.",
+                        "description": "The number of packet bursts transmitted per flow.\nA value of 0 implies continuous burst of packets.",
                         "type": "integer",
                         "default": 0
                     },
@@ -3140,9 +3141,6 @@
             "Flow.Duration.InterBurstGap": {
                 "type": "object",
                 "description": "The optional container for specifying a gap between bursts.",
-                "required": [
-                    "choice"
-                ],
                 "properties": {
                     "choice": {
                         "description": "The type of inter burst gap units.",
