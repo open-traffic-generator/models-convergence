@@ -136,6 +136,7 @@ components:
           enum:
           - link_up_down
           - route_advertise_withdraw
+          - remote_link_failure
           default: route_advertise_withdraw
     Config:
       description: |-
@@ -3548,8 +3549,6 @@ components:
       description: |-
         Destination MAC address
       type: object
-      required:
-      - choice
       properties:
         choice:
           type: string
@@ -3601,8 +3600,6 @@ components:
       description: |-
         Source MAC address
       type: object
-      required:
-      - choice
       properties:
         choice:
           type: string
@@ -3662,8 +3659,6 @@ components:
       description: |-
         Ethernet type
       type: object
-      required:
-      - choice
       properties:
         choice:
           type: string
@@ -3731,8 +3726,6 @@ components:
       description: |-
         Priority flow control queue
       type: object
-      required:
-      - choice
       properties:
         choice:
           type: string
@@ -3788,8 +3781,6 @@ components:
       description: |-
         Priority code point
       type: object
-      required:
-      - choice
       properties:
         choice:
           type: string
@@ -3845,8 +3836,6 @@ components:
       description: |-
         Canonical format indicator or drop elegible indicator
       type: object
-      required:
-      - choice
       properties:
         choice:
           type: string
@@ -3902,8 +3891,6 @@ components:
       description: |-
         Vlan identifier
       type: object
-      required:
-      - choice
       properties:
         choice:
           type: string
@@ -3965,8 +3952,6 @@ components:
       description: |-
         Protocol identifier
       type: object
-      required:
-      - choice
       properties:
         choice:
           type: string
@@ -4028,8 +4013,6 @@ components:
       description: |-
         Flags field with a bit format of RRRRIRRR. The I flag MUST be set to 1 for a valid vxlan network id (VNI).   The other 7 bits (designated "R") are reserved fields and MUST be  set to zero on transmission and ignored on receipt.
       type: object
-      required:
-      - choice
       properties:
         choice:
           type: string
@@ -4085,8 +4068,6 @@ components:
       description: |-
         Reserved field
       type: object
-      required:
-      - choice
       properties:
         choice:
           type: string
@@ -4142,8 +4123,6 @@ components:
       description: |-
         VXLAN network id
       type: object
-      required:
-      - choice
       properties:
         choice:
           type: string
@@ -4199,8 +4178,6 @@ components:
       description: |-
         Reserved field
       type: object
-      required:
-      - choice
       properties:
         choice:
           type: string
@@ -4256,8 +4233,6 @@ components:
       description: |-
         Version
       type: object
-      required:
-      - choice
       properties:
         choice:
           type: string
@@ -4313,8 +4288,6 @@ components:
       description: |-
         Header length
       type: object
-      required:
-      - choice
       properties:
         choice:
           type: string
@@ -4376,8 +4349,6 @@ components:
       description: |-
         Total length
       type: object
-      required:
-      - choice
       properties:
         choice:
           type: string
@@ -4439,8 +4410,6 @@ components:
       description: |-
         Identification
       type: object
-      required:
-      - choice
       properties:
         choice:
           type: string
@@ -4496,8 +4465,6 @@ components:
       description: |-
         Reserved flag.
       type: object
-      required:
-      - choice
       properties:
         choice:
           type: string
@@ -4553,8 +4520,6 @@ components:
       description: |-
         Dont fragment flag If the dont_fragment flag is set and fragmentation is required to route the packet then the packet is dropped.
       type: object
-      required:
-      - choice
       properties:
         choice:
           type: string
@@ -4610,8 +4575,6 @@ components:
       description: |-
         More fragments flag
       type: object
-      required:
-      - choice
       properties:
         choice:
           type: string
@@ -4667,8 +4630,6 @@ components:
       description: |-
         Fragment offset
       type: object
-      required:
-      - choice
       properties:
         choice:
           type: string
@@ -4724,8 +4685,6 @@ components:
       description: |-
         Time to live
       type: object
-      required:
-      - choice
       properties:
         choice:
           type: string
@@ -4781,8 +4740,6 @@ components:
       description: |-
         Protocol, default is 61 any host internal protocol
       type: object
-      required:
-      - choice
       properties:
         choice:
           type: string
@@ -4865,8 +4822,6 @@ components:
       description: |-
         Source address
       type: object
-      required:
-      - choice
       properties:
         choice:
           type: string
@@ -4918,8 +4873,6 @@ components:
       description: |-
         Destination address
       type: object
-      required:
-      - choice
       properties:
         choice:
           type: string
@@ -4973,8 +4926,6 @@ components:
       description: |-
         Raw priority
       type: object
-      required:
-      - choice
       properties:
         choice:
           type: string
@@ -5052,8 +5003,6 @@ components:
       description: |-
         Per hop behavior
       type: object
-      required:
-      - choice
       properties:
         choice:
           type: string
@@ -5136,8 +5085,6 @@ components:
       description: |-
         Explicit congestion notification
       type: object
-      required:
-      - choice
       properties:
         choice:
           type: string
@@ -5207,8 +5154,6 @@ components:
       description: |-
         Precedence
       type: object
-      required:
-      - choice
       properties:
         choice:
           type: string
@@ -5276,8 +5221,6 @@ components:
       description: |-
         Delay
       type: object
-      required:
-      - choice
       properties:
         choice:
           type: string
@@ -5339,8 +5282,6 @@ components:
       description: |-
         Throughput
       type: object
-      required:
-      - choice
       properties:
         choice:
           type: string
@@ -5402,8 +5343,6 @@ components:
       description: |-
         Reliability
       type: object
-      required:
-      - choice
       properties:
         choice:
           type: string
@@ -5465,8 +5404,6 @@ components:
       description: |-
         Monetary
       type: object
-      required:
-      - choice
       properties:
         choice:
           type: string
@@ -5525,8 +5462,6 @@ components:
       description: |-
         Unused
       type: object
-      required:
-      - choice
       properties:
         choice:
           type: string
@@ -5582,8 +5517,6 @@ components:
       description: |-
         Version number
       type: object
-      required:
-      - choice
       properties:
         choice:
           type: string
@@ -5639,8 +5572,6 @@ components:
       description: |-
         Traffic class
       type: object
-      required:
-      - choice
       properties:
         choice:
           type: string
@@ -5696,8 +5627,6 @@ components:
       description: |-
         Flow label
       type: object
-      required:
-      - choice
       properties:
         choice:
           type: string
@@ -5753,8 +5682,6 @@ components:
       description: |-
         Payload length
       type: object
-      required:
-      - choice
       properties:
         choice:
           type: string
@@ -5828,8 +5755,6 @@ components:
       description: |-
         Next header
       type: object
-      required:
-      - choice
       properties:
         choice:
           type: string
@@ -5897,8 +5822,6 @@ components:
       description: |-
         Hop limit
       type: object
-      required:
-      - choice
       properties:
         choice:
           type: string
@@ -5952,8 +5875,6 @@ components:
       description: |-
         Source address
       type: object
-      required:
-      - choice
       properties:
         choice:
           type: string
@@ -6005,8 +5926,6 @@ components:
       description: |-
         Destination address
       type: object
-      required:
-      - choice
       properties:
         choice:
           type: string
@@ -6058,8 +5977,6 @@ components:
       description: |-
         Destination MAC address
       type: object
-      required:
-      - choice
       properties:
         choice:
           type: string
@@ -6111,8 +6028,6 @@ components:
       description: |-
         Source MAC address
       type: object
-      required:
-      - choice
       properties:
         choice:
           type: string
@@ -6168,8 +6083,6 @@ components:
       description: |-
         Ethernet type
       type: object
-      required:
-      - choice
       properties:
         choice:
           type: string
@@ -6227,8 +6140,6 @@ components:
       description: |-
         Control operation code
       type: object
-      required:
-      - choice
       properties:
         choice:
           type: string
@@ -6284,8 +6195,6 @@ components:
       description: |-
         Destination
       type: object
-      required:
-      - choice
       properties:
         choice:
           type: string
@@ -6341,8 +6250,6 @@ components:
       description: |-
         Pause class 0
       type: object
-      required:
-      - choice
       properties:
         choice:
           type: string
@@ -6398,8 +6305,6 @@ components:
       description: |-
         Pause class 1
       type: object
-      required:
-      - choice
       properties:
         choice:
           type: string
@@ -6455,8 +6360,6 @@ components:
       description: |-
         Pause class 2
       type: object
-      required:
-      - choice
       properties:
         choice:
           type: string
@@ -6512,8 +6415,6 @@ components:
       description: |-
         Pause class 3
       type: object
-      required:
-      - choice
       properties:
         choice:
           type: string
@@ -6569,8 +6470,6 @@ components:
       description: |-
         Pause class 4
       type: object
-      required:
-      - choice
       properties:
         choice:
           type: string
@@ -6626,8 +6525,6 @@ components:
       description: |-
         Pause class 5
       type: object
-      required:
-      - choice
       properties:
         choice:
           type: string
@@ -6683,8 +6580,6 @@ components:
       description: |-
         Pause class 6
       type: object
-      required:
-      - choice
       properties:
         choice:
           type: string
@@ -6740,8 +6635,6 @@ components:
       description: |-
         Pause class 7
       type: object
-      required:
-      - choice
       properties:
         choice:
           type: string
@@ -6795,8 +6688,6 @@ components:
       description: |-
         Destination MAC address
       type: object
-      required:
-      - choice
       properties:
         choice:
           type: string
@@ -6848,8 +6739,6 @@ components:
       description: |-
         Source MAC address
       type: object
-      required:
-      - choice
       properties:
         choice:
           type: string
@@ -6905,8 +6794,6 @@ components:
       description: |-
         Ethernet type
       type: object
-      required:
-      - choice
       properties:
         choice:
           type: string
@@ -6964,8 +6851,6 @@ components:
       description: |-
         Control operation code
       type: object
-      required:
-      - choice
       properties:
         choice:
           type: string
@@ -7021,8 +6906,6 @@ components:
       description: |-
         Time
       type: object
-      required:
-      - choice
       properties:
         choice:
           type: string
@@ -7078,8 +6961,6 @@ components:
       description: |-
         Source port
       type: object
-      required:
-      - choice
       properties:
         choice:
           type: string
@@ -7135,8 +7016,6 @@ components:
       description: |-
         Destination port
       type: object
-      required:
-      - choice
       properties:
         choice:
           type: string
@@ -7192,8 +7071,6 @@ components:
       description: |-
         Sequence number
       type: object
-      required:
-      - choice
       properties:
         choice:
           type: string
@@ -7249,8 +7126,6 @@ components:
       description: |-
         Acknowledgement number
       type: object
-      required:
-      - choice
       properties:
         choice:
           type: string
@@ -7306,8 +7181,6 @@ components:
       description: |-
         The number of 32 bit words in the TCP header. This indicates where the data begins.
       type: object
-      required:
-      - choice
       properties:
         choice:
           type: string
@@ -7363,8 +7236,6 @@ components:
       description: |-
         Explicit congestion notification, concealment protection.
       type: object
-      required:
-      - choice
       properties:
         choice:
           type: string
@@ -7420,8 +7291,6 @@ components:
       description: |-
         Explicit congestion notification, congestion window reduced.
       type: object
-      required:
-      - choice
       properties:
         choice:
           type: string
@@ -7477,8 +7346,6 @@ components:
       description: |-
         Explicit congestion notification, echo. 1 indicates the peer is ecn capable. 0 indicates that a packet with ipv4.ecn = 11 in the ip header was  received during normal transmission.
       type: object
-      required:
-      - choice
       properties:
         choice:
           type: string
@@ -7534,8 +7401,6 @@ components:
       description: |-
         A value of 1 indicates that the urgent pointer field is significant.
       type: object
-      required:
-      - choice
       properties:
         choice:
           type: string
@@ -7591,8 +7456,6 @@ components:
       description: |-
         A value of 1 indicates that the ackknowledgment field is significant.
       type: object
-      required:
-      - choice
       properties:
         choice:
           type: string
@@ -7647,8 +7510,6 @@ components:
     Pattern.Flow.Tcp.CtlPsh:
       description: "Asks to push the buffered data to the receiving application. "
       type: object
-      required:
-      - choice
       properties:
         choice:
           type: string
@@ -7703,8 +7564,6 @@ components:
     Pattern.Flow.Tcp.CtlRst:
       description: "Reset the connection. "
       type: object
-      required:
-      - choice
       properties:
         choice:
           type: string
@@ -7759,8 +7618,6 @@ components:
     Pattern.Flow.Tcp.CtlSyn:
       description: "Synchronize sequenece numbers. "
       type: object
-      required:
-      - choice
       properties:
         choice:
           type: string
@@ -7815,8 +7672,6 @@ components:
     Pattern.Flow.Tcp.CtlFin:
       description: "Last packet from the sender. "
       type: object
-      required:
-      - choice
       properties:
         choice:
           type: string
@@ -7872,8 +7727,6 @@ components:
       description: |-
         Tcp connection window.
       type: object
-      required:
-      - choice
       properties:
         choice:
           type: string
@@ -7929,8 +7782,6 @@ components:
       description: |-
         Source port
       type: object
-      required:
-      - choice
       properties:
         choice:
           type: string
@@ -7986,8 +7837,6 @@ components:
       description: |-
         Destination port
       type: object
-      required:
-      - choice
       properties:
         choice:
           type: string
@@ -8043,8 +7892,6 @@ components:
       description: |-
         Length
       type: object
-      required:
-      - choice
       properties:
         choice:
           type: string
@@ -8129,8 +7976,6 @@ components:
       description: |-
         Checksum present bit
       type: object
-      required:
-      - choice
       properties:
         choice:
           type: string
@@ -8186,8 +8031,6 @@ components:
       description: |-
         Reserved bits
       type: object
-      required:
-      - choice
       properties:
         choice:
           type: string
@@ -8243,8 +8086,6 @@ components:
       description: |-
         GRE version number
       type: object
-      required:
-      - choice
       properties:
         choice:
           type: string
@@ -8303,8 +8144,6 @@ components:
       description: |-
         Protocol type of encapsulated payload
       type: object
-      required:
-      - choice
       properties:
         choice:
           type: string
@@ -8392,8 +8231,6 @@ components:
       description: |-
         Optional reserved field. Only present if the checksum_present bit is set.
       type: object
-      required:
-      - choice
       properties:
         choice:
           type: string
@@ -8449,8 +8286,6 @@ components:
       description: |-
         GTPv1 version
       type: object
-      required:
-      - choice
       properties:
         choice:
           type: string
@@ -8506,8 +8341,6 @@ components:
       description: |-
         Protocol type, GTP is 1, GTP' is 0
       type: object
-      required:
-      - choice
       properties:
         choice:
           type: string
@@ -8563,8 +8396,6 @@ components:
       description: |-
         Reserved field
       type: object
-      required:
-      - choice
       properties:
         choice:
           type: string
@@ -8620,8 +8451,6 @@ components:
       description: |-
         Extension header field present
       type: object
-      required:
-      - choice
       properties:
         choice:
           type: string
@@ -8677,8 +8506,6 @@ components:
       description: |-
         Sequence number field present
       type: object
-      required:
-      - choice
       properties:
         choice:
           type: string
@@ -8734,8 +8561,6 @@ components:
       description: |-
         N-PDU field present
       type: object
-      required:
-      - choice
       properties:
         choice:
           type: string
@@ -8791,8 +8616,6 @@ components:
       description: |-
         The type of GTP message Different types of messages are defined in 3GPP TS 29.060 section 7.1
       type: object
-      required:
-      - choice
       properties:
         choice:
           type: string
@@ -8848,8 +8671,6 @@ components:
       description: |-
         The length of the payload (the bytes following the mandatory 8-byte GTP header) in bytes that includes any optional fields
       type: object
-      required:
-      - choice
       properties:
         choice:
           type: string
@@ -8905,8 +8726,6 @@ components:
       description: |-
         Tunnel endpoint identifier (TEID) used to multiplex connections in the same GTP tunnel
       type: object
-      required:
-      - choice
       properties:
         choice:
           type: string
@@ -8962,8 +8781,6 @@ components:
       description: |-
         Sequence number. Exists if any of the e_flag, s_flag, or pn_flag bits are on.  Must be interpreted only if the s_flag bit is on.
       type: object
-      required:
-      - choice
       properties:
         choice:
           type: string
@@ -9019,8 +8836,6 @@ components:
       description: |-
         N-PDU number. Exists if any of the e_flag, s_flag, or pn_flag bits are on.  Must be interpreted only if the pn_flag bit is on.
       type: object
-      required:
-      - choice
       properties:
         choice:
           type: string
@@ -9076,8 +8891,6 @@ components:
       description: |-
         Next extension header. Exists if any of the e_flag, s_flag, or pn_flag bits are on.  Must be interpreted only if the e_flag bit is on.
       type: object
-      required:
-      - choice
       properties:
         choice:
           type: string
@@ -9133,8 +8946,6 @@ components:
       description: |-
         This field states the length of this extension header,  including the length, the contents, and the next extension header field, in 4-octet units, so the length of the extension must  always be a multiple of 4.
       type: object
-      required:
-      - choice
       properties:
         choice:
           type: string
@@ -9190,8 +9001,6 @@ components:
       description: |-
         The extension header contents
       type: object
-      required:
-      - choice
       properties:
         choice:
           type: string
@@ -9247,8 +9056,6 @@ components:
       description: |-
         It states the type of the next extension, or 0 if no next  extension exists.  This permits chaining several next extension headers.
       type: object
-      required:
-      - choice
       properties:
         choice:
           type: string
@@ -9304,8 +9111,6 @@ components:
       description: |-
         Version number
       type: object
-      required:
-      - choice
       properties:
         choice:
           type: string
@@ -9361,8 +9166,6 @@ components:
       description: |-
         If piggybacking_flag is set to 1 then another GTP-C message with its own header shall be present at the end of the current message
       type: object
-      required:
-      - choice
       properties:
         choice:
           type: string
@@ -9418,8 +9221,6 @@ components:
       description: |-
         If teid_flag is set to 1 then the TEID field will be present  between the message length and the sequence number. All messages except Echo and Echo reply require TEID to be present
       type: object
-      required:
-      - choice
       properties:
         choice:
           type: string
@@ -9475,8 +9276,6 @@ components:
       description: |-
         A 3-bit reserved field (must be 0).
       type: object
-      required:
-      - choice
       properties:
         choice:
           type: string
@@ -9532,8 +9331,6 @@ components:
       description: |-
         An 8-bit field that indicates the type of GTP message. Different types of messages are defined in 3GPP TS 29.060 section 7.1
       type: object
-      required:
-      - choice
       properties:
         choice:
           type: string
@@ -9589,8 +9386,6 @@ components:
       description: |-
         A 16-bit field that indicates the length of the payload in bytes, excluding the mandatory GTP-c header (first 4 bytes). Includes the TEID and sequence_number if they are present.
       type: object
-      required:
-      - choice
       properties:
         choice:
           type: string
@@ -9646,8 +9441,6 @@ components:
       description: |-
         Tunnel endpoint identifier. A 32-bit (4-octet) field used to multiplex different connections in the same GTP tunnel. Is present only if the teid_flag is set.
       type: object
-      required:
-      - choice
       properties:
         choice:
           type: string
@@ -9703,8 +9496,6 @@ components:
       description: |-
         The sequence number
       type: object
-      required:
-      - choice
       properties:
         choice:
           type: string
@@ -9760,8 +9551,6 @@ components:
       description: |-
         Reserved field
       type: object
-      required:
-      - choice
       properties:
         choice:
           type: string
@@ -9819,8 +9608,6 @@ components:
       description: |-
         Network link protocol type
       type: object
-      required:
-      - choice
       properties:
         choice:
           type: string
@@ -9881,8 +9668,6 @@ components:
       description: |-
         The internetwork protocol for which the ARP request is intended
       type: object
-      required:
-      - choice
       properties:
         choice:
           type: string
@@ -9941,8 +9726,6 @@ components:
       description: |-
         Length (in octets) of a hardware address
       type: object
-      required:
-      - choice
       properties:
         choice:
           type: string
@@ -9998,8 +9781,6 @@ components:
       description: |-
         Length (in octets) of internetwork addresses
       type: object
-      required:
-      - choice
       properties:
         choice:
           type: string
@@ -10058,8 +9839,6 @@ components:
       description: |-
         The operation that the sender is performing
       type: object
-      required:
-      - choice
       properties:
         choice:
           type: string
@@ -10116,8 +9895,6 @@ components:
       description: |-
         Media address of the sender
       type: object
-      required:
-      - choice
       properties:
         choice:
           type: string
@@ -10169,8 +9946,6 @@ components:
       description: |-
         Internetwork address of the sender
       type: object
-      required:
-      - choice
       properties:
         choice:
           type: string
@@ -10222,8 +9997,6 @@ components:
       description: |-
         Media address of the target
       type: object
-      required:
-      - choice
       properties:
         choice:
           type: string
@@ -10275,8 +10048,6 @@ components:
       description: |-
         Internetwork address of the target
       type: object
-      required:
-      - choice
       properties:
         choice:
           type: string
@@ -10333,8 +10104,6 @@ components:
       description: |-
         The type of ICMP echo packet
       type: object
-      required:
-      - choice
       properties:
         choice:
           type: string
@@ -10393,8 +10162,6 @@ components:
       description: |-
         The ICMP subtype.  The default code for ICMP echo request and reply is 0.
       type: object
-      required:
-      - choice
       properties:
         choice:
           type: string
@@ -10479,8 +10246,6 @@ components:
       description: |-
         ICMP identifier
       type: object
-      required:
-      - choice
       properties:
         choice:
           type: string
@@ -10536,8 +10301,6 @@ components:
       description: |-
         ICMP sequence number
       type: object
-      required:
-      - choice
       properties:
         choice:
           type: string
@@ -10622,8 +10385,6 @@ components:
       description: |-
         ICMP identifier
       type: object
-      required:
-      - choice
       properties:
         choice:
           type: string
@@ -10679,8 +10440,6 @@ components:
       description: |-
         ICMP sequence number
       type: object
-      required:
-      - choice
       properties:
         choice:
           type: string
@@ -10739,8 +10498,6 @@ components:
       description: |-
         ICMPv6 echo type
       type: object
-      required:
-      - choice
       properties:
         choice:
           type: string
@@ -10799,8 +10556,6 @@ components:
       description: |-
         ICMPv6 echo sub type
       type: object
-      required:
-      - choice
       properties:
         choice:
           type: string
@@ -10856,8 +10611,6 @@ components:
       description: |-
         ICMPv6 echo identifier
       type: object
-      required:
-      - choice
       properties:
         choice:
           type: string
@@ -10913,8 +10666,6 @@ components:
       description: |-
         ICMPv6 echo sequence number
       type: object
-      required:
-      - choice
       properties:
         choice:
           type: string
@@ -11030,8 +10781,6 @@ components:
       description: |-
         PPP address
       type: object
-      required:
-      - choice
       properties:
         choice:
           type: string
@@ -11091,8 +10840,6 @@ components:
       description: |-
         PPP control
       type: object
-      required:
-      - choice
       properties:
         choice:
           type: string
@@ -11148,8 +10895,6 @@ components:
       description: |-
         PPP protocol type
       type: object
-      required:
-      - choice
       properties:
         choice:
           type: string
@@ -11208,8 +10953,6 @@ components:
       description: |-
         Version number
       type: object
-      required:
-      - choice
       properties:
         choice:
           type: string
@@ -11268,8 +11011,6 @@ components:
       description: |-
         Type of message
       type: object
-      required:
-      - choice
       properties:
         choice:
           type: string
@@ -11328,8 +11069,6 @@ components:
       description: |-
         Unused
       type: object
-      required:
-      - choice
       properties:
         choice:
           type: string
@@ -11416,8 +11155,6 @@ components:
       description: |-
         Group address
       type: object
-      required:
-      - choice
       properties:
         choice:
           type: string
