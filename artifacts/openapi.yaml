@@ -134,10 +134,10 @@ components:
             Convergence will be measured when this event occurs.
           type: string
           enum:
-          - link_up_down
-          - route_advertise_withdraw
-          - remote_link_failure
-          default: route_advertise_withdraw
+          - link_down
+          - route_withdraw
+          - remote_link_down
+          default: route_withdraw
     Config:
       description: |-
         A container for all models that are part of the configuration.
@@ -3502,6 +3502,8 @@ components:
           - route_advertise
           - flow_rx_rate_above_threshold
           - flow_rx_rate_below_threshold
+          - remote_link_up
+          - remote_link_down
           example: route_withdraw
         source:
           description: "The source of the event. \nThe source MUST be the value of\

@@ -28,5 +28,5 @@ components:
           description: |-
             Convergence will be measured when this event occurs.
           type: string
-          enum: [link_up_down, route_advertise_withdraw, remote_link_failure]
-          default: route_advertise_withdraw
+          enum: [link_down, route_withdraw, remote_link_down]
+          default: route_withdraw
