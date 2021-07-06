@@ -94,7 +94,8 @@ components:
           - route_advertise
           - flow_rx_rate_above_threshold
           - flow_rx_rate_below_threshold
-          - remote_link_failure
+          - remote_link_up
+          - remote_link_down
           example: route_withdraw
         source:
           description: |-
