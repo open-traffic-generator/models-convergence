@@ -176,11 +176,11 @@
                         "description": "Convergence will be measured when this event occurs.",
                         "type": "string",
                         "enum": [
-                            "link_up_down",
-                            "route_advertise_withdraw",
-                            "remote_link_failure"
+                            "link_down",
+                            "route_withdraw",
+                            "remote_link_down"
                         ],
-                        "default": "route_advertise_withdraw"
+                        "default": "route_withdraw"
                     }
                 }
             },
@@ -3957,7 +3957,8 @@
                             "route_advertise",
                             "flow_rx_rate_above_threshold",
                             "flow_rx_rate_below_threshold",
-                            "remote_link_failure"
+                            "remote_link_up",
+                            "remote_link_down"
                         ],
                         "example": "route_withdraw"
                     },
