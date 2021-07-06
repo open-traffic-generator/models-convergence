@@ -177,7 +177,8 @@
                         "type": "string",
                         "enum": [
                             "link_up_down",
-                            "route_advertise_withdraw"
+                            "route_advertise_withdraw",
+                            "remote_link_failure"
                         ],
                         "default": "route_advertise_withdraw"
                     }
@@ -3955,7 +3956,8 @@
                             "route_withdraw",
                             "route_advertise",
                             "flow_rx_rate_above_threshold",
-                            "flow_rx_rate_below_threshold"
+                            "flow_rx_rate_below_threshold",
+                            "remote_link_failure"
                         ],
                         "example": "route_withdraw"
                     },
@@ -4009,9 +4011,6 @@
             "Pattern.Flow.Ethernet.Dst": {
                 "description": "Destination MAC address",
                 "type": "object",
-                "required": [
-                    "choice"
-                ],
                 "properties": {
                     "choice": {
                         "type": "string",
@@ -4077,9 +4076,6 @@
             "Pattern.Flow.Ethernet.Src": {
                 "description": "Source MAC address",
                 "type": "object",
-                "required": [
-                    "choice"
-                ],
                 "properties": {
                     "choice": {
                         "type": "string",
@@ -4154,9 +4150,6 @@
             "Pattern.Flow.Ethernet.EtherType": {
                 "description": "Ethernet type",
                 "type": "object",
-                "required": [
-                    "choice"
-                ],
                 "properties": {
                     "choice": {
                         "type": "string",
@@ -4241,9 +4234,6 @@
             "Pattern.Flow.Ethernet.PfcQueue": {
                 "description": "Priority flow control queue",
                 "type": "object",
-                "required": [
-                    "choice"
-                ],
                 "properties": {
                     "choice": {
                         "type": "string",
@@ -4313,9 +4303,6 @@
             "Pattern.Flow.Vlan.Priority": {
                 "description": "Priority code point",
                 "type": "object",
-                "required": [
-                    "choice"
-                ],
                 "properties": {
                     "choice": {
                         "type": "string",
@@ -4385,9 +4372,6 @@
             "Pattern.Flow.Vlan.Cfi": {
                 "description": "Canonical format indicator or drop elegible indicator",
                 "type": "object",
-                "required": [
-                    "choice"
-                ],
                 "properties": {
                     "choice": {
                         "type": "string",
@@ -4457,9 +4441,6 @@
             "Pattern.Flow.Vlan.Id": {
                 "description": "Vlan identifier",
                 "type": "object",
-                "required": [
-                    "choice"
-                ],
                 "properties": {
                     "choice": {
                         "type": "string",
@@ -4536,9 +4517,6 @@
             "Pattern.Flow.Vlan.Tpid": {
                 "description": "Protocol identifier",
                 "type": "object",
-                "required": [
-                    "choice"
-                ],
                 "properties": {
                     "choice": {
                         "type": "string",
@@ -4615,9 +4593,6 @@
             "Pattern.Flow.Vxlan.Flags": {
                 "description": "Flags field with a bit format of RRRRIRRR. The I flag MUST be set to 1 for a valid vxlan network id (VNI).   The other 7 bits (designated \"R\") are reserved fields and MUST be  set to zero on transmission and ignored on receipt.",
                 "type": "object",
-                "required": [
-                    "choice"
-                ],
                 "properties": {
                     "choice": {
                         "type": "string",
@@ -4687,9 +4662,6 @@
             "Pattern.Flow.Vxlan.Reserved0": {
                 "description": "Reserved field",
                 "type": "object",
-                "required": [
-                    "choice"
-                ],
                 "properties": {
                     "choice": {
                         "type": "string",
@@ -4759,9 +4731,6 @@
             "Pattern.Flow.Vxlan.Vni": {
                 "description": "VXLAN network id",
                 "type": "object",
-                "required": [
-                    "choice"
-                ],
                 "properties": {
                     "choice": {
                         "type": "string",
@@ -4831,9 +4800,6 @@
             "Pattern.Flow.Vxlan.Reserved1": {
                 "description": "Reserved field",
                 "type": "object",
-                "required": [
-                    "choice"
-                ],
                 "properties": {
                     "choice": {
                         "type": "string",
@@ -4903,9 +4869,6 @@
             "Pattern.Flow.Ipv4.Version": {
                 "description": "Version",
                 "type": "object",
-                "required": [
-                    "choice"
-                ],
                 "properties": {
                     "choice": {
                         "type": "string",
@@ -4975,9 +4938,6 @@
             "Pattern.Flow.Ipv4.HeaderLength": {
                 "description": "Header length",
                 "type": "object",
-                "required": [
-                    "choice"
-                ],
                 "properties": {
                     "choice": {
                         "type": "string",
@@ -5055,9 +5015,6 @@
             "Pattern.Flow.Ipv4.TotalLength": {
                 "description": "Total length",
                 "type": "object",
-                "required": [
-                    "choice"
-                ],
                 "properties": {
                     "choice": {
                         "type": "string",
@@ -5135,9 +5092,6 @@
             "Pattern.Flow.Ipv4.Identification": {
                 "description": "Identification",
                 "type": "object",
-                "required": [
-                    "choice"
-                ],
                 "properties": {
                     "choice": {
                         "type": "string",
@@ -5207,9 +5161,6 @@
             "Pattern.Flow.Ipv4.Reserved": {
                 "description": "Reserved flag.",
                 "type": "object",
-                "required": [
-                    "choice"
-                ],
                 "properties": {
                     "choice": {
                         "type": "string",
@@ -5279,9 +5230,6 @@
             "Pattern.Flow.Ipv4.DontFragment": {
                 "description": "Dont fragment flag If the dont_fragment flag is set and fragmentation is required to route the packet then the packet is dropped.",
                 "type": "object",
-                "required": [
-                    "choice"
-                ],
                 "properties": {
                     "choice": {
                         "type": "string",
@@ -5351,9 +5299,6 @@
             "Pattern.Flow.Ipv4.MoreFragments": {
                 "description": "More fragments flag",
                 "type": "object",
-                "required": [
-                    "choice"
-                ],
                 "properties": {
                     "choice": {
                         "type": "string",
@@ -5423,9 +5368,6 @@
             "Pattern.Flow.Ipv4.FragmentOffset": {
                 "description": "Fragment offset",
                 "type": "object",
-                "required": [
-                    "choice"
-                ],
                 "properties": {
                     "choice": {
                         "type": "string",
@@ -5495,9 +5437,6 @@
             "Pattern.Flow.Ipv4.TimeToLive": {
                 "description": "Time to live",
                 "type": "object",
-                "required": [
-                    "choice"
-                ],
                 "properties": {
                     "choice": {
                         "type": "string",
@@ -5567,9 +5506,6 @@
             "Pattern.Flow.Ipv4.Protocol": {
                 "description": "Protocol, default is 61 any host internal protocol",
                 "type": "object",
-                "required": [
-                    "choice"
-                ],
                 "properties": {
                     "choice": {
                         "type": "string",
@@ -5670,9 +5606,6 @@
             "Pattern.Flow.Ipv4.Src": {
                 "description": "Source address",
                 "type": "object",
-                "required": [
-                    "choice"
-                ],
                 "properties": {
                     "choice": {
                         "type": "string",
@@ -5738,9 +5671,6 @@
             "Pattern.Flow.Ipv4.Dst": {
                 "description": "Destination address",
                 "type": "object",
-                "required": [
-                    "choice"
-                ],
                 "properties": {
                     "choice": {
                         "type": "string",
@@ -5808,9 +5738,6 @@
             "Pattern.Flow.Ipv4.Priority.Raw": {
                 "description": "Raw priority",
                 "type": "object",
-                "required": [
-                    "choice"
-                ],
                 "properties": {
                     "choice": {
                         "type": "string",
@@ -5903,9 +5830,6 @@
             "Pattern.Flow.Ipv4.Dscp.Phb": {
                 "description": "Per hop behavior",
                 "type": "object",
-                "required": [
-                    "choice"
-                ],
                 "properties": {
                     "choice": {
                         "type": "string",
@@ -6004,9 +5928,6 @@
             "Pattern.Flow.Ipv4.Dscp.Ecn": {
                 "description": "Explicit congestion notification",
                 "type": "object",
-                "required": [
-                    "choice"
-                ],
                 "properties": {
                     "choice": {
                         "type": "string",
@@ -6092,9 +6013,6 @@
             "Pattern.Flow.Ipv4.Tos.Precedence": {
                 "description": "Precedence",
                 "type": "object",
-                "required": [
-                    "choice"
-                ],
                 "properties": {
                     "choice": {
                         "type": "string",
@@ -6178,9 +6096,6 @@
             "Pattern.Flow.Ipv4.Tos.Delay": {
                 "description": "Delay",
                 "type": "object",
-                "required": [
-                    "choice"
-                ],
                 "properties": {
                     "choice": {
                         "type": "string",
@@ -6258,9 +6173,6 @@
             "Pattern.Flow.Ipv4.Tos.Throughput": {
                 "description": "Throughput",
                 "type": "object",
-                "required": [
-                    "choice"
-                ],
                 "properties": {
                     "choice": {
                         "type": "string",
@@ -6338,9 +6250,6 @@
             "Pattern.Flow.Ipv4.Tos.Reliability": {
                 "description": "Reliability",
                 "type": "object",
-                "required": [
-                    "choice"
-                ],
                 "properties": {
                     "choice": {
                         "type": "string",
@@ -6418,9 +6327,6 @@
             "Pattern.Flow.Ipv4.Tos.Monetary": {
                 "description": "Monetary",
                 "type": "object",
-                "required": [
-                    "choice"
-                ],
                 "properties": {
                     "choice": {
                         "type": "string",
@@ -6494,9 +6400,6 @@
             "Pattern.Flow.Ipv4.Tos.Unused": {
                 "description": "Unused",
                 "type": "object",
-                "required": [
-                    "choice"
-                ],
                 "properties": {
                     "choice": {
                         "type": "string",
@@ -6566,9 +6469,6 @@
             "Pattern.Flow.Ipv6.Version": {
                 "description": "Version number",
                 "type": "object",
-                "required": [
-                    "choice"
-                ],
                 "properties": {
                     "choice": {
                         "type": "string",
@@ -6638,9 +6538,6 @@
             "Pattern.Flow.Ipv6.TrafficClass": {
                 "description": "Traffic class",
                 "type": "object",
-                "required": [
-                    "choice"
-                ],
                 "properties": {
                     "choice": {
                         "type": "string",
@@ -6710,9 +6607,6 @@
             "Pattern.Flow.Ipv6.FlowLabel": {
                 "description": "Flow label",
                 "type": "object",
-                "required": [
-                    "choice"
-                ],
                 "properties": {
                     "choice": {
                         "type": "string",
@@ -6782,9 +6676,6 @@
             "Pattern.Flow.Ipv6.PayloadLength": {
                 "description": "Payload length",
                 "type": "object",
-                "required": [
-                    "choice"
-                ],
                 "properties": {
                     "choice": {
                         "type": "string",
@@ -6875,9 +6766,6 @@
             "Pattern.Flow.Ipv6.NextHeader": {
                 "description": "Next header",
                 "type": "object",
-                "required": [
-                    "choice"
-                ],
                 "properties": {
                     "choice": {
                         "type": "string",
@@ -6960,9 +6848,6 @@
             "Pattern.Flow.Ipv6.HopLimit": {
                 "description": "Hop limit",
                 "type": "object",
-                "required": [
-                    "choice"
-                ],
                 "properties": {
                     "choice": {
                         "type": "string",
@@ -7030,9 +6915,6 @@
             "Pattern.Flow.Ipv6.Src": {
                 "description": "Source address",
                 "type": "object",
-                "required": [
-                    "choice"
-                ],
                 "properties": {
                     "choice": {
                         "type": "string",
@@ -7098,9 +6980,6 @@
             "Pattern.Flow.Ipv6.Dst": {
                 "description": "Destination address",
                 "type": "object",
-                "required": [
-                    "choice"
-                ],
                 "properties": {
                     "choice": {
                         "type": "string",
@@ -7166,9 +7045,6 @@
             "Pattern.Flow.PfcPause.Dst": {
                 "description": "Destination MAC address",
                 "type": "object",
-                "required": [
-                    "choice"
-                ],
                 "properties": {
                     "choice": {
                         "type": "string",
@@ -7234,9 +7110,6 @@
             "Pattern.Flow.PfcPause.Src": {
                 "description": "Source MAC address",
                 "type": "object",
-                "required": [
-                    "choice"
-                ],
                 "properties": {
                     "choice": {
                         "type": "string",
@@ -7307,9 +7180,6 @@
             "Pattern.Flow.PfcPause.EtherType": {
                 "description": "Ethernet type",
                 "type": "object",
-                "required": [
-                    "choice"
-                ],
                 "properties": {
                     "choice": {
                         "type": "string",
@@ -7382,9 +7252,6 @@
             "Pattern.Flow.PfcPause.ControlOpCode": {
                 "description": "Control operation code",
                 "type": "object",
-                "required": [
-                    "choice"
-                ],
                 "properties": {
                     "choice": {
                         "type": "string",
@@ -7454,9 +7321,6 @@
             "Pattern.Flow.PfcPause.ClassEnableVector": {
                 "description": "Destination",
                 "type": "object",
-                "required": [
-                    "choice"
-                ],
                 "properties": {
                     "choice": {
                         "type": "string",
@@ -7526,9 +7390,6 @@
             "Pattern.Flow.PfcPause.PauseClass0": {
                 "description": "Pause class 0",
                 "type": "object",
-                "required": [
-                    "choice"
-                ],
                 "properties": {
                     "choice": {
                         "type": "string",
@@ -7598,9 +7459,6 @@
             "Pattern.Flow.PfcPause.PauseClass1": {
                 "description": "Pause class 1",
                 "type": "object",
-                "required": [
-                    "choice"
-                ],
                 "properties": {
                     "choice": {
                         "type": "string",
@@ -7670,9 +7528,6 @@
             "Pattern.Flow.PfcPause.PauseClass2": {
                 "description": "Pause class 2",
                 "type": "object",
-                "required": [
-                    "choice"
-                ],
                 "properties": {
                     "choice": {
                         "type": "string",
@@ -7742,9 +7597,6 @@
             "Pattern.Flow.PfcPause.PauseClass3": {
                 "description": "Pause class 3",
                 "type": "object",
-                "required": [
-                    "choice"
-                ],
                 "properties": {
                     "choice": {
                         "type": "string",
@@ -7814,9 +7666,6 @@
             "Pattern.Flow.PfcPause.PauseClass4": {
                 "description": "Pause class 4",
                 "type": "object",
-                "required": [
-                    "choice"
-                ],
                 "properties": {
                     "choice": {
                         "type": "string",
@@ -7886,9 +7735,6 @@
             "Pattern.Flow.PfcPause.PauseClass5": {
                 "description": "Pause class 5",
                 "type": "object",
-                "required": [
-                    "choice"
-                ],
                 "properties": {
                     "choice": {
                         "type": "string",
@@ -7958,9 +7804,6 @@
             "Pattern.Flow.PfcPause.PauseClass6": {
                 "description": "Pause class 6",
                 "type": "object",
-                "required": [
-                    "choice"
-                ],
                 "properties": {
                     "choice": {
                         "type": "string",
@@ -8030,9 +7873,6 @@
             "Pattern.Flow.PfcPause.PauseClass7": {
                 "description": "Pause class 7",
                 "type": "object",
-                "required": [
-                    "choice"
-                ],
                 "properties": {
                     "choice": {
                         "type": "string",
@@ -8100,9 +7940,6 @@
             "Pattern.Flow.EthernetPause.Dst": {
                 "description": "Destination MAC address",
                 "type": "object",
-                "required": [
-                    "choice"
-                ],
                 "properties": {
                     "choice": {
                         "type": "string",
@@ -8168,9 +8005,6 @@
             "Pattern.Flow.EthernetPause.Src": {
                 "description": "Source MAC address",
                 "type": "object",
-                "required": [
-                    "choice"
-                ],
                 "properties": {
                     "choice": {
                         "type": "string",
@@ -8241,9 +8075,6 @@
             "Pattern.Flow.EthernetPause.EtherType": {
                 "description": "Ethernet type",
                 "type": "object",
-                "required": [
-                    "choice"
-                ],
                 "properties": {
                     "choice": {
                         "type": "string",
@@ -8316,9 +8147,6 @@
             "Pattern.Flow.EthernetPause.ControlOpCode": {
                 "description": "Control operation code",
                 "type": "object",
-                "required": [
-                    "choice"
-                ],
                 "properties": {
                     "choice": {
                         "type": "string",
@@ -8388,9 +8216,6 @@
             "Pattern.Flow.EthernetPause.Time": {
                 "description": "Time",
                 "type": "object",
-                "required": [
-                    "choice"
-                ],
                 "properties": {
                     "choice": {
                         "type": "string",
@@ -8460,9 +8285,6 @@
             "Pattern.Flow.Tcp.SrcPort": {
                 "description": "Source port",
                 "type": "object",
-                "required": [
-                    "choice"
-                ],
                 "properties": {
                     "choice": {
                         "type": "string",
@@ -8532,9 +8354,6 @@
             "Pattern.Flow.Tcp.DstPort": {
                 "description": "Destination port",
                 "type": "object",
-                "required": [
-                    "choice"
-                ],
                 "properties": {
                     "choice": {
                         "type": "string",
@@ -8604,9 +8423,6 @@
             "Pattern.Flow.Tcp.SeqNum": {
                 "description": "Sequence number",
                 "type": "object",
-                "required": [
-                    "choice"
-                ],
                 "properties": {
                     "choice": {
                         "type": "string",
@@ -8676,9 +8492,6 @@
             "Pattern.Flow.Tcp.AckNum": {
                 "description": "Acknowledgement number",
                 "type": "object",
-                "required": [
-                    "choice"
-                ],
                 "properties": {
                     "choice": {
                         "type": "string",
@@ -8748,9 +8561,6 @@
             "Pattern.Flow.Tcp.DataOffset": {
                 "description": "The number of 32 bit words in the TCP header. This indicates where the data begins.",
                 "type": "object",
-                "required": [
-                    "choice"
-                ],
                 "properties": {
                     "choice": {
                         "type": "string",
@@ -8820,9 +8630,6 @@
             "Pattern.Flow.Tcp.EcnNs": {
                 "description": "Explicit congestion notification, concealment protection.",
                 "type": "object",
-                "required": [
-                    "choice"
-                ],
                 "properties": {
                     "choice": {
                         "type": "string",
@@ -8892,9 +8699,6 @@
             "Pattern.Flow.Tcp.EcnCwr": {
                 "description": "Explicit congestion notification, congestion window reduced.",
                 "type": "object",
-                "required": [
-                    "choice"
-                ],
                 "properties": {
                     "choice": {
                         "type": "string",
@@ -8964,9 +8768,6 @@
             "Pattern.Flow.Tcp.EcnEcho": {
                 "description": "Explicit congestion notification, echo. 1 indicates the peer is ecn capable. 0 indicates that a packet with ipv4.ecn = 11 in the ip header was  received during normal transmission.",
                 "type": "object",
-                "required": [
-                    "choice"
-                ],
                 "properties": {
                     "choice": {
                         "type": "string",
@@ -9036,9 +8837,6 @@
             "Pattern.Flow.Tcp.CtlUrg": {
                 "description": "A value of 1 indicates that the urgent pointer field is significant.",
                 "type": "object",
-                "required": [
-                    "choice"
-                ],
                 "properties": {
                     "choice": {
                         "type": "string",
@@ -9108,9 +8906,6 @@
             "Pattern.Flow.Tcp.CtlAck": {
                 "description": "A value of 1 indicates that the ackknowledgment field is significant.",
                 "type": "object",
-                "required": [
-                    "choice"
-                ],
                 "properties": {
                     "choice": {
                         "type": "string",
@@ -9180,9 +8975,6 @@
             "Pattern.Flow.Tcp.CtlPsh": {
                 "description": "Asks to push the buffered data to the receiving application. ",
                 "type": "object",
-                "required": [
-                    "choice"
-                ],
                 "properties": {
                     "choice": {
                         "type": "string",
@@ -9252,9 +9044,6 @@
             "Pattern.Flow.Tcp.CtlRst": {
                 "description": "Reset the connection. ",
                 "type": "object",
-                "required": [
-                    "choice"
-                ],
                 "properties": {
                     "choice": {
                         "type": "string",
@@ -9324,9 +9113,6 @@
             "Pattern.Flow.Tcp.CtlSyn": {
                 "description": "Synchronize sequenece numbers. ",
                 "type": "object",
-                "required": [
-                    "choice"
-                ],
                 "properties": {
                     "choice": {
                         "type": "string",
@@ -9396,9 +9182,6 @@
             "Pattern.Flow.Tcp.CtlFin": {
                 "description": "Last packet from the sender. ",
                 "type": "object",
-                "required": [
-                    "choice"
-                ],
                 "properties": {
                     "choice": {
                         "type": "string",
@@ -9468,9 +9251,6 @@
             "Pattern.Flow.Tcp.Window": {
                 "description": "Tcp connection window.",
                 "type": "object",
-                "required": [
-                    "choice"
-                ],
                 "properties": {
                     "choice": {
                         "type": "string",
@@ -9540,9 +9320,6 @@
             "Pattern.Flow.Udp.SrcPort": {
                 "description": "Source port",
                 "type": "object",
-                "required": [
-                    "choice"
-                ],
                 "properties": {
                     "choice": {
                         "type": "string",
@@ -9612,9 +9389,6 @@
             "Pattern.Flow.Udp.DstPort": {
                 "description": "Destination port",
                 "type": "object",
-                "required": [
-                    "choice"
-                ],
                 "properties": {
                     "choice": {
                         "type": "string",
@@ -9684,9 +9458,6 @@
             "Pattern.Flow.Udp.Length": {
                 "description": "Length",
                 "type": "object",
-                "required": [
-                    "choice"
-                ],
                 "properties": {
                     "choice": {
                         "type": "string",
@@ -9789,9 +9560,6 @@
             "Pattern.Flow.Gre.ChecksumPresent": {
                 "description": "Checksum present bit",
                 "type": "object",
-                "required": [
-                    "choice"
-                ],
                 "properties": {
                     "choice": {
                         "type": "string",
@@ -9861,9 +9629,6 @@
             "Pattern.Flow.Gre.Reserved0": {
                 "description": "Reserved bits",
                 "type": "object",
-                "required": [
-                    "choice"
-                ],
                 "properties": {
                     "choice": {
                         "type": "string",
@@ -9933,9 +9698,6 @@
             "Pattern.Flow.Gre.Version": {
                 "description": "GRE version number",
                 "type": "object",
-                "required": [
-                    "choice"
-                ],
                 "properties": {
                     "choice": {
                         "type": "string",
@@ -10009,9 +9771,6 @@
             "Pattern.Flow.Gre.Protocol": {
                 "description": "Protocol type of encapsulated payload",
                 "type": "object",
-                "required": [
-                    "choice"
-                ],
                 "properties": {
                     "choice": {
                         "type": "string",
@@ -10118,9 +9877,6 @@
             "Pattern.Flow.Gre.Reserved1": {
                 "description": "Optional reserved field. Only present if the checksum_present bit is set.",
                 "type": "object",
-                "required": [
-                    "choice"
-                ],
                 "properties": {
                     "choice": {
                         "type": "string",
@@ -10190,9 +9946,6 @@
             "Pattern.Flow.Gtpv1.Version": {
                 "description": "GTPv1 version",
                 "type": "object",
-                "required": [
-                    "choice"
-                ],
                 "properties": {
                     "choice": {
                         "type": "string",
@@ -10262,9 +10015,6 @@
             "Pattern.Flow.Gtpv1.ProtocolType": {
                 "description": "Protocol type, GTP is 1, GTP' is 0",
                 "type": "object",
-                "required": [
-                    "choice"
-                ],
                 "properties": {
                     "choice": {
                         "type": "string",
@@ -10334,9 +10084,6 @@
             "Pattern.Flow.Gtpv1.Reserved": {
                 "description": "Reserved field",
                 "type": "object",
-                "required": [
-                    "choice"
-                ],
                 "properties": {
                     "choice": {
                         "type": "string",
@@ -10406,9 +10153,6 @@
             "Pattern.Flow.Gtpv1.EFlag": {
                 "description": "Extension header field present",
                 "type": "object",
-                "required": [
-                    "choice"
-                ],
                 "properties": {
                     "choice": {
                         "type": "string",
@@ -10478,9 +10222,6 @@
             "Pattern.Flow.Gtpv1.SFlag": {
                 "description": "Sequence number field present",
                 "type": "object",
-                "required": [
-                    "choice"
-                ],
                 "properties": {
                     "choice": {
                         "type": "string",
@@ -10550,9 +10291,6 @@
             "Pattern.Flow.Gtpv1.PnFlag": {
                 "description": "N-PDU field present",
                 "type": "object",
-                "required": [
-                    "choice"
-                ],
                 "properties": {
                     "choice": {
                         "type": "string",
@@ -10622,9 +10360,6 @@
             "Pattern.Flow.Gtpv1.MessageType": {
                 "description": "The type of GTP message Different types of messages are defined in 3GPP TS 29.060 section 7.1",
                 "type": "object",
-                "required": [
-                    "choice"
-                ],
                 "properties": {
                     "choice": {
                         "type": "string",
@@ -10694,9 +10429,6 @@
             "Pattern.Flow.Gtpv1.MessageLength": {
                 "description": "The length of the payload (the bytes following the mandatory 8-byte GTP header) in bytes that includes any optional fields",
                 "type": "object",
-                "required": [
-                    "choice"
-                ],
                 "properties": {
                     "choice": {
                         "type": "string",
@@ -10766,9 +10498,6 @@
             "Pattern.Flow.Gtpv1.Teid": {
                 "description": "Tunnel endpoint identifier (TEID) used to multiplex connections in the same GTP tunnel",
                 "type": "object",
-                "required": [
-                    "choice"
-                ],
                 "properties": {
                     "choice": {
                         "type": "string",
@@ -10838,9 +10567,6 @@
             "Pattern.Flow.Gtpv1.SquenceNumber": {
                 "description": "Sequence number. Exists if any of the e_flag, s_flag, or pn_flag bits are on.  Must be interpreted only if the s_flag bit is on.",
                 "type": "object",
-                "required": [
-                    "choice"
-                ],
                 "properties": {
                     "choice": {
                         "type": "string",
@@ -10910,9 +10636,6 @@
             "Pattern.Flow.Gtpv1.NPduNumber": {
                 "description": "N-PDU number. Exists if any of the e_flag, s_flag, or pn_flag bits are on.  Must be interpreted only if the pn_flag bit is on.",
                 "type": "object",
-                "required": [
-                    "choice"
-                ],
                 "properties": {
                     "choice": {
                         "type": "string",
@@ -10982,9 +10705,6 @@
             "Pattern.Flow.Gtpv1.NextExtensionHeaderType": {
                 "description": "Next extension header. Exists if any of the e_flag, s_flag, or pn_flag bits are on.  Must be interpreted only if the e_flag bit is on.",
                 "type": "object",
-                "required": [
-                    "choice"
-                ],
                 "properties": {
                     "choice": {
                         "type": "string",
@@ -11054,9 +10774,6 @@
             "Pattern.Flow.GtpExtension.ExtensionLength": {
                 "description": "This field states the length of this extension header,  including the length, the contents, and the next extension header field, in 4-octet units, so the length of the extension must  always be a multiple of 4.",
                 "type": "object",
-                "required": [
-                    "choice"
-                ],
                 "properties": {
                     "choice": {
                         "type": "string",
@@ -11126,9 +10843,6 @@
             "Pattern.Flow.GtpExtension.Contents": {
                 "description": "The extension header contents",
                 "type": "object",
-                "required": [
-                    "choice"
-                ],
                 "properties": {
                     "choice": {
                         "type": "string",
@@ -11198,9 +10912,6 @@
             "Pattern.Flow.GtpExtension.NextExtensionHeader": {
                 "description": "It states the type of the next extension, or 0 if no next  extension exists.  This permits chaining several next extension headers.",
                 "type": "object",
-                "required": [
-                    "choice"
-                ],
                 "properties": {
                     "choice": {
                         "type": "string",
@@ -11270,9 +10981,6 @@
             "Pattern.Flow.Gtpv2.Version": {
                 "description": "Version number",
                 "type": "object",
-                "required": [
-                    "choice"
-                ],
                 "properties": {
                     "choice": {
                         "type": "string",
@@ -11342,9 +11050,6 @@
             "Pattern.Flow.Gtpv2.PiggybackingFlag": {
                 "description": "If piggybacking_flag is set to 1 then another GTP-C message with its own header shall be present at the end of the current message",
                 "type": "object",
-                "required": [
-                    "choice"
-                ],
                 "properties": {
                     "choice": {
                         "type": "string",
@@ -11414,9 +11119,6 @@
             "Pattern.Flow.Gtpv2.TeidFlag": {
                 "description": "If teid_flag is set to 1 then the TEID field will be present  between the message length and the sequence number. All messages except Echo and Echo reply require TEID to be present",
                 "type": "object",
-                "required": [
-                    "choice"
-                ],
                 "properties": {
                     "choice": {
                         "type": "string",
@@ -11486,9 +11188,6 @@
             "Pattern.Flow.Gtpv2.Spare1": {
                 "description": "A 3-bit reserved field (must be 0).",
                 "type": "object",
-                "required": [
-                    "choice"
-                ],
                 "properties": {
                     "choice": {
                         "type": "string",
@@ -11558,9 +11257,6 @@
             "Pattern.Flow.Gtpv2.MessageType": {
                 "description": "An 8-bit field that indicates the type of GTP message. Different types of messages are defined in 3GPP TS 29.060 section 7.1",
                 "type": "object",
-                "required": [
-                    "choice"
-                ],
                 "properties": {
                     "choice": {
                         "type": "string",
@@ -11630,9 +11326,6 @@
             "Pattern.Flow.Gtpv2.MessageLength": {
                 "description": "A 16-bit field that indicates the length of the payload in bytes, excluding the mandatory GTP-c header (first 4 bytes). Includes the TEID and sequence_number if they are present.",
                 "type": "object",
-                "required": [
-                    "choice"
-                ],
                 "properties": {
                     "choice": {
                         "type": "string",
@@ -11702,9 +11395,6 @@
             "Pattern.Flow.Gtpv2.Teid": {
                 "description": "Tunnel endpoint identifier. A 32-bit (4-octet) field used to multiplex different connections in the same GTP tunnel. Is present only if the teid_flag is set.",
                 "type": "object",
-                "required": [
-                    "choice"
-                ],
                 "properties": {
                     "choice": {
                         "type": "string",
@@ -11774,9 +11464,6 @@
             "Pattern.Flow.Gtpv2.SequenceNumber": {
                 "description": "The sequence number",
                 "type": "object",
-                "required": [
-                    "choice"
-                ],
                 "properties": {
                     "choice": {
                         "type": "string",
@@ -11846,9 +11533,6 @@
             "Pattern.Flow.Gtpv2.Spare2": {
                 "description": "Reserved field",
                 "type": "object",
-                "required": [
-                    "choice"
-                ],
                 "properties": {
                     "choice": {
                         "type": "string",
@@ -11921,9 +11605,6 @@
             "Pattern.Flow.Arp.HardwareType": {
                 "description": "Network link protocol type",
                 "type": "object",
-                "required": [
-                    "choice"
-                ],
                 "properties": {
                     "choice": {
                         "type": "string",
@@ -12000,9 +11681,6 @@
             "Pattern.Flow.Arp.ProtocolType": {
                 "description": "The internetwork protocol for which the ARP request is intended",
                 "type": "object",
-                "required": [
-                    "choice"
-                ],
                 "properties": {
                     "choice": {
                         "type": "string",
@@ -12076,9 +11754,6 @@
             "Pattern.Flow.Arp.HardwareLength": {
                 "description": "Length (in octets) of a hardware address",
                 "type": "object",
-                "required": [
-                    "choice"
-                ],
                 "properties": {
                     "choice": {
                         "type": "string",
@@ -12148,9 +11823,6 @@
             "Pattern.Flow.Arp.ProtocolLength": {
                 "description": "Length (in octets) of internetwork addresses",
                 "type": "object",
-                "required": [
-                    "choice"
-                ],
                 "properties": {
                     "choice": {
                         "type": "string",
@@ -12224,9 +11896,6 @@
             "Pattern.Flow.Arp.Operation": {
                 "description": "The operation that the sender is performing",
                 "type": "object",
-                "required": [
-                    "choice"
-                ],
                 "properties": {
                     "choice": {
                         "type": "string",
@@ -12298,9 +11967,6 @@
             "Pattern.Flow.Arp.SenderHardwareAddr": {
                 "description": "Media address of the sender",
                 "type": "object",
-                "required": [
-                    "choice"
-                ],
                 "properties": {
                     "choice": {
                         "type": "string",
@@ -12366,9 +12032,6 @@
             "Pattern.Flow.Arp.SenderProtocolAddr": {
                 "description": "Internetwork address of the sender",
                 "type": "object",
-                "required": [
-                    "choice"
-                ],
                 "properties": {
                     "choice": {
                         "type": "string",
@@ -12434,9 +12097,6 @@
             "Pattern.Flow.Arp.TargetHardwareAddr": {
                 "description": "Media address of the target",
                 "type": "object",
-                "required": [
-                    "choice"
-                ],
                 "properties": {
                     "choice": {
                         "type": "string",
@@ -12502,9 +12162,6 @@
             "Pattern.Flow.Arp.TargetProtocolAddr": {
                 "description": "Internetwork address of the target",
                 "type": "object",
-                "required": [
-                    "choice"
-                ],
                 "properties": {
                     "choice": {
                         "type": "string",
@@ -12576,9 +12233,6 @@
             "Pattern.Flow.Icmp.Echo.Type": {
                 "description": "The type of ICMP echo packet",
                 "type": "object",
-                "required": [
-                    "choice"
-                ],
                 "properties": {
                     "choice": {
                         "type": "string",
@@ -12652,9 +12306,6 @@
             "Pattern.Flow.Icmp.Echo.Code": {
                 "description": "The ICMP subtype.  The default code for ICMP echo request and reply is 0.",
                 "type": "object",
-                "required": [
-                    "choice"
-                ],
                 "properties": {
                     "choice": {
                         "type": "string",
@@ -12757,9 +12408,6 @@
             "Pattern.Flow.Icmp.Echo.Identifier": {
                 "description": "ICMP identifier",
                 "type": "object",
-                "required": [
-                    "choice"
-                ],
                 "properties": {
                     "choice": {
                         "type": "string",
@@ -12829,9 +12477,6 @@
             "Pattern.Flow.Icmp.Echo.SequenceNumber": {
                 "description": "ICMP sequence number",
                 "type": "object",
-                "required": [
-                    "choice"
-                ],
                 "properties": {
                     "choice": {
                         "type": "string",
@@ -12934,9 +12579,6 @@
             "Pattern.Flow.Icmp.NextFields.Identifier": {
                 "description": "ICMP identifier",
                 "type": "object",
-                "required": [
-                    "choice"
-                ],
                 "properties": {
                     "choice": {
                         "type": "string",
@@ -13006,9 +12648,6 @@
             "Pattern.Flow.Icmp.NextFields.SequenceNumber": {
                 "description": "ICMP sequence number",
                 "type": "object",
-                "required": [
-                    "choice"
-                ],
                 "properties": {
                     "choice": {
                         "type": "string",
@@ -13082,9 +12721,6 @@
             "Pattern.Flow.Icmpv6.Echo.Type": {
                 "description": "ICMPv6 echo type",
                 "type": "object",
-                "required": [
-                    "choice"
-                ],
                 "properties": {
                     "choice": {
                         "type": "string",
@@ -13158,9 +12794,6 @@
             "Pattern.Flow.Icmpv6.Echo.Code": {
                 "description": "ICMPv6 echo sub type",
                 "type": "object",
-                "required": [
-                    "choice"
-                ],
                 "properties": {
                     "choice": {
                         "type": "string",
@@ -13230,9 +12863,6 @@
             "Pattern.Flow.Icmpv6.Echo.Identifier": {
                 "description": "ICMPv6 echo identifier",
                 "type": "object",
-                "required": [
-                    "choice"
-                ],
                 "properties": {
                     "choice": {
                         "type": "string",
@@ -13302,9 +12932,6 @@
             "Pattern.Flow.Icmpv6.Echo.SequenceNumber": {
                 "description": "ICMPv6 echo sequence number",
                 "type": "object",
-                "required": [
-                    "choice"
-                ],
                 "properties": {
                     "choice": {
                         "type": "string",
@@ -13443,9 +13070,6 @@
             "Pattern.Flow.Ppp.Address": {
                 "description": "PPP address",
                 "type": "object",
-                "required": [
-                    "choice"
-                ],
                 "properties": {
                     "choice": {
                         "type": "string",
@@ -13521,9 +13145,6 @@
             "Pattern.Flow.Ppp.Control": {
                 "description": "PPP control",
                 "type": "object",
-                "required": [
-                    "choice"
-                ],
                 "properties": {
                     "choice": {
                         "type": "string",
@@ -13594,9 +13215,6 @@
             "Pattern.Flow.Ppp.ProtocolType": {
                 "description": "PPP protocol type",
                 "type": "object",
-                "required": [
-                    "choice"
-                ],
                 "properties": {
                     "choice": {
                         "type": "string",
@@ -13670,9 +13288,6 @@
             "Pattern.Flow.Igmpv1.Version": {
                 "description": "Version number",
                 "type": "object",
-                "required": [
-                    "choice"
-                ],
                 "properties": {
                     "choice": {
                         "type": "string",
@@ -13746,9 +13361,6 @@
             "Pattern.Flow.Igmpv1.Type": {
                 "description": "Type of message",
                 "type": "object",
-                "required": [
-                    "choice"
-                ],
                 "properties": {
                     "choice": {
                         "type": "string",
@@ -13822,9 +13434,6 @@
             "Pattern.Flow.Igmpv1.Unused": {
                 "description": "Unused",
                 "type": "object",
-                "required": [
-                    "choice"
-                ],
                 "properties": {
                     "choice": {
                         "type": "string",
@@ -13929,9 +13538,6 @@
             "Pattern.Flow.Igmpv1.GroupAddress": {
                 "description": "Group address",
                 "type": "object",
-                "required": [
-                    "choice"
-                ],
                 "properties": {
                     "choice": {
                         "type": "string",
