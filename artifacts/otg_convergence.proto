@@ -3515,6 +3515,7 @@ message ConvergenceEvent {
       ROUTE_ADVERTISE = 3;
       FLOW_RX_RATE_ABOVE_THRESHOLD = 4;
       FLOW_RX_RATE_BELOW_THRESHOLD = 5;
+      REMOTE_LINK_FAILURE = 6;
     }
   }
   optional Type.Enum type = 1 [

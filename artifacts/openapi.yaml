@@ -3502,6 +3502,7 @@ components:
           - route_advertise
           - flow_rx_rate_above_threshold
           - flow_rx_rate_below_threshold
+          - remote_link_failure
           example: route_withdraw
         source:
           description: "The source of the event. \nThe source MUST be the value of\
