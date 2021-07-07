@@ -24,9 +24,3 @@ components:
             below then above the threshold value. 
           type: number
           default: 95
-        convergence_event:
-          description: |-
-            Convergence will be measured when this event occurs.
-          type: string
-          enum: [link_down, route_withdraw, remote_link_down]
-          default: route_withdraw

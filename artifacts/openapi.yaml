@@ -129,15 +129,6 @@ components:
             \ passes \nbelow then above the threshold value. "
           type: number
           default: 95
-        convergence_event:
-          description: |-
-            Convergence will be measured when this event occurs.
-          type: string
-          enum:
-          - link_down
-          - route_withdraw
-          - remote_link_down
-          default: route_withdraw
     Config:
       description: |-
         A container for all models that are part of the configuration.
@@ -3502,8 +3493,6 @@ components:
           - route_advertise
           - flow_rx_rate_above_threshold
           - flow_rx_rate_below_threshold
-          - remote_link_up
-          - remote_link_down
           example: route_withdraw
         source:
           description: "The source of the event. \nThe source MUST be the value of\
