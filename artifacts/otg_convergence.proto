@@ -73,18 +73,6 @@ message ConvergenceConfig {
     (fld_meta).default = "95",
     (fld_meta).description = "Convergence will be calculated when the rx rate of a flow passes \nbelow then above the threshold value. "
   ];
-
-  message Convergence_event {
-    enum Enum {
-      LINK_DOWN = 0;
-      ROUTE_WITHDRAW = 1;
-      REMOTE_LINK_DOWN = 2;
-    }
-  }
-  optional Convergence_event.Enum convergence_event = 4 [
-    (fld_meta).default = "Convergence_event.Enum.ROUTE_WITHDRAW",
-    (fld_meta).description = "Convergence will be measured when this event occurs."
-  ];
 }
 
 message Config {
@@ -3515,8 +3503,6 @@ message ConvergenceEvent {
       ROUTE_ADVERTISE = 3;
       FLOW_RX_RATE_ABOVE_THRESHOLD = 4;
       FLOW_RX_RATE_BELOW_THRESHOLD = 5;
-      REMOTE_LINK_UP = 6;
-      REMOTE_LINK_DOWN = 7;
     }
   }
   optional Type.Enum type = 1 [
