@@ -1028,8 +1028,8 @@ message DeviceBgpv4RouteAddress {
     (fld_meta).description = "The total number of addresses in the range"
   ];
 
-  optional int32 step = 4 [
-    (fld_meta).default = "1",
+  optional string step = 4 [
+    (fld_meta).default = "0.0.0.1",
     (fld_meta).description = "The amount to increase each address by"
   ];
 }
@@ -1104,8 +1104,8 @@ message DeviceBgpv6RouteAddress {
     (fld_meta).description = "The total number of addresses in the range"
   ];
 
-  optional int32 step = 4 [
-    (fld_meta).default = "1",
+  optional string step = 4 [
+    (fld_meta).default = "::1",
     (fld_meta).description = "The amount to increase each address by"
   ];
 }
@@ -3525,12 +3525,12 @@ message ConvergenceEvent {
 message PatternFlowEthernetDstCounter {
   option (msg_meta).description = "mac counter pattern";
 
-  string start = 1 [
+  optional string start = 1 [
     (fld_meta).default = "00:00:00:00:00:00",
     (fld_meta).description = "Description missing in models"
   ];
 
-  string step = 2 [
+  optional string step = 2 [
     (fld_meta).default = "00:00:00:00:00:01",
     (fld_meta).description = "Description missing in models"
   ];
@@ -3582,12 +3582,12 @@ message PatternFlowEthernetDst {
 message PatternFlowEthernetSrcCounter {
   option (msg_meta).description = "mac counter pattern";
 
-  string start = 1 [
+  optional string start = 1 [
     (fld_meta).default = "00:00:00:00:00:00",
     (fld_meta).description = "Description missing in models"
   ];
 
-  string step = 2 [
+  optional string step = 2 [
     (fld_meta).default = "00:00:00:00:00:01",
     (fld_meta).description = "Description missing in models"
   ];
@@ -3639,12 +3639,12 @@ message PatternFlowEthernetSrc {
 message PatternFlowEthernetEtherTypeCounter {
   option (msg_meta).description = "integer counter pattern";
 
-  int32 start = 1 [
+  optional int32 start = 1 [
     (fld_meta).default = "65535",
     (fld_meta).description = "Description missing in models"
   ];
 
-  int32 step = 2 [
+  optional int32 step = 2 [
     (fld_meta).default = "1",
     (fld_meta).description = "Description missing in models"
   ];
@@ -3707,12 +3707,12 @@ message PatternFlowEthernetEtherType {
 message PatternFlowEthernetPfcQueueCounter {
   option (msg_meta).description = "integer counter pattern";
 
-  int32 start = 1 [
+  optional int32 start = 1 [
     (fld_meta).default = "0",
     (fld_meta).description = "Description missing in models"
   ];
 
-  int32 step = 2 [
+  optional int32 step = 2 [
     (fld_meta).default = "1",
     (fld_meta).description = "Description missing in models"
   ];
@@ -3764,12 +3764,12 @@ message PatternFlowEthernetPfcQueue {
 message PatternFlowVlanPriorityCounter {
   option (msg_meta).description = "integer counter pattern";
 
-  int32 start = 1 [
+  optional int32 start = 1 [
     (fld_meta).default = "0",
     (fld_meta).description = "Description missing in models"
   ];
 
-  int32 step = 2 [
+  optional int32 step = 2 [
     (fld_meta).default = "1",
     (fld_meta).description = "Description missing in models"
   ];
@@ -3821,12 +3821,12 @@ message PatternFlowVlanPriority {
 message PatternFlowVlanCfiCounter {
   option (msg_meta).description = "integer counter pattern";
 
-  int32 start = 1 [
+  optional int32 start = 1 [
     (fld_meta).default = "0",
     (fld_meta).description = "Description missing in models"
   ];
 
-  int32 step = 2 [
+  optional int32 step = 2 [
     (fld_meta).default = "1",
     (fld_meta).description = "Description missing in models"
   ];
@@ -3878,12 +3878,12 @@ message PatternFlowVlanCfi {
 message PatternFlowVlanIdCounter {
   option (msg_meta).description = "integer counter pattern";
 
-  int32 start = 1 [
+  optional int32 start = 1 [
     (fld_meta).default = "0",
     (fld_meta).description = "Description missing in models"
   ];
 
-  int32 step = 2 [
+  optional int32 step = 2 [
     (fld_meta).default = "1",
     (fld_meta).description = "Description missing in models"
   ];
@@ -3935,12 +3935,12 @@ message PatternFlowVlanId {
 message PatternFlowVlanTpidCounter {
   option (msg_meta).description = "integer counter pattern";
 
-  int32 start = 1 [
+  optional int32 start = 1 [
     (fld_meta).default = "33024",
     (fld_meta).description = "Description missing in models"
   ];
 
-  int32 step = 2 [
+  optional int32 step = 2 [
     (fld_meta).default = "1",
     (fld_meta).description = "Description missing in models"
   ];
@@ -3992,12 +3992,12 @@ message PatternFlowVlanTpid {
 message PatternFlowVxlanFlagsCounter {
   option (msg_meta).description = "integer counter pattern";
 
-  int32 start = 1 [
+  optional int32 start = 1 [
     (fld_meta).default = "8",
     (fld_meta).description = "Description missing in models"
   ];
 
-  int32 step = 2 [
+  optional int32 step = 2 [
     (fld_meta).default = "1",
     (fld_meta).description = "Description missing in models"
   ];
@@ -4049,12 +4049,12 @@ message PatternFlowVxlanFlags {
 message PatternFlowVxlanReserved0Counter {
   option (msg_meta).description = "integer counter pattern";
 
-  int32 start = 1 [
+  optional int32 start = 1 [
     (fld_meta).default = "0",
     (fld_meta).description = "Description missing in models"
   ];
 
-  int32 step = 2 [
+  optional int32 step = 2 [
     (fld_meta).default = "1",
     (fld_meta).description = "Description missing in models"
   ];
@@ -4106,12 +4106,12 @@ message PatternFlowVxlanReserved0 {
 message PatternFlowVxlanVniCounter {
   option (msg_meta).description = "integer counter pattern";
 
-  int32 start = 1 [
+  optional int32 start = 1 [
     (fld_meta).default = "0",
     (fld_meta).description = "Description missing in models"
   ];
 
-  int32 step = 2 [
+  optional int32 step = 2 [
     (fld_meta).default = "1",
     (fld_meta).description = "Description missing in models"
   ];
@@ -4163,12 +4163,12 @@ message PatternFlowVxlanVni {
 message PatternFlowVxlanReserved1Counter {
   option (msg_meta).description = "integer counter pattern";
 
-  int32 start = 1 [
+  optional int32 start = 1 [
     (fld_meta).default = "0",
     (fld_meta).description = "Description missing in models"
   ];
 
-  int32 step = 2 [
+  optional int32 step = 2 [
     (fld_meta).default = "1",
     (fld_meta).description = "Description missing in models"
   ];
@@ -4220,12 +4220,12 @@ message PatternFlowVxlanReserved1 {
 message PatternFlowIpv4VersionCounter {
   option (msg_meta).description = "integer counter pattern";
 
-  int32 start = 1 [
+  optional int32 start = 1 [
     (fld_meta).default = "4",
     (fld_meta).description = "Description missing in models"
   ];
 
-  int32 step = 2 [
+  optional int32 step = 2 [
     (fld_meta).default = "1",
     (fld_meta).description = "Description missing in models"
   ];
@@ -4277,12 +4277,12 @@ message PatternFlowIpv4Version {
 message PatternFlowIpv4HeaderLengthCounter {
   option (msg_meta).description = "integer counter pattern";
 
-  int32 start = 1 [
+  optional int32 start = 1 [
     (fld_meta).default = "5",
     (fld_meta).description = "Description missing in models"
   ];
 
-  int32 step = 2 [
+  optional int32 step = 2 [
     (fld_meta).default = "1",
     (fld_meta).description = "Description missing in models"
   ];
@@ -4345,12 +4345,12 @@ message PatternFlowIpv4HeaderLength {
 message PatternFlowIpv4TotalLengthCounter {
   option (msg_meta).description = "integer counter pattern";
 
-  int32 start = 1 [
+  optional int32 start = 1 [
     (fld_meta).default = "46",
     (fld_meta).description = "Description missing in models"
   ];
 
-  int32 step = 2 [
+  optional int32 step = 2 [
     (fld_meta).default = "1",
     (fld_meta).description = "Description missing in models"
   ];
@@ -4413,12 +4413,12 @@ message PatternFlowIpv4TotalLength {
 message PatternFlowIpv4IdentificationCounter {
   option (msg_meta).description = "integer counter pattern";
 
-  int32 start = 1 [
+  optional int32 start = 1 [
     (fld_meta).default = "0",
     (fld_meta).description = "Description missing in models"
   ];
 
-  int32 step = 2 [
+  optional int32 step = 2 [
     (fld_meta).default = "1",
     (fld_meta).description = "Description missing in models"
   ];
@@ -4470,12 +4470,12 @@ message PatternFlowIpv4Identification {
 message PatternFlowIpv4ReservedCounter {
   option (msg_meta).description = "integer counter pattern";
 
-  int32 start = 1 [
+  optional int32 start = 1 [
     (fld_meta).default = "0",
     (fld_meta).description = "Description missing in models"
   ];
 
-  int32 step = 2 [
+  optional int32 step = 2 [
     (fld_meta).default = "1",
     (fld_meta).description = "Description missing in models"
   ];
@@ -4527,12 +4527,12 @@ message PatternFlowIpv4Reserved {
 message PatternFlowIpv4DontFragmentCounter {
   option (msg_meta).description = "integer counter pattern";
 
-  int32 start = 1 [
+  optional int32 start = 1 [
     (fld_meta).default = "0",
     (fld_meta).description = "Description missing in models"
   ];
 
-  int32 step = 2 [
+  optional int32 step = 2 [
     (fld_meta).default = "1",
     (fld_meta).description = "Description missing in models"
   ];
@@ -4584,12 +4584,12 @@ message PatternFlowIpv4DontFragment {
 message PatternFlowIpv4MoreFragmentsCounter {
   option (msg_meta).description = "integer counter pattern";
 
-  int32 start = 1 [
+  optional int32 start = 1 [
     (fld_meta).default = "0",
     (fld_meta).description = "Description missing in models"
   ];
 
-  int32 step = 2 [
+  optional int32 step = 2 [
     (fld_meta).default = "1",
     (fld_meta).description = "Description missing in models"
   ];
@@ -4641,12 +4641,12 @@ message PatternFlowIpv4MoreFragments {
 message PatternFlowIpv4FragmentOffsetCounter {
   option (msg_meta).description = "integer counter pattern";
 
-  int32 start = 1 [
+  optional int32 start = 1 [
     (fld_meta).default = "0",
     (fld_meta).description = "Description missing in models"
   ];
 
-  int32 step = 2 [
+  optional int32 step = 2 [
     (fld_meta).default = "1",
     (fld_meta).description = "Description missing in models"
   ];
@@ -4698,12 +4698,12 @@ message PatternFlowIpv4FragmentOffset {
 message PatternFlowIpv4TimeToLiveCounter {
   option (msg_meta).description = "integer counter pattern";
 
-  int32 start = 1 [
+  optional int32 start = 1 [
     (fld_meta).default = "64",
     (fld_meta).description = "Description missing in models"
   ];
 
-  int32 step = 2 [
+  optional int32 step = 2 [
     (fld_meta).default = "1",
     (fld_meta).description = "Description missing in models"
   ];
@@ -4755,12 +4755,12 @@ message PatternFlowIpv4TimeToLive {
 message PatternFlowIpv4ProtocolCounter {
   option (msg_meta).description = "integer counter pattern";
 
-  int32 start = 1 [
+  optional int32 start = 1 [
     (fld_meta).default = "61",
     (fld_meta).description = "Description missing in models"
   ];
 
-  int32 step = 2 [
+  optional int32 step = 2 [
     (fld_meta).default = "1",
     (fld_meta).description = "Description missing in models"
   ];
@@ -4842,12 +4842,12 @@ message PatternFlowIpv4HeaderChecksum {
 message PatternFlowIpv4SrcCounter {
   option (msg_meta).description = "ipv4 counter pattern";
 
-  string start = 1 [
+  optional string start = 1 [
     (fld_meta).default = "0.0.0.0",
     (fld_meta).description = "Description missing in models"
   ];
 
-  string step = 2 [
+  optional string step = 2 [
     (fld_meta).default = "0.0.0.1",
     (fld_meta).description = "Description missing in models"
   ];
@@ -4899,12 +4899,12 @@ message PatternFlowIpv4Src {
 message PatternFlowIpv4DstCounter {
   option (msg_meta).description = "ipv4 counter pattern";
 
-  string start = 1 [
+  optional string start = 1 [
     (fld_meta).default = "0.0.0.0",
     (fld_meta).description = "Description missing in models"
   ];
 
-  string step = 2 [
+  optional string step = 2 [
     (fld_meta).default = "0.0.0.1",
     (fld_meta).description = "Description missing in models"
   ];
@@ -4956,12 +4956,12 @@ message PatternFlowIpv4Dst {
 message PatternFlowIpv4PriorityRawCounter {
   option (msg_meta).description = "integer counter pattern";
 
-  int32 start = 1 [
+  optional int32 start = 1 [
     (fld_meta).default = "0",
     (fld_meta).description = "Description missing in models"
   ];
 
-  int32 step = 2 [
+  optional int32 step = 2 [
     (fld_meta).default = "1",
     (fld_meta).description = "Description missing in models"
   ];
@@ -5013,12 +5013,12 @@ message PatternFlowIpv4PriorityRaw {
 message PatternFlowIpv4DscpPhbCounter {
   option (msg_meta).description = "integer counter pattern";
 
-  int32 start = 1 [
+  optional int32 start = 1 [
     (fld_meta).default = "0",
     (fld_meta).description = "Description missing in models"
   ];
 
-  int32 step = 2 [
+  optional int32 step = 2 [
     (fld_meta).default = "1",
     (fld_meta).description = "Description missing in models"
   ];
@@ -5070,12 +5070,12 @@ message PatternFlowIpv4DscpPhb {
 message PatternFlowIpv4DscpEcnCounter {
   option (msg_meta).description = "integer counter pattern";
 
-  int32 start = 1 [
+  optional int32 start = 1 [
     (fld_meta).default = "0",
     (fld_meta).description = "Description missing in models"
   ];
 
-  int32 step = 2 [
+  optional int32 step = 2 [
     (fld_meta).default = "1",
     (fld_meta).description = "Description missing in models"
   ];
@@ -5127,12 +5127,12 @@ message PatternFlowIpv4DscpEcn {
 message PatternFlowIpv4TosPrecedenceCounter {
   option (msg_meta).description = "integer counter pattern";
 
-  int32 start = 1 [
+  optional int32 start = 1 [
     (fld_meta).default = "0",
     (fld_meta).description = "Description missing in models"
   ];
 
-  int32 step = 2 [
+  optional int32 step = 2 [
     (fld_meta).default = "1",
     (fld_meta).description = "Description missing in models"
   ];
@@ -5184,12 +5184,12 @@ message PatternFlowIpv4TosPrecedence {
 message PatternFlowIpv4TosDelayCounter {
   option (msg_meta).description = "integer counter pattern";
 
-  int32 start = 1 [
+  optional int32 start = 1 [
     (fld_meta).default = "0",
     (fld_meta).description = "Description missing in models"
   ];
 
-  int32 step = 2 [
+  optional int32 step = 2 [
     (fld_meta).default = "1",
     (fld_meta).description = "Description missing in models"
   ];
@@ -5241,12 +5241,12 @@ message PatternFlowIpv4TosDelay {
 message PatternFlowIpv4TosThroughputCounter {
   option (msg_meta).description = "integer counter pattern";
 
-  int32 start = 1 [
+  optional int32 start = 1 [
     (fld_meta).default = "0",
     (fld_meta).description = "Description missing in models"
   ];
 
-  int32 step = 2 [
+  optional int32 step = 2 [
     (fld_meta).default = "1",
     (fld_meta).description = "Description missing in models"
   ];
@@ -5298,12 +5298,12 @@ message PatternFlowIpv4TosThroughput {
 message PatternFlowIpv4TosReliabilityCounter {
   option (msg_meta).description = "integer counter pattern";
 
-  int32 start = 1 [
+  optional int32 start = 1 [
     (fld_meta).default = "0",
     (fld_meta).description = "Description missing in models"
   ];
 
-  int32 step = 2 [
+  optional int32 step = 2 [
     (fld_meta).default = "1",
     (fld_meta).description = "Description missing in models"
   ];
@@ -5355,12 +5355,12 @@ message PatternFlowIpv4TosReliability {
 message PatternFlowIpv4TosMonetaryCounter {
   option (msg_meta).description = "integer counter pattern";
 
-  int32 start = 1 [
+  optional int32 start = 1 [
     (fld_meta).default = "0",
     (fld_meta).description = "Description missing in models"
   ];
 
-  int32 step = 2 [
+  optional int32 step = 2 [
     (fld_meta).default = "1",
     (fld_meta).description = "Description missing in models"
   ];
@@ -5412,12 +5412,12 @@ message PatternFlowIpv4TosMonetary {
 message PatternFlowIpv4TosUnusedCounter {
   option (msg_meta).description = "integer counter pattern";
 
-  int32 start = 1 [
+  optional int32 start = 1 [
     (fld_meta).default = "0",
     (fld_meta).description = "Description missing in models"
   ];
 
-  int32 step = 2 [
+  optional int32 step = 2 [
     (fld_meta).default = "1",
     (fld_meta).description = "Description missing in models"
   ];
@@ -5469,12 +5469,12 @@ message PatternFlowIpv4TosUnused {
 message PatternFlowIpv6VersionCounter {
   option (msg_meta).description = "integer counter pattern";
 
-  int32 start = 1 [
+  optional int32 start = 1 [
     (fld_meta).default = "6",
     (fld_meta).description = "Description missing in models"
   ];
 
-  int32 step = 2 [
+  optional int32 step = 2 [
     (fld_meta).default = "1",
     (fld_meta).description = "Description missing in models"
   ];
@@ -5526,12 +5526,12 @@ message PatternFlowIpv6Version {
 message PatternFlowIpv6TrafficClassCounter {
   option (msg_meta).description = "integer counter pattern";
 
-  int32 start = 1 [
+  optional int32 start = 1 [
     (fld_meta).default = "0",
     (fld_meta).description = "Description missing in models"
   ];
 
-  int32 step = 2 [
+  optional int32 step = 2 [
     (fld_meta).default = "1",
     (fld_meta).description = "Description missing in models"
   ];
@@ -5583,12 +5583,12 @@ message PatternFlowIpv6TrafficClass {
 message PatternFlowIpv6FlowLabelCounter {
   option (msg_meta).description = "integer counter pattern";
 
-  int32 start = 1 [
+  optional int32 start = 1 [
     (fld_meta).default = "0",
     (fld_meta).description = "Description missing in models"
   ];
 
-  int32 step = 2 [
+  optional int32 step = 2 [
     (fld_meta).default = "1",
     (fld_meta).description = "Description missing in models"
   ];
@@ -5640,12 +5640,12 @@ message PatternFlowIpv6FlowLabel {
 message PatternFlowIpv6PayloadLengthCounter {
   option (msg_meta).description = "integer counter pattern";
 
-  int32 start = 1 [
+  optional int32 start = 1 [
     (fld_meta).default = "0",
     (fld_meta).description = "Description missing in models"
   ];
 
-  int32 step = 2 [
+  optional int32 step = 2 [
     (fld_meta).default = "1",
     (fld_meta).description = "Description missing in models"
   ];
@@ -5708,12 +5708,12 @@ message PatternFlowIpv6PayloadLength {
 message PatternFlowIpv6NextHeaderCounter {
   option (msg_meta).description = "integer counter pattern";
 
-  int32 start = 1 [
+  optional int32 start = 1 [
     (fld_meta).default = "59",
     (fld_meta).description = "Description missing in models"
   ];
 
-  int32 step = 2 [
+  optional int32 step = 2 [
     (fld_meta).default = "1",
     (fld_meta).description = "Description missing in models"
   ];
@@ -5765,12 +5765,12 @@ message PatternFlowIpv6NextHeader {
 message PatternFlowIpv6HopLimitCounter {
   option (msg_meta).description = "integer counter pattern";
 
-  int32 start = 1 [
+  optional int32 start = 1 [
     (fld_meta).default = "64",
     (fld_meta).description = "Description missing in models"
   ];
 
-  int32 step = 2 [
+  optional int32 step = 2 [
     (fld_meta).default = "1",
     (fld_meta).description = "Description missing in models"
   ];
@@ -5822,12 +5822,12 @@ message PatternFlowIpv6HopLimit {
 message PatternFlowIpv6SrcCounter {
   option (msg_meta).description = "ipv6 counter pattern";
 
-  string start = 1 [
+  optional string start = 1 [
     (fld_meta).default = "::0",
     (fld_meta).description = "Description missing in models"
   ];
 
-  string step = 2 [
+  optional string step = 2 [
     (fld_meta).default = "::1",
     (fld_meta).description = "Description missing in models"
   ];
@@ -5879,12 +5879,12 @@ message PatternFlowIpv6Src {
 message PatternFlowIpv6DstCounter {
   option (msg_meta).description = "ipv6 counter pattern";
 
-  string start = 1 [
+  optional string start = 1 [
     (fld_meta).default = "::0",
     (fld_meta).description = "Description missing in models"
   ];
 
-  string step = 2 [
+  optional string step = 2 [
     (fld_meta).default = "::1",
     (fld_meta).description = "Description missing in models"
   ];
@@ -5936,12 +5936,12 @@ message PatternFlowIpv6Dst {
 message PatternFlowPfcPauseDstCounter {
   option (msg_meta).description = "mac counter pattern";
 
-  string start = 1 [
+  optional string start = 1 [
     (fld_meta).default = "00:00:00:00:00:00",
     (fld_meta).description = "Description missing in models"
   ];
 
-  string step = 2 [
+  optional string step = 2 [
     (fld_meta).default = "00:00:00:00:00:01",
     (fld_meta).description = "Description missing in models"
   ];
@@ -5993,12 +5993,12 @@ message PatternFlowPfcPauseDst {
 message PatternFlowPfcPauseSrcCounter {
   option (msg_meta).description = "mac counter pattern";
 
-  string start = 1 [
+  optional string start = 1 [
     (fld_meta).default = "00:00:00:00:00:00",
     (fld_meta).description = "Description missing in models"
   ];
 
-  string step = 2 [
+  optional string step = 2 [
     (fld_meta).default = "00:00:00:00:00:01",
     (fld_meta).description = "Description missing in models"
   ];
@@ -6050,12 +6050,12 @@ message PatternFlowPfcPauseSrc {
 message PatternFlowPfcPauseEtherTypeCounter {
   option (msg_meta).description = "integer counter pattern";
 
-  int32 start = 1 [
+  optional int32 start = 1 [
     (fld_meta).default = "34824",
     (fld_meta).description = "Description missing in models"
   ];
 
-  int32 step = 2 [
+  optional int32 step = 2 [
     (fld_meta).default = "1",
     (fld_meta).description = "Description missing in models"
   ];
@@ -6107,12 +6107,12 @@ message PatternFlowPfcPauseEtherType {
 message PatternFlowPfcPauseControlOpCodeCounter {
   option (msg_meta).description = "integer counter pattern";
 
-  int32 start = 1 [
+  optional int32 start = 1 [
     (fld_meta).default = "257",
     (fld_meta).description = "Description missing in models"
   ];
 
-  int32 step = 2 [
+  optional int32 step = 2 [
     (fld_meta).default = "1",
     (fld_meta).description = "Description missing in models"
   ];
@@ -6164,12 +6164,12 @@ message PatternFlowPfcPauseControlOpCode {
 message PatternFlowPfcPauseClassEnableVectorCounter {
   option (msg_meta).description = "integer counter pattern";
 
-  int32 start = 1 [
+  optional int32 start = 1 [
     (fld_meta).default = "0",
     (fld_meta).description = "Description missing in models"
   ];
 
-  int32 step = 2 [
+  optional int32 step = 2 [
     (fld_meta).default = "1",
     (fld_meta).description = "Description missing in models"
   ];
@@ -6221,12 +6221,12 @@ message PatternFlowPfcPauseClassEnableVector {
 message PatternFlowPfcPausePauseClass0Counter {
   option (msg_meta).description = "integer counter pattern";
 
-  int32 start = 1 [
+  optional int32 start = 1 [
     (fld_meta).default = "0",
     (fld_meta).description = "Description missing in models"
   ];
 
-  int32 step = 2 [
+  optional int32 step = 2 [
     (fld_meta).default = "1",
     (fld_meta).description = "Description missing in models"
   ];
@@ -6278,12 +6278,12 @@ message PatternFlowPfcPausePauseClass0 {
 message PatternFlowPfcPausePauseClass1Counter {
   option (msg_meta).description = "integer counter pattern";
 
-  int32 start = 1 [
+  optional int32 start = 1 [
     (fld_meta).default = "0",
     (fld_meta).description = "Description missing in models"
   ];
 
-  int32 step = 2 [
+  optional int32 step = 2 [
     (fld_meta).default = "1",
     (fld_meta).description = "Description missing in models"
   ];
@@ -6335,12 +6335,12 @@ message PatternFlowPfcPausePauseClass1 {
 message PatternFlowPfcPausePauseClass2Counter {
   option (msg_meta).description = "integer counter pattern";
 
-  int32 start = 1 [
+  optional int32 start = 1 [
     (fld_meta).default = "0",
     (fld_meta).description = "Description missing in models"
   ];
 
-  int32 step = 2 [
+  optional int32 step = 2 [
     (fld_meta).default = "1",
     (fld_meta).description = "Description missing in models"
   ];
@@ -6392,12 +6392,12 @@ message PatternFlowPfcPausePauseClass2 {
 message PatternFlowPfcPausePauseClass3Counter {
   option (msg_meta).description = "integer counter pattern";
 
-  int32 start = 1 [
+  optional int32 start = 1 [
     (fld_meta).default = "0",
     (fld_meta).description = "Description missing in models"
   ];
 
-  int32 step = 2 [
+  optional int32 step = 2 [
     (fld_meta).default = "1",
     (fld_meta).description = "Description missing in models"
   ];
@@ -6449,12 +6449,12 @@ message PatternFlowPfcPausePauseClass3 {
 message PatternFlowPfcPausePauseClass4Counter {
   option (msg_meta).description = "integer counter pattern";
 
-  int32 start = 1 [
+  optional int32 start = 1 [
     (fld_meta).default = "0",
     (fld_meta).description = "Description missing in models"
   ];
 
-  int32 step = 2 [
+  optional int32 step = 2 [
     (fld_meta).default = "1",
     (fld_meta).description = "Description missing in models"
   ];
@@ -6506,12 +6506,12 @@ message PatternFlowPfcPausePauseClass4 {
 message PatternFlowPfcPausePauseClass5Counter {
   option (msg_meta).description = "integer counter pattern";
 
-  int32 start = 1 [
+  optional int32 start = 1 [
     (fld_meta).default = "0",
     (fld_meta).description = "Description missing in models"
   ];
 
-  int32 step = 2 [
+  optional int32 step = 2 [
     (fld_meta).default = "1",
     (fld_meta).description = "Description missing in models"
   ];
@@ -6563,12 +6563,12 @@ message PatternFlowPfcPausePauseClass5 {
 message PatternFlowPfcPausePauseClass6Counter {
   option (msg_meta).description = "integer counter pattern";
 
-  int32 start = 1 [
+  optional int32 start = 1 [
     (fld_meta).default = "0",
     (fld_meta).description = "Description missing in models"
   ];
 
-  int32 step = 2 [
+  optional int32 step = 2 [
     (fld_meta).default = "1",
     (fld_meta).description = "Description missing in models"
   ];
@@ -6620,12 +6620,12 @@ message PatternFlowPfcPausePauseClass6 {
 message PatternFlowPfcPausePauseClass7Counter {
   option (msg_meta).description = "integer counter pattern";
 
-  int32 start = 1 [
+  optional int32 start = 1 [
     (fld_meta).default = "0",
     (fld_meta).description = "Description missing in models"
   ];
 
-  int32 step = 2 [
+  optional int32 step = 2 [
     (fld_meta).default = "1",
     (fld_meta).description = "Description missing in models"
   ];
@@ -6677,12 +6677,12 @@ message PatternFlowPfcPausePauseClass7 {
 message PatternFlowEthernetPauseDstCounter {
   option (msg_meta).description = "mac counter pattern";
 
-  string start = 1 [
+  optional string start = 1 [
     (fld_meta).default = "00:00:00:00:00:00",
     (fld_meta).description = "Description missing in models"
   ];
 
-  string step = 2 [
+  optional string step = 2 [
     (fld_meta).default = "00:00:00:00:00:01",
     (fld_meta).description = "Description missing in models"
   ];
@@ -6734,12 +6734,12 @@ message PatternFlowEthernetPauseDst {
 message PatternFlowEthernetPauseSrcCounter {
   option (msg_meta).description = "mac counter pattern";
 
-  string start = 1 [
+  optional string start = 1 [
     (fld_meta).default = "00:00:00:00:00:00",
     (fld_meta).description = "Description missing in models"
   ];
 
-  string step = 2 [
+  optional string step = 2 [
     (fld_meta).default = "00:00:00:00:00:01",
     (fld_meta).description = "Description missing in models"
   ];
@@ -6791,12 +6791,12 @@ message PatternFlowEthernetPauseSrc {
 message PatternFlowEthernetPauseEtherTypeCounter {
   option (msg_meta).description = "integer counter pattern";
 
-  int32 start = 1 [
+  optional int32 start = 1 [
     (fld_meta).default = "34824",
     (fld_meta).description = "Description missing in models"
   ];
 
-  int32 step = 2 [
+  optional int32 step = 2 [
     (fld_meta).default = "1",
     (fld_meta).description = "Description missing in models"
   ];
@@ -6848,12 +6848,12 @@ message PatternFlowEthernetPauseEtherType {
 message PatternFlowEthernetPauseControlOpCodeCounter {
   option (msg_meta).description = "integer counter pattern";
 
-  int32 start = 1 [
+  optional int32 start = 1 [
     (fld_meta).default = "1",
     (fld_meta).description = "Description missing in models"
   ];
 
-  int32 step = 2 [
+  optional int32 step = 2 [
     (fld_meta).default = "1",
     (fld_meta).description = "Description missing in models"
   ];
@@ -6905,12 +6905,12 @@ message PatternFlowEthernetPauseControlOpCode {
 message PatternFlowEthernetPauseTimeCounter {
   option (msg_meta).description = "integer counter pattern";
 
-  int32 start = 1 [
+  optional int32 start = 1 [
     (fld_meta).default = "0",
     (fld_meta).description = "Description missing in models"
   ];
 
-  int32 step = 2 [
+  optional int32 step = 2 [
     (fld_meta).default = "1",
     (fld_meta).description = "Description missing in models"
   ];
@@ -6962,12 +6962,12 @@ message PatternFlowEthernetPauseTime {
 message PatternFlowTcpSrcPortCounter {
   option (msg_meta).description = "integer counter pattern";
 
-  int32 start = 1 [
+  optional int32 start = 1 [
     (fld_meta).default = "0",
     (fld_meta).description = "Description missing in models"
   ];
 
-  int32 step = 2 [
+  optional int32 step = 2 [
     (fld_meta).default = "1",
     (fld_meta).description = "Description missing in models"
   ];
@@ -7019,12 +7019,12 @@ message PatternFlowTcpSrcPort {
 message PatternFlowTcpDstPortCounter {
   option (msg_meta).description = "integer counter pattern";
 
-  int32 start = 1 [
+  optional int32 start = 1 [
     (fld_meta).default = "0",
     (fld_meta).description = "Description missing in models"
   ];
 
-  int32 step = 2 [
+  optional int32 step = 2 [
     (fld_meta).default = "1",
     (fld_meta).description = "Description missing in models"
   ];
@@ -7076,12 +7076,12 @@ message PatternFlowTcpDstPort {
 message PatternFlowTcpSeqNumCounter {
   option (msg_meta).description = "integer counter pattern";
 
-  int32 start = 1 [
+  optional int32 start = 1 [
     (fld_meta).default = "0",
     (fld_meta).description = "Description missing in models"
   ];
 
-  int32 step = 2 [
+  optional int32 step = 2 [
     (fld_meta).default = "1",
     (fld_meta).description = "Description missing in models"
   ];
@@ -7133,12 +7133,12 @@ message PatternFlowTcpSeqNum {
 message PatternFlowTcpAckNumCounter {
   option (msg_meta).description = "integer counter pattern";
 
-  int32 start = 1 [
+  optional int32 start = 1 [
     (fld_meta).default = "0",
     (fld_meta).description = "Description missing in models"
   ];
 
-  int32 step = 2 [
+  optional int32 step = 2 [
     (fld_meta).default = "1",
     (fld_meta).description = "Description missing in models"
   ];
@@ -7190,12 +7190,12 @@ message PatternFlowTcpAckNum {
 message PatternFlowTcpDataOffsetCounter {
   option (msg_meta).description = "integer counter pattern";
 
-  int32 start = 1 [
+  optional int32 start = 1 [
     (fld_meta).default = "0",
     (fld_meta).description = "Description missing in models"
   ];
 
-  int32 step = 2 [
+  optional int32 step = 2 [
     (fld_meta).default = "1",
     (fld_meta).description = "Description missing in models"
   ];
@@ -7247,12 +7247,12 @@ message PatternFlowTcpDataOffset {
 message PatternFlowTcpEcnNsCounter {
   option (msg_meta).description = "integer counter pattern";
 
-  int32 start = 1 [
+  optional int32 start = 1 [
     (fld_meta).default = "0",
     (fld_meta).description = "Description missing in models"
   ];
 
-  int32 step = 2 [
+  optional int32 step = 2 [
     (fld_meta).default = "1",
     (fld_meta).description = "Description missing in models"
   ];
@@ -7304,12 +7304,12 @@ message PatternFlowTcpEcnNs {
 message PatternFlowTcpEcnCwrCounter {
   option (msg_meta).description = "integer counter pattern";
 
-  int32 start = 1 [
+  optional int32 start = 1 [
     (fld_meta).default = "0",
     (fld_meta).description = "Description missing in models"
   ];
 
-  int32 step = 2 [
+  optional int32 step = 2 [
     (fld_meta).default = "1",
     (fld_meta).description = "Description missing in models"
   ];
@@ -7361,12 +7361,12 @@ message PatternFlowTcpEcnCwr {
 message PatternFlowTcpEcnEchoCounter {
   option (msg_meta).description = "integer counter pattern";
 
-  int32 start = 1 [
+  optional int32 start = 1 [
     (fld_meta).default = "0",
     (fld_meta).description = "Description missing in models"
   ];
 
-  int32 step = 2 [
+  optional int32 step = 2 [
     (fld_meta).default = "1",
     (fld_meta).description = "Description missing in models"
   ];
@@ -7418,12 +7418,12 @@ message PatternFlowTcpEcnEcho {
 message PatternFlowTcpCtlUrgCounter {
   option (msg_meta).description = "integer counter pattern";
 
-  int32 start = 1 [
+  optional int32 start = 1 [
     (fld_meta).default = "0",
     (fld_meta).description = "Description missing in models"
   ];
 
-  int32 step = 2 [
+  optional int32 step = 2 [
     (fld_meta).default = "1",
     (fld_meta).description = "Description missing in models"
   ];
@@ -7475,12 +7475,12 @@ message PatternFlowTcpCtlUrg {
 message PatternFlowTcpCtlAckCounter {
   option (msg_meta).description = "integer counter pattern";
 
-  int32 start = 1 [
+  optional int32 start = 1 [
     (fld_meta).default = "0",
     (fld_meta).description = "Description missing in models"
   ];
 
-  int32 step = 2 [
+  optional int32 step = 2 [
     (fld_meta).default = "1",
     (fld_meta).description = "Description missing in models"
   ];
@@ -7532,12 +7532,12 @@ message PatternFlowTcpCtlAck {
 message PatternFlowTcpCtlPshCounter {
   option (msg_meta).description = "integer counter pattern";
 
-  int32 start = 1 [
+  optional int32 start = 1 [
     (fld_meta).default = "0",
     (fld_meta).description = "Description missing in models"
   ];
 
-  int32 step = 2 [
+  optional int32 step = 2 [
     (fld_meta).default = "1",
     (fld_meta).description = "Description missing in models"
   ];
@@ -7589,12 +7589,12 @@ message PatternFlowTcpCtlPsh {
 message PatternFlowTcpCtlRstCounter {
   option (msg_meta).description = "integer counter pattern";
 
-  int32 start = 1 [
+  optional int32 start = 1 [
     (fld_meta).default = "0",
     (fld_meta).description = "Description missing in models"
   ];
 
-  int32 step = 2 [
+  optional int32 step = 2 [
     (fld_meta).default = "1",
     (fld_meta).description = "Description missing in models"
   ];
@@ -7646,12 +7646,12 @@ message PatternFlowTcpCtlRst {
 message PatternFlowTcpCtlSynCounter {
   option (msg_meta).description = "integer counter pattern";
 
-  int32 start = 1 [
+  optional int32 start = 1 [
     (fld_meta).default = "0",
     (fld_meta).description = "Description missing in models"
   ];
 
-  int32 step = 2 [
+  optional int32 step = 2 [
     (fld_meta).default = "1",
     (fld_meta).description = "Description missing in models"
   ];
@@ -7703,12 +7703,12 @@ message PatternFlowTcpCtlSyn {
 message PatternFlowTcpCtlFinCounter {
   option (msg_meta).description = "integer counter pattern";
 
-  int32 start = 1 [
+  optional int32 start = 1 [
     (fld_meta).default = "0",
     (fld_meta).description = "Description missing in models"
   ];
 
-  int32 step = 2 [
+  optional int32 step = 2 [
     (fld_meta).default = "1",
     (fld_meta).description = "Description missing in models"
   ];
@@ -7760,12 +7760,12 @@ message PatternFlowTcpCtlFin {
 message PatternFlowTcpWindowCounter {
   option (msg_meta).description = "integer counter pattern";
 
-  int32 start = 1 [
+  optional int32 start = 1 [
     (fld_meta).default = "0",
     (fld_meta).description = "Description missing in models"
   ];
 
-  int32 step = 2 [
+  optional int32 step = 2 [
     (fld_meta).default = "1",
     (fld_meta).description = "Description missing in models"
   ];
@@ -7817,12 +7817,12 @@ message PatternFlowTcpWindow {
 message PatternFlowUdpSrcPortCounter {
   option (msg_meta).description = "integer counter pattern";
 
-  int32 start = 1 [
+  optional int32 start = 1 [
     (fld_meta).default = "0",
     (fld_meta).description = "Description missing in models"
   ];
 
-  int32 step = 2 [
+  optional int32 step = 2 [
     (fld_meta).default = "1",
     (fld_meta).description = "Description missing in models"
   ];
@@ -7874,12 +7874,12 @@ message PatternFlowUdpSrcPort {
 message PatternFlowUdpDstPortCounter {
   option (msg_meta).description = "integer counter pattern";
 
-  int32 start = 1 [
+  optional int32 start = 1 [
     (fld_meta).default = "0",
     (fld_meta).description = "Description missing in models"
   ];
 
-  int32 step = 2 [
+  optional int32 step = 2 [
     (fld_meta).default = "1",
     (fld_meta).description = "Description missing in models"
   ];
@@ -7931,12 +7931,12 @@ message PatternFlowUdpDstPort {
 message PatternFlowUdpLengthCounter {
   option (msg_meta).description = "integer counter pattern";
 
-  int32 start = 1 [
+  optional int32 start = 1 [
     (fld_meta).default = "0",
     (fld_meta).description = "Description missing in models"
   ];
 
-  int32 step = 2 [
+  optional int32 step = 2 [
     (fld_meta).default = "1",
     (fld_meta).description = "Description missing in models"
   ];
@@ -8018,12 +8018,12 @@ message PatternFlowUdpChecksum {
 message PatternFlowGreChecksumPresentCounter {
   option (msg_meta).description = "integer counter pattern";
 
-  int32 start = 1 [
+  optional int32 start = 1 [
     (fld_meta).default = "0",
     (fld_meta).description = "Description missing in models"
   ];
 
-  int32 step = 2 [
+  optional int32 step = 2 [
     (fld_meta).default = "1",
     (fld_meta).description = "Description missing in models"
   ];
@@ -8075,12 +8075,12 @@ message PatternFlowGreChecksumPresent {
 message PatternFlowGreReserved0Counter {
   option (msg_meta).description = "integer counter pattern";
 
-  int32 start = 1 [
+  optional int32 start = 1 [
     (fld_meta).default = "0",
     (fld_meta).description = "Description missing in models"
   ];
 
-  int32 step = 2 [
+  optional int32 step = 2 [
     (fld_meta).default = "1",
     (fld_meta).description = "Description missing in models"
   ];
@@ -8132,12 +8132,12 @@ message PatternFlowGreReserved0 {
 message PatternFlowGreVersionCounter {
   option (msg_meta).description = "integer counter pattern";
 
-  int32 start = 1 [
+  optional int32 start = 1 [
     (fld_meta).default = "0",
     (fld_meta).description = "Description missing in models"
   ];
 
-  int32 step = 2 [
+  optional int32 step = 2 [
     (fld_meta).default = "1",
     (fld_meta).description = "Description missing in models"
   ];
@@ -8189,12 +8189,12 @@ message PatternFlowGreVersion {
 message PatternFlowGreProtocolCounter {
   option (msg_meta).description = "integer counter pattern";
 
-  int32 start = 1 [
+  optional int32 start = 1 [
     (fld_meta).default = "2048",
     (fld_meta).description = "Description missing in models"
   ];
 
-  int32 step = 2 [
+  optional int32 step = 2 [
     (fld_meta).default = "1",
     (fld_meta).description = "Description missing in models"
   ];
@@ -8276,12 +8276,12 @@ message PatternFlowGreChecksum {
 message PatternFlowGreReserved1Counter {
   option (msg_meta).description = "integer counter pattern";
 
-  int32 start = 1 [
+  optional int32 start = 1 [
     (fld_meta).default = "0",
     (fld_meta).description = "Description missing in models"
   ];
 
-  int32 step = 2 [
+  optional int32 step = 2 [
     (fld_meta).default = "1",
     (fld_meta).description = "Description missing in models"
   ];
@@ -8333,12 +8333,12 @@ message PatternFlowGreReserved1 {
 message PatternFlowGtpv1VersionCounter {
   option (msg_meta).description = "integer counter pattern";
 
-  int32 start = 1 [
+  optional int32 start = 1 [
     (fld_meta).default = "1",
     (fld_meta).description = "Description missing in models"
   ];
 
-  int32 step = 2 [
+  optional int32 step = 2 [
     (fld_meta).default = "1",
     (fld_meta).description = "Description missing in models"
   ];
@@ -8390,12 +8390,12 @@ message PatternFlowGtpv1Version {
 message PatternFlowGtpv1ProtocolTypeCounter {
   option (msg_meta).description = "integer counter pattern";
 
-  int32 start = 1 [
+  optional int32 start = 1 [
     (fld_meta).default = "1",
     (fld_meta).description = "Description missing in models"
   ];
 
-  int32 step = 2 [
+  optional int32 step = 2 [
     (fld_meta).default = "1",
     (fld_meta).description = "Description missing in models"
   ];
@@ -8447,12 +8447,12 @@ message PatternFlowGtpv1ProtocolType {
 message PatternFlowGtpv1ReservedCounter {
   option (msg_meta).description = "integer counter pattern";
 
-  int32 start = 1 [
+  optional int32 start = 1 [
     (fld_meta).default = "0",
     (fld_meta).description = "Description missing in models"
   ];
 
-  int32 step = 2 [
+  optional int32 step = 2 [
     (fld_meta).default = "1",
     (fld_meta).description = "Description missing in models"
   ];
@@ -8504,12 +8504,12 @@ message PatternFlowGtpv1Reserved {
 message PatternFlowGtpv1EFlagCounter {
   option (msg_meta).description = "integer counter pattern";
 
-  int32 start = 1 [
+  optional int32 start = 1 [
     (fld_meta).default = "0",
     (fld_meta).description = "Description missing in models"
   ];
 
-  int32 step = 2 [
+  optional int32 step = 2 [
     (fld_meta).default = "1",
     (fld_meta).description = "Description missing in models"
   ];
@@ -8561,12 +8561,12 @@ message PatternFlowGtpv1EFlag {
 message PatternFlowGtpv1SFlagCounter {
   option (msg_meta).description = "integer counter pattern";
 
-  int32 start = 1 [
+  optional int32 start = 1 [
     (fld_meta).default = "0",
     (fld_meta).description = "Description missing in models"
   ];
 
-  int32 step = 2 [
+  optional int32 step = 2 [
     (fld_meta).default = "1",
     (fld_meta).description = "Description missing in models"
   ];
@@ -8618,12 +8618,12 @@ message PatternFlowGtpv1SFlag {
 message PatternFlowGtpv1PnFlagCounter {
   option (msg_meta).description = "integer counter pattern";
 
-  int32 start = 1 [
+  optional int32 start = 1 [
     (fld_meta).default = "0",
     (fld_meta).description = "Description missing in models"
   ];
 
-  int32 step = 2 [
+  optional int32 step = 2 [
     (fld_meta).default = "1",
     (fld_meta).description = "Description missing in models"
   ];
@@ -8675,12 +8675,12 @@ message PatternFlowGtpv1PnFlag {
 message PatternFlowGtpv1MessageTypeCounter {
   option (msg_meta).description = "integer counter pattern";
 
-  int32 start = 1 [
+  optional int32 start = 1 [
     (fld_meta).default = "0",
     (fld_meta).description = "Description missing in models"
   ];
 
-  int32 step = 2 [
+  optional int32 step = 2 [
     (fld_meta).default = "1",
     (fld_meta).description = "Description missing in models"
   ];
@@ -8732,12 +8732,12 @@ message PatternFlowGtpv1MessageType {
 message PatternFlowGtpv1MessageLengthCounter {
   option (msg_meta).description = "integer counter pattern";
 
-  int32 start = 1 [
+  optional int32 start = 1 [
     (fld_meta).default = "0",
     (fld_meta).description = "Description missing in models"
   ];
 
-  int32 step = 2 [
+  optional int32 step = 2 [
     (fld_meta).default = "1",
     (fld_meta).description = "Description missing in models"
   ];
@@ -8789,12 +8789,12 @@ message PatternFlowGtpv1MessageLength {
 message PatternFlowGtpv1TeidCounter {
   option (msg_meta).description = "integer counter pattern";
 
-  int32 start = 1 [
+  optional int32 start = 1 [
     (fld_meta).default = "0",
     (fld_meta).description = "Description missing in models"
   ];
 
-  int32 step = 2 [
+  optional int32 step = 2 [
     (fld_meta).default = "1",
     (fld_meta).description = "Description missing in models"
   ];
@@ -8846,12 +8846,12 @@ message PatternFlowGtpv1Teid {
 message PatternFlowGtpv1SquenceNumberCounter {
   option (msg_meta).description = "integer counter pattern";
 
-  int32 start = 1 [
+  optional int32 start = 1 [
     (fld_meta).default = "0",
     (fld_meta).description = "Description missing in models"
   ];
 
-  int32 step = 2 [
+  optional int32 step = 2 [
     (fld_meta).default = "1",
     (fld_meta).description = "Description missing in models"
   ];
@@ -8903,12 +8903,12 @@ message PatternFlowGtpv1SquenceNumber {
 message PatternFlowGtpv1NPduNumberCounter {
   option (msg_meta).description = "integer counter pattern";
 
-  int32 start = 1 [
+  optional int32 start = 1 [
     (fld_meta).default = "0",
     (fld_meta).description = "Description missing in models"
   ];
 
-  int32 step = 2 [
+  optional int32 step = 2 [
     (fld_meta).default = "1",
     (fld_meta).description = "Description missing in models"
   ];
@@ -8960,12 +8960,12 @@ message PatternFlowGtpv1NPduNumber {
 message PatternFlowGtpv1NextExtensionHeaderTypeCounter {
   option (msg_meta).description = "integer counter pattern";
 
-  int32 start = 1 [
+  optional int32 start = 1 [
     (fld_meta).default = "0",
     (fld_meta).description = "Description missing in models"
   ];
 
-  int32 step = 2 [
+  optional int32 step = 2 [
     (fld_meta).default = "1",
     (fld_meta).description = "Description missing in models"
   ];
@@ -9017,12 +9017,12 @@ message PatternFlowGtpv1NextExtensionHeaderType {
 message PatternFlowGtpExtensionExtensionLengthCounter {
   option (msg_meta).description = "integer counter pattern";
 
-  int32 start = 1 [
+  optional int32 start = 1 [
     (fld_meta).default = "0",
     (fld_meta).description = "Description missing in models"
   ];
 
-  int32 step = 2 [
+  optional int32 step = 2 [
     (fld_meta).default = "1",
     (fld_meta).description = "Description missing in models"
   ];
@@ -9074,12 +9074,12 @@ message PatternFlowGtpExtensionExtensionLength {
 message PatternFlowGtpExtensionContentsCounter {
   option (msg_meta).description = "integer counter pattern";
 
-  int32 start = 1 [
+  optional int32 start = 1 [
     (fld_meta).default = "0",
     (fld_meta).description = "Description missing in models"
   ];
 
-  int32 step = 2 [
+  optional int32 step = 2 [
     (fld_meta).default = "1",
     (fld_meta).description = "Description missing in models"
   ];
@@ -9131,12 +9131,12 @@ message PatternFlowGtpExtensionContents {
 message PatternFlowGtpExtensionNextExtensionHeaderCounter {
   option (msg_meta).description = "integer counter pattern";
 
-  int32 start = 1 [
+  optional int32 start = 1 [
     (fld_meta).default = "0",
     (fld_meta).description = "Description missing in models"
   ];
 
-  int32 step = 2 [
+  optional int32 step = 2 [
     (fld_meta).default = "1",
     (fld_meta).description = "Description missing in models"
   ];
@@ -9188,12 +9188,12 @@ message PatternFlowGtpExtensionNextExtensionHeader {
 message PatternFlowGtpv2VersionCounter {
   option (msg_meta).description = "integer counter pattern";
 
-  int32 start = 1 [
+  optional int32 start = 1 [
     (fld_meta).default = "2",
     (fld_meta).description = "Description missing in models"
   ];
 
-  int32 step = 2 [
+  optional int32 step = 2 [
     (fld_meta).default = "1",
     (fld_meta).description = "Description missing in models"
   ];
@@ -9245,12 +9245,12 @@ message PatternFlowGtpv2Version {
 message PatternFlowGtpv2PiggybackingFlagCounter {
   option (msg_meta).description = "integer counter pattern";
 
-  int32 start = 1 [
+  optional int32 start = 1 [
     (fld_meta).default = "0",
     (fld_meta).description = "Description missing in models"
   ];
 
-  int32 step = 2 [
+  optional int32 step = 2 [
     (fld_meta).default = "1",
     (fld_meta).description = "Description missing in models"
   ];
@@ -9302,12 +9302,12 @@ message PatternFlowGtpv2PiggybackingFlag {
 message PatternFlowGtpv2TeidFlagCounter {
   option (msg_meta).description = "integer counter pattern";
 
-  int32 start = 1 [
+  optional int32 start = 1 [
     (fld_meta).default = "0",
     (fld_meta).description = "Description missing in models"
   ];
 
-  int32 step = 2 [
+  optional int32 step = 2 [
     (fld_meta).default = "1",
     (fld_meta).description = "Description missing in models"
   ];
@@ -9359,12 +9359,12 @@ message PatternFlowGtpv2TeidFlag {
 message PatternFlowGtpv2Spare1Counter {
   option (msg_meta).description = "integer counter pattern";
 
-  int32 start = 1 [
+  optional int32 start = 1 [
     (fld_meta).default = "0",
     (fld_meta).description = "Description missing in models"
   ];
 
-  int32 step = 2 [
+  optional int32 step = 2 [
     (fld_meta).default = "1",
     (fld_meta).description = "Description missing in models"
   ];
@@ -9416,12 +9416,12 @@ message PatternFlowGtpv2Spare1 {
 message PatternFlowGtpv2MessageTypeCounter {
   option (msg_meta).description = "integer counter pattern";
 
-  int32 start = 1 [
+  optional int32 start = 1 [
     (fld_meta).default = "0",
     (fld_meta).description = "Description missing in models"
   ];
 
-  int32 step = 2 [
+  optional int32 step = 2 [
     (fld_meta).default = "1",
     (fld_meta).description = "Description missing in models"
   ];
@@ -9473,12 +9473,12 @@ message PatternFlowGtpv2MessageType {
 message PatternFlowGtpv2MessageLengthCounter {
   option (msg_meta).description = "integer counter pattern";
 
-  int32 start = 1 [
+  optional int32 start = 1 [
     (fld_meta).default = "0",
     (fld_meta).description = "Description missing in models"
   ];
 
-  int32 step = 2 [
+  optional int32 step = 2 [
     (fld_meta).default = "1",
     (fld_meta).description = "Description missing in models"
   ];
@@ -9530,12 +9530,12 @@ message PatternFlowGtpv2MessageLength {
 message PatternFlowGtpv2TeidCounter {
   option (msg_meta).description = "integer counter pattern";
 
-  int32 start = 1 [
+  optional int32 start = 1 [
     (fld_meta).default = "0",
     (fld_meta).description = "Description missing in models"
   ];
 
-  int32 step = 2 [
+  optional int32 step = 2 [
     (fld_meta).default = "1",
     (fld_meta).description = "Description missing in models"
   ];
@@ -9587,12 +9587,12 @@ message PatternFlowGtpv2Teid {
 message PatternFlowGtpv2SequenceNumberCounter {
   option (msg_meta).description = "integer counter pattern";
 
-  int32 start = 1 [
+  optional int32 start = 1 [
     (fld_meta).default = "0",
     (fld_meta).description = "Description missing in models"
   ];
 
-  int32 step = 2 [
+  optional int32 step = 2 [
     (fld_meta).default = "1",
     (fld_meta).description = "Description missing in models"
   ];
@@ -9644,12 +9644,12 @@ message PatternFlowGtpv2SequenceNumber {
 message PatternFlowGtpv2Spare2Counter {
   option (msg_meta).description = "integer counter pattern";
 
-  int32 start = 1 [
+  optional int32 start = 1 [
     (fld_meta).default = "0",
     (fld_meta).description = "Description missing in models"
   ];
 
-  int32 step = 2 [
+  optional int32 step = 2 [
     (fld_meta).default = "1",
     (fld_meta).description = "Description missing in models"
   ];
@@ -9701,12 +9701,12 @@ message PatternFlowGtpv2Spare2 {
 message PatternFlowArpHardwareTypeCounter {
   option (msg_meta).description = "integer counter pattern";
 
-  int32 start = 1 [
+  optional int32 start = 1 [
     (fld_meta).default = "1",
     (fld_meta).description = "Description missing in models"
   ];
 
-  int32 step = 2 [
+  optional int32 step = 2 [
     (fld_meta).default = "1",
     (fld_meta).description = "Description missing in models"
   ];
@@ -9758,12 +9758,12 @@ message PatternFlowArpHardwareType {
 message PatternFlowArpProtocolTypeCounter {
   option (msg_meta).description = "integer counter pattern";
 
-  int32 start = 1 [
+  optional int32 start = 1 [
     (fld_meta).default = "2048",
     (fld_meta).description = "Description missing in models"
   ];
 
-  int32 step = 2 [
+  optional int32 step = 2 [
     (fld_meta).default = "1",
     (fld_meta).description = "Description missing in models"
   ];
@@ -9815,12 +9815,12 @@ message PatternFlowArpProtocolType {
 message PatternFlowArpHardwareLengthCounter {
   option (msg_meta).description = "integer counter pattern";
 
-  int32 start = 1 [
+  optional int32 start = 1 [
     (fld_meta).default = "6",
     (fld_meta).description = "Description missing in models"
   ];
 
-  int32 step = 2 [
+  optional int32 step = 2 [
     (fld_meta).default = "1",
     (fld_meta).description = "Description missing in models"
   ];
@@ -9872,12 +9872,12 @@ message PatternFlowArpHardwareLength {
 message PatternFlowArpProtocolLengthCounter {
   option (msg_meta).description = "integer counter pattern";
 
-  int32 start = 1 [
+  optional int32 start = 1 [
     (fld_meta).default = "4",
     (fld_meta).description = "Description missing in models"
   ];
 
-  int32 step = 2 [
+  optional int32 step = 2 [
     (fld_meta).default = "1",
     (fld_meta).description = "Description missing in models"
   ];
@@ -9929,12 +9929,12 @@ message PatternFlowArpProtocolLength {
 message PatternFlowArpOperationCounter {
   option (msg_meta).description = "integer counter pattern";
 
-  int32 start = 1 [
+  optional int32 start = 1 [
     (fld_meta).default = "1",
     (fld_meta).description = "Description missing in models"
   ];
 
-  int32 step = 2 [
+  optional int32 step = 2 [
     (fld_meta).default = "1",
     (fld_meta).description = "Description missing in models"
   ];
@@ -9986,12 +9986,12 @@ message PatternFlowArpOperation {
 message PatternFlowArpSenderHardwareAddrCounter {
   option (msg_meta).description = "mac counter pattern";
 
-  string start = 1 [
+  optional string start = 1 [
     (fld_meta).default = "00:00:00:00:00:00",
     (fld_meta).description = "Description missing in models"
   ];
 
-  string step = 2 [
+  optional string step = 2 [
     (fld_meta).default = "00:00:00:00:00:01",
     (fld_meta).description = "Description missing in models"
   ];
@@ -10043,12 +10043,12 @@ message PatternFlowArpSenderHardwareAddr {
 message PatternFlowArpSenderProtocolAddrCounter {
   option (msg_meta).description = "ipv4 counter pattern";
 
-  string start = 1 [
+  optional string start = 1 [
     (fld_meta).default = "0.0.0.0",
     (fld_meta).description = "Description missing in models"
   ];
 
-  string step = 2 [
+  optional string step = 2 [
     (fld_meta).default = "0.0.0.1",
     (fld_meta).description = "Description missing in models"
   ];
@@ -10100,12 +10100,12 @@ message PatternFlowArpSenderProtocolAddr {
 message PatternFlowArpTargetHardwareAddrCounter {
   option (msg_meta).description = "mac counter pattern";
 
-  string start = 1 [
+  optional string start = 1 [
     (fld_meta).default = "00:00:00:00:00:00",
     (fld_meta).description = "Description missing in models"
   ];
 
-  string step = 2 [
+  optional string step = 2 [
     (fld_meta).default = "00:00:00:00:00:01",
     (fld_meta).description = "Description missing in models"
   ];
@@ -10157,12 +10157,12 @@ message PatternFlowArpTargetHardwareAddr {
 message PatternFlowArpTargetProtocolAddrCounter {
   option (msg_meta).description = "ipv4 counter pattern";
 
-  string start = 1 [
+  optional string start = 1 [
     (fld_meta).default = "0.0.0.0",
     (fld_meta).description = "Description missing in models"
   ];
 
-  string step = 2 [
+  optional string step = 2 [
     (fld_meta).default = "0.0.0.1",
     (fld_meta).description = "Description missing in models"
   ];
@@ -10214,12 +10214,12 @@ message PatternFlowArpTargetProtocolAddr {
 message PatternFlowIcmpEchoTypeCounter {
   option (msg_meta).description = "integer counter pattern";
 
-  int32 start = 1 [
+  optional int32 start = 1 [
     (fld_meta).default = "8",
     (fld_meta).description = "Description missing in models"
   ];
 
-  int32 step = 2 [
+  optional int32 step = 2 [
     (fld_meta).default = "1",
     (fld_meta).description = "Description missing in models"
   ];
@@ -10271,12 +10271,12 @@ message PatternFlowIcmpEchoType {
 message PatternFlowIcmpEchoCodeCounter {
   option (msg_meta).description = "integer counter pattern";
 
-  int32 start = 1 [
+  optional int32 start = 1 [
     (fld_meta).default = "0",
     (fld_meta).description = "Description missing in models"
   ];
 
-  int32 step = 2 [
+  optional int32 step = 2 [
     (fld_meta).default = "1",
     (fld_meta).description = "Description missing in models"
   ];
@@ -10358,12 +10358,12 @@ message PatternFlowIcmpEchoChecksum {
 message PatternFlowIcmpEchoIdentifierCounter {
   option (msg_meta).description = "integer counter pattern";
 
-  int32 start = 1 [
+  optional int32 start = 1 [
     (fld_meta).default = "0",
     (fld_meta).description = "Description missing in models"
   ];
 
-  int32 step = 2 [
+  optional int32 step = 2 [
     (fld_meta).default = "1",
     (fld_meta).description = "Description missing in models"
   ];
@@ -10415,12 +10415,12 @@ message PatternFlowIcmpEchoIdentifier {
 message PatternFlowIcmpEchoSequenceNumberCounter {
   option (msg_meta).description = "integer counter pattern";
 
-  int32 start = 1 [
+  optional int32 start = 1 [
     (fld_meta).default = "0",
     (fld_meta).description = "Description missing in models"
   ];
 
-  int32 step = 2 [
+  optional int32 step = 2 [
     (fld_meta).default = "1",
     (fld_meta).description = "Description missing in models"
   ];
@@ -10502,12 +10502,12 @@ message PatternFlowIcmpCommonChecksum {
 message PatternFlowIcmpNextFieldsIdentifierCounter {
   option (msg_meta).description = "integer counter pattern";
 
-  int32 start = 1 [
+  optional int32 start = 1 [
     (fld_meta).default = "0",
     (fld_meta).description = "Description missing in models"
   ];
 
-  int32 step = 2 [
+  optional int32 step = 2 [
     (fld_meta).default = "1",
     (fld_meta).description = "Description missing in models"
   ];
@@ -10559,12 +10559,12 @@ message PatternFlowIcmpNextFieldsIdentifier {
 message PatternFlowIcmpNextFieldsSequenceNumberCounter {
   option (msg_meta).description = "integer counter pattern";
 
-  int32 start = 1 [
+  optional int32 start = 1 [
     (fld_meta).default = "0",
     (fld_meta).description = "Description missing in models"
   ];
 
-  int32 step = 2 [
+  optional int32 step = 2 [
     (fld_meta).default = "1",
     (fld_meta).description = "Description missing in models"
   ];
@@ -10616,12 +10616,12 @@ message PatternFlowIcmpNextFieldsSequenceNumber {
 message PatternFlowIcmpv6EchoTypeCounter {
   option (msg_meta).description = "integer counter pattern";
 
-  int32 start = 1 [
+  optional int32 start = 1 [
     (fld_meta).default = "128",
     (fld_meta).description = "Description missing in models"
   ];
 
-  int32 step = 2 [
+  optional int32 step = 2 [
     (fld_meta).default = "1",
     (fld_meta).description = "Description missing in models"
   ];
@@ -10673,12 +10673,12 @@ message PatternFlowIcmpv6EchoType {
 message PatternFlowIcmpv6EchoCodeCounter {
   option (msg_meta).description = "integer counter pattern";
 
-  int32 start = 1 [
+  optional int32 start = 1 [
     (fld_meta).default = "0",
     (fld_meta).description = "Description missing in models"
   ];
 
-  int32 step = 2 [
+  optional int32 step = 2 [
     (fld_meta).default = "1",
     (fld_meta).description = "Description missing in models"
   ];
@@ -10730,12 +10730,12 @@ message PatternFlowIcmpv6EchoCode {
 message PatternFlowIcmpv6EchoIdentifierCounter {
   option (msg_meta).description = "integer counter pattern";
 
-  int32 start = 1 [
+  optional int32 start = 1 [
     (fld_meta).default = "0",
     (fld_meta).description = "Description missing in models"
   ];
 
-  int32 step = 2 [
+  optional int32 step = 2 [
     (fld_meta).default = "1",
     (fld_meta).description = "Description missing in models"
   ];
@@ -10787,12 +10787,12 @@ message PatternFlowIcmpv6EchoIdentifier {
 message PatternFlowIcmpv6EchoSequenceNumberCounter {
   option (msg_meta).description = "integer counter pattern";
 
-  int32 start = 1 [
+  optional int32 start = 1 [
     (fld_meta).default = "0",
     (fld_meta).description = "Description missing in models"
   ];
 
-  int32 step = 2 [
+  optional int32 step = 2 [
     (fld_meta).default = "1",
     (fld_meta).description = "Description missing in models"
   ];
@@ -10904,12 +10904,12 @@ message PatternFlowIcmpv6CommonChecksum {
 message PatternFlowPppAddressCounter {
   option (msg_meta).description = "integer counter pattern";
 
-  int32 start = 1 [
+  optional int32 start = 1 [
     (fld_meta).default = "255",
     (fld_meta).description = "Description missing in models"
   ];
 
-  int32 step = 2 [
+  optional int32 step = 2 [
     (fld_meta).default = "1",
     (fld_meta).description = "Description missing in models"
   ];
@@ -10961,12 +10961,12 @@ message PatternFlowPppAddress {
 message PatternFlowPppControlCounter {
   option (msg_meta).description = "integer counter pattern";
 
-  int32 start = 1 [
+  optional int32 start = 1 [
     (fld_meta).default = "3",
     (fld_meta).description = "Description missing in models"
   ];
 
-  int32 step = 2 [
+  optional int32 step = 2 [
     (fld_meta).default = "1",
     (fld_meta).description = "Description missing in models"
   ];
@@ -11018,11 +11018,11 @@ message PatternFlowPppControl {
 message PatternFlowPppProtocolTypeCounter {
   option (msg_meta).description = "integer counter pattern";
 
-  int32 start = 1 [
+  optional int32 start = 1 [
     (fld_meta).description = "Description missing in models"
   ];
 
-  int32 step = 2 [
+  optional int32 step = 2 [
     (fld_meta).description = "Description missing in models"
   ];
 
@@ -11083,12 +11083,12 @@ message PatternFlowPppProtocolType {
 message PatternFlowIgmpv1VersionCounter {
   option (msg_meta).description = "integer counter pattern";
 
-  int32 start = 1 [
+  optional int32 start = 1 [
     (fld_meta).default = "1",
     (fld_meta).description = "Description missing in models"
   ];
 
-  int32 step = 2 [
+  optional int32 step = 2 [
     (fld_meta).default = "1",
     (fld_meta).description = "Description missing in models"
   ];
@@ -11140,12 +11140,12 @@ message PatternFlowIgmpv1Version {
 message PatternFlowIgmpv1TypeCounter {
   option (msg_meta).description = "integer counter pattern";
 
-  int32 start = 1 [
+  optional int32 start = 1 [
     (fld_meta).default = "17",
     (fld_meta).description = "Description missing in models"
   ];
 
-  int32 step = 2 [
+  optional int32 step = 2 [
     (fld_meta).default = "1",
     (fld_meta).description = "Description missing in models"
   ];
@@ -11197,12 +11197,12 @@ message PatternFlowIgmpv1Type {
 message PatternFlowIgmpv1UnusedCounter {
   option (msg_meta).description = "integer counter pattern";
 
-  int32 start = 1 [
+  optional int32 start = 1 [
     (fld_meta).default = "0",
     (fld_meta).description = "Description missing in models"
   ];
 
-  int32 step = 2 [
+  optional int32 step = 2 [
     (fld_meta).default = "1",
     (fld_meta).description = "Description missing in models"
   ];
@@ -11284,12 +11284,12 @@ message PatternFlowIgmpv1Checksum {
 message PatternFlowIgmpv1GroupAddressCounter {
   option (msg_meta).description = "ipv4 counter pattern";
 
-  string start = 1 [
+  optional string start = 1 [
     (fld_meta).default = "0.0.0.0",
     (fld_meta).description = "Description missing in models"
   ];
 
-  string step = 2 [
+  optional string step = 2 [
     (fld_meta).default = "0.0.0.1",
     (fld_meta).description = "Description missing in models"
   ];

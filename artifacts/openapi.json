@@ -1311,8 +1311,9 @@
                     },
                     "step": {
                         "description": "The amount to increase each address by",
-                        "type": "integer",
-                        "default": 1
+                        "type": "string",
+                        "format": "ipv4",
+                        "default": "0.0.0.1"
                     }
                 }
             },
@@ -1407,8 +1408,9 @@
                     },
                     "step": {
                         "description": "The amount to increase each address by",
-                        "type": "integer",
-                        "default": 1
+                        "type": "string",
+                        "format": "ipv6",
+                        "default": "::1"
                     }
                 }
             },
@@ -3976,10 +3978,6 @@
             "Pattern.Flow.Ethernet.Dst.Counter": {
                 "description": "mac counter pattern",
                 "type": "object",
-                "required": [
-                    "start",
-                    "step"
-                ],
                 "properties": {
                     "start": {
                         "type": "string",
@@ -4041,10 +4039,6 @@
             "Pattern.Flow.Ethernet.Src.Counter": {
                 "description": "mac counter pattern",
                 "type": "object",
-                "required": [
-                    "start",
-                    "step"
-                ],
                 "properties": {
                     "start": {
                         "type": "string",
@@ -4106,10 +4100,6 @@
             "Pattern.Flow.Ethernet.EtherType.Counter": {
                 "description": "integer counter pattern",
                 "type": "object",
-                "required": [
-                    "start",
-                    "step"
-                ],
                 "properties": {
                     "start": {
                         "type": "integer",
@@ -4197,10 +4187,6 @@
             "Pattern.Flow.Ethernet.PfcQueue.Counter": {
                 "description": "integer counter pattern",
                 "type": "object",
-                "required": [
-                    "start",
-                    "step"
-                ],
                 "properties": {
                     "start": {
                         "type": "integer",
@@ -4266,10 +4252,6 @@
             "Pattern.Flow.Vlan.Priority.Counter": {
                 "description": "integer counter pattern",
                 "type": "object",
-                "required": [
-                    "start",
-                    "step"
-                ],
                 "properties": {
                     "start": {
                         "type": "integer",
@@ -4335,10 +4317,6 @@
             "Pattern.Flow.Vlan.Cfi.Counter": {
                 "description": "integer counter pattern",
                 "type": "object",
-                "required": [
-                    "start",
-                    "step"
-                ],
                 "properties": {
                     "start": {
                         "type": "integer",
@@ -4404,10 +4382,6 @@
             "Pattern.Flow.Vlan.Id.Counter": {
                 "description": "integer counter pattern",
                 "type": "object",
-                "required": [
-                    "start",
-                    "step"
-                ],
                 "properties": {
                     "start": {
                         "type": "integer",
@@ -4473,10 +4447,6 @@
             "Pattern.Flow.Vlan.Tpid.Counter": {
                 "description": "integer counter pattern",
                 "type": "object",
-                "required": [
-                    "start",
-                    "step"
-                ],
                 "properties": {
                     "start": {
                         "type": "integer",
@@ -4556,10 +4526,6 @@
             "Pattern.Flow.Vxlan.Flags.Counter": {
                 "description": "integer counter pattern",
                 "type": "object",
-                "required": [
-                    "start",
-                    "step"
-                ],
                 "properties": {
                     "start": {
                         "type": "integer",
@@ -4625,10 +4591,6 @@
             "Pattern.Flow.Vxlan.Reserved0.Counter": {
                 "description": "integer counter pattern",
                 "type": "object",
-                "required": [
-                    "start",
-                    "step"
-                ],
                 "properties": {
                     "start": {
                         "type": "integer",
@@ -4694,10 +4656,6 @@
             "Pattern.Flow.Vxlan.Vni.Counter": {
                 "description": "integer counter pattern",
                 "type": "object",
-                "required": [
-                    "start",
-                    "step"
-                ],
                 "properties": {
                     "start": {
                         "type": "integer",
@@ -4763,10 +4721,6 @@
             "Pattern.Flow.Vxlan.Reserved1.Counter": {
                 "description": "integer counter pattern",
                 "type": "object",
-                "required": [
-                    "start",
-                    "step"
-                ],
                 "properties": {
                     "start": {
                         "type": "integer",
@@ -4832,10 +4786,6 @@
             "Pattern.Flow.Ipv4.Version.Counter": {
                 "description": "integer counter pattern",
                 "type": "object",
-                "required": [
-                    "start",
-                    "step"
-                ],
                 "properties": {
                     "start": {
                         "type": "integer",
@@ -4901,10 +4851,6 @@
             "Pattern.Flow.Ipv4.HeaderLength.Counter": {
                 "description": "integer counter pattern",
                 "type": "object",
-                "required": [
-                    "start",
-                    "step"
-                ],
                 "properties": {
                     "start": {
                         "type": "integer",
@@ -4978,10 +4924,6 @@
             "Pattern.Flow.Ipv4.TotalLength.Counter": {
                 "description": "integer counter pattern",
                 "type": "object",
-                "required": [
-                    "start",
-                    "step"
-                ],
                 "properties": {
                     "start": {
                         "type": "integer",
@@ -5055,10 +4997,6 @@
             "Pattern.Flow.Ipv4.Identification.Counter": {
                 "description": "integer counter pattern",
                 "type": "object",
-                "required": [
-                    "start",
-                    "step"
-                ],
                 "properties": {
                     "start": {
                         "type": "integer",
@@ -5124,10 +5062,6 @@
             "Pattern.Flow.Ipv4.Reserved.Counter": {
                 "description": "integer counter pattern",
                 "type": "object",
-                "required": [
-                    "start",
-                    "step"
-                ],
                 "properties": {
                     "start": {
                         "type": "integer",
@@ -5193,10 +5127,6 @@
             "Pattern.Flow.Ipv4.DontFragment.Counter": {
                 "description": "integer counter pattern",
                 "type": "object",
-                "required": [
-                    "start",
-                    "step"
-                ],
                 "properties": {
                     "start": {
                         "type": "integer",
@@ -5262,10 +5192,6 @@
             "Pattern.Flow.Ipv4.MoreFragments.Counter": {
                 "description": "integer counter pattern",
                 "type": "object",
-                "required": [
-                    "start",
-                    "step"
-                ],
                 "properties": {
                     "start": {
                         "type": "integer",
@@ -5331,10 +5257,6 @@
             "Pattern.Flow.Ipv4.FragmentOffset.Counter": {
                 "description": "integer counter pattern",
                 "type": "object",
-                "required": [
-                    "start",
-                    "step"
-                ],
                 "properties": {
                     "start": {
                         "type": "integer",
@@ -5400,10 +5322,6 @@
             "Pattern.Flow.Ipv4.TimeToLive.Counter": {
                 "description": "integer counter pattern",
                 "type": "object",
-                "required": [
-                    "start",
-                    "step"
-                ],
                 "properties": {
                     "start": {
                         "type": "integer",
@@ -5469,10 +5387,6 @@
             "Pattern.Flow.Ipv4.Protocol.Counter": {
                 "description": "integer counter pattern",
                 "type": "object",
-                "required": [
-                    "start",
-                    "step"
-                ],
                 "properties": {
                     "start": {
                         "type": "integer",
@@ -5571,10 +5485,6 @@
             "Pattern.Flow.Ipv4.Src.Counter": {
                 "description": "ipv4 counter pattern",
                 "type": "object",
-                "required": [
-                    "start",
-                    "step"
-                ],
                 "properties": {
                     "start": {
                         "type": "string",
@@ -5636,10 +5546,6 @@
             "Pattern.Flow.Ipv4.Dst.Counter": {
                 "description": "ipv4 counter pattern",
                 "type": "object",
-                "required": [
-                    "start",
-                    "step"
-                ],
                 "properties": {
                     "start": {
                         "type": "string",
@@ -5701,10 +5607,6 @@
             "Pattern.Flow.Ipv4.Priority.Raw.Counter": {
                 "description": "integer counter pattern",
                 "type": "object",
-                "required": [
-                    "start",
-                    "step"
-                ],
                 "properties": {
                     "start": {
                         "type": "integer",
@@ -5770,10 +5672,6 @@
             "Pattern.Flow.Ipv4.Dscp.Phb.Counter": {
                 "description": "integer counter pattern",
                 "type": "object",
-                "required": [
-                    "start",
-                    "step"
-                ],
                 "properties": {
                     "start": {
                         "type": "integer",
@@ -5885,10 +5783,6 @@
             "Pattern.Flow.Ipv4.Dscp.Ecn.Counter": {
                 "description": "integer counter pattern",
                 "type": "object",
-                "required": [
-                    "start",
-                    "step"
-                ],
                 "properties": {
                     "start": {
                         "type": "integer",
@@ -5966,10 +5860,6 @@
             "Pattern.Flow.Ipv4.Tos.Precedence.Counter": {
                 "description": "integer counter pattern",
                 "type": "object",
-                "required": [
-                    "start",
-                    "step"
-                ],
                 "properties": {
                     "start": {
                         "type": "integer",
@@ -6055,10 +5945,6 @@
             "Pattern.Flow.Ipv4.Tos.Delay.Counter": {
                 "description": "integer counter pattern",
                 "type": "object",
-                "required": [
-                    "start",
-                    "step"
-                ],
                 "properties": {
                     "start": {
                         "type": "integer",
@@ -6132,10 +6018,6 @@
             "Pattern.Flow.Ipv4.Tos.Throughput.Counter": {
                 "description": "integer counter pattern",
                 "type": "object",
-                "required": [
-                    "start",
-                    "step"
-                ],
                 "properties": {
                     "start": {
                         "type": "integer",
@@ -6209,10 +6091,6 @@
             "Pattern.Flow.Ipv4.Tos.Reliability.Counter": {
                 "description": "integer counter pattern",
                 "type": "object",
-                "required": [
-                    "start",
-                    "step"
-                ],
                 "properties": {
                     "start": {
                         "type": "integer",
@@ -6286,10 +6164,6 @@
             "Pattern.Flow.Ipv4.Tos.Monetary.Counter": {
                 "description": "integer counter pattern",
                 "type": "object",
-                "required": [
-                    "start",
-                    "step"
-                ],
                 "properties": {
                     "start": {
                         "type": "integer",
@@ -6363,10 +6237,6 @@
             "Pattern.Flow.Ipv4.Tos.Unused.Counter": {
                 "description": "integer counter pattern",
                 "type": "object",
-                "required": [
-                    "start",
-                    "step"
-                ],
                 "properties": {
                     "start": {
                         "type": "integer",
@@ -6432,10 +6302,6 @@
             "Pattern.Flow.Ipv6.Version.Counter": {
                 "description": "integer counter pattern",
                 "type": "object",
-                "required": [
-                    "start",
-                    "step"
-                ],
                 "properties": {
                     "start": {
                         "type": "integer",
@@ -6501,10 +6367,6 @@
             "Pattern.Flow.Ipv6.TrafficClass.Counter": {
                 "description": "integer counter pattern",
                 "type": "object",
-                "required": [
-                    "start",
-                    "step"
-                ],
                 "properties": {
                     "start": {
                         "type": "integer",
@@ -6570,10 +6432,6 @@
             "Pattern.Flow.Ipv6.FlowLabel.Counter": {
                 "description": "integer counter pattern",
                 "type": "object",
-                "required": [
-                    "start",
-                    "step"
-                ],
                 "properties": {
                     "start": {
                         "type": "integer",
@@ -6639,10 +6497,6 @@
             "Pattern.Flow.Ipv6.PayloadLength.Counter": {
                 "description": "integer counter pattern",
                 "type": "object",
-                "required": [
-                    "start",
-                    "step"
-                ],
                 "properties": {
                     "start": {
                         "type": "integer",
@@ -6716,10 +6570,6 @@
             "Pattern.Flow.Ipv6.NextHeader.Counter": {
                 "description": "integer counter pattern",
                 "type": "object",
-                "required": [
-                    "start",
-                    "step"
-                ],
                 "properties": {
                     "start": {
                         "type": "integer",
@@ -6811,10 +6661,6 @@
             "Pattern.Flow.Ipv6.HopLimit.Counter": {
                 "description": "integer counter pattern",
                 "type": "object",
-                "required": [
-                    "start",
-                    "step"
-                ],
                 "properties": {
                     "start": {
                         "type": "integer",
@@ -6880,10 +6726,6 @@
             "Pattern.Flow.Ipv6.Src.Counter": {
                 "description": "ipv6 counter pattern",
                 "type": "object",
-                "required": [
-                    "start",
-                    "step"
-                ],
                 "properties": {
                     "start": {
                         "type": "string",
@@ -6945,10 +6787,6 @@
             "Pattern.Flow.Ipv6.Dst.Counter": {
                 "description": "ipv6 counter pattern",
                 "type": "object",
-                "required": [
-                    "start",
-                    "step"
-                ],
                 "properties": {
                     "start": {
                         "type": "string",
@@ -7010,10 +6848,6 @@
             "Pattern.Flow.PfcPause.Dst.Counter": {
                 "description": "mac counter pattern",
                 "type": "object",
-                "required": [
-                    "start",
-                    "step"
-                ],
                 "properties": {
                     "start": {
                         "type": "string",
@@ -7075,10 +6909,6 @@
             "Pattern.Flow.PfcPause.Src.Counter": {
                 "description": "mac counter pattern",
                 "type": "object",
-                "required": [
-                    "start",
-                    "step"
-                ],
                 "properties": {
                     "start": {
                         "type": "string",
@@ -7140,10 +6970,6 @@
             "Pattern.Flow.PfcPause.EtherType.Counter": {
                 "description": "integer counter pattern",
                 "type": "object",
-                "required": [
-                    "start",
-                    "step"
-                ],
                 "properties": {
                     "start": {
                         "type": "integer",
@@ -7215,10 +7041,6 @@
             "Pattern.Flow.PfcPause.ControlOpCode.Counter": {
                 "description": "integer counter pattern",
                 "type": "object",
-                "required": [
-                    "start",
-                    "step"
-                ],
                 "properties": {
                     "start": {
                         "type": "integer",
@@ -7284,10 +7106,6 @@
             "Pattern.Flow.PfcPause.ClassEnableVector.Counter": {
                 "description": "integer counter pattern",
                 "type": "object",
-                "required": [
-                    "start",
-                    "step"
-                ],
                 "properties": {
                     "start": {
                         "type": "integer",
@@ -7353,10 +7171,6 @@
             "Pattern.Flow.PfcPause.PauseClass0.Counter": {
                 "description": "integer counter pattern",
                 "type": "object",
-                "required": [
-                    "start",
-                    "step"
-                ],
                 "properties": {
                     "start": {
                         "type": "integer",
@@ -7422,10 +7236,6 @@
             "Pattern.Flow.PfcPause.PauseClass1.Counter": {
                 "description": "integer counter pattern",
                 "type": "object",
-                "required": [
-                    "start",
-                    "step"
-                ],
                 "properties": {
                     "start": {
                         "type": "integer",
@@ -7491,10 +7301,6 @@
             "Pattern.Flow.PfcPause.PauseClass2.Counter": {
                 "description": "integer counter pattern",
                 "type": "object",
-                "required": [
-                    "start",
-                    "step"
-                ],
                 "properties": {
                     "start": {
                         "type": "integer",
@@ -7560,10 +7366,6 @@
             "Pattern.Flow.PfcPause.PauseClass3.Counter": {
                 "description": "integer counter pattern",
                 "type": "object",
-                "required": [
-                    "start",
-                    "step"
-                ],
                 "properties": {
                     "start": {
                         "type": "integer",
@@ -7629,10 +7431,6 @@
             "Pattern.Flow.PfcPause.PauseClass4.Counter": {
                 "description": "integer counter pattern",
                 "type": "object",
-                "required": [
-                    "start",
-                    "step"
-                ],
                 "properties": {
                     "start": {
                         "type": "integer",
@@ -7698,10 +7496,6 @@
             "Pattern.Flow.PfcPause.PauseClass5.Counter": {
                 "description": "integer counter pattern",
                 "type": "object",
-                "required": [
-                    "start",
-                    "step"
-                ],
                 "properties": {
                     "start": {
                         "type": "integer",
@@ -7767,10 +7561,6 @@
             "Pattern.Flow.PfcPause.PauseClass6.Counter": {
                 "description": "integer counter pattern",
                 "type": "object",
-                "required": [
-                    "start",
-                    "step"
-                ],
                 "properties": {
                     "start": {
                         "type": "integer",
@@ -7836,10 +7626,6 @@
             "Pattern.Flow.PfcPause.PauseClass7.Counter": {
                 "description": "integer counter pattern",
                 "type": "object",
-                "required": [
-                    "start",
-                    "step"
-                ],
                 "properties": {
                     "start": {
                         "type": "integer",
@@ -7905,10 +7691,6 @@
             "Pattern.Flow.EthernetPause.Dst.Counter": {
                 "description": "mac counter pattern",
                 "type": "object",
-                "required": [
-                    "start",
-                    "step"
-                ],
                 "properties": {
                     "start": {
                         "type": "string",
@@ -7970,10 +7752,6 @@
             "Pattern.Flow.EthernetPause.Src.Counter": {
                 "description": "mac counter pattern",
                 "type": "object",
-                "required": [
-                    "start",
-                    "step"
-                ],
                 "properties": {
                     "start": {
                         "type": "string",
@@ -8035,10 +7813,6 @@
             "Pattern.Flow.EthernetPause.EtherType.Counter": {
                 "description": "integer counter pattern",
                 "type": "object",
-                "required": [
-                    "start",
-                    "step"
-                ],
                 "properties": {
                     "start": {
                         "type": "integer",
@@ -8110,10 +7884,6 @@
             "Pattern.Flow.EthernetPause.ControlOpCode.Counter": {
                 "description": "integer counter pattern",
                 "type": "object",
-                "required": [
-                    "start",
-                    "step"
-                ],
                 "properties": {
                     "start": {
                         "type": "integer",
@@ -8179,10 +7949,6 @@
             "Pattern.Flow.EthernetPause.Time.Counter": {
                 "description": "integer counter pattern",
                 "type": "object",
-                "required": [
-                    "start",
-                    "step"
-                ],
                 "properties": {
                     "start": {
                         "type": "integer",
@@ -8248,10 +8014,6 @@
             "Pattern.Flow.Tcp.SrcPort.Counter": {
                 "description": "integer counter pattern",
                 "type": "object",
-                "required": [
-                    "start",
-                    "step"
-                ],
                 "properties": {
                     "start": {
                         "type": "integer",
@@ -8317,10 +8079,6 @@
             "Pattern.Flow.Tcp.DstPort.Counter": {
                 "description": "integer counter pattern",
                 "type": "object",
-                "required": [
-                    "start",
-                    "step"
-                ],
                 "properties": {
                     "start": {
                         "type": "integer",
@@ -8386,10 +8144,6 @@
             "Pattern.Flow.Tcp.SeqNum.Counter": {
                 "description": "integer counter pattern",
                 "type": "object",
-                "required": [
-                    "start",
-                    "step"
-                ],
                 "properties": {
                     "start": {
                         "type": "integer",
@@ -8455,10 +8209,6 @@
             "Pattern.Flow.Tcp.AckNum.Counter": {
                 "description": "integer counter pattern",
                 "type": "object",
-                "required": [
-                    "start",
-                    "step"
-                ],
                 "properties": {
                     "start": {
                         "type": "integer",
@@ -8524,10 +8274,6 @@
             "Pattern.Flow.Tcp.DataOffset.Counter": {
                 "description": "integer counter pattern",
                 "type": "object",
-                "required": [
-                    "start",
-                    "step"
-                ],
                 "properties": {
                     "start": {
                         "type": "integer",
@@ -8593,10 +8339,6 @@
             "Pattern.Flow.Tcp.EcnNs.Counter": {
                 "description": "integer counter pattern",
                 "type": "object",
-                "required": [
-                    "start",
-                    "step"
-                ],
                 "properties": {
                     "start": {
                         "type": "integer",
@@ -8662,10 +8404,6 @@
             "Pattern.Flow.Tcp.EcnCwr.Counter": {
                 "description": "integer counter pattern",
                 "type": "object",
-                "required": [
-                    "start",
-                    "step"
-                ],
                 "properties": {
                     "start": {
                         "type": "integer",
@@ -8731,10 +8469,6 @@
             "Pattern.Flow.Tcp.EcnEcho.Counter": {
                 "description": "integer counter pattern",
                 "type": "object",
-                "required": [
-                    "start",
-                    "step"
-                ],
                 "properties": {
                     "start": {
                         "type": "integer",
@@ -8800,10 +8534,6 @@
             "Pattern.Flow.Tcp.CtlUrg.Counter": {
                 "description": "integer counter pattern",
                 "type": "object",
-                "required": [
-                    "start",
-                    "step"
-                ],
                 "properties": {
                     "start": {
                         "type": "integer",
@@ -8869,10 +8599,6 @@
             "Pattern.Flow.Tcp.CtlAck.Counter": {
                 "description": "integer counter pattern",
                 "type": "object",
-                "required": [
-                    "start",
-                    "step"
-                ],
                 "properties": {
                     "start": {
                         "type": "integer",
@@ -8938,10 +8664,6 @@
             "Pattern.Flow.Tcp.CtlPsh.Counter": {
                 "description": "integer counter pattern",
                 "type": "object",
-                "required": [
-                    "start",
-                    "step"
-                ],
                 "properties": {
                     "start": {
                         "type": "integer",
@@ -9007,10 +8729,6 @@
             "Pattern.Flow.Tcp.CtlRst.Counter": {
                 "description": "integer counter pattern",
                 "type": "object",
-                "required": [
-                    "start",
-                    "step"
-                ],
                 "properties": {
                     "start": {
                         "type": "integer",
@@ -9076,10 +8794,6 @@
             "Pattern.Flow.Tcp.CtlSyn.Counter": {
                 "description": "integer counter pattern",
                 "type": "object",
-                "required": [
-                    "start",
-                    "step"
-                ],
                 "properties": {
                     "start": {
                         "type": "integer",
@@ -9145,10 +8859,6 @@
             "Pattern.Flow.Tcp.CtlFin.Counter": {
                 "description": "integer counter pattern",
                 "type": "object",
-                "required": [
-                    "start",
-                    "step"
-                ],
                 "properties": {
                     "start": {
                         "type": "integer",
@@ -9214,10 +8924,6 @@
             "Pattern.Flow.Tcp.Window.Counter": {
                 "description": "integer counter pattern",
                 "type": "object",
-                "required": [
-                    "start",
-                    "step"
-                ],
                 "properties": {
                     "start": {
                         "type": "integer",
@@ -9283,10 +8989,6 @@
             "Pattern.Flow.Udp.SrcPort.Counter": {
                 "description": "integer counter pattern",
                 "type": "object",
-                "required": [
-                    "start",
-                    "step"
-                ],
                 "properties": {
                     "start": {
                         "type": "integer",
@@ -9352,10 +9054,6 @@
             "Pattern.Flow.Udp.DstPort.Counter": {
                 "description": "integer counter pattern",
                 "type": "object",
-                "required": [
-                    "start",
-                    "step"
-                ],
                 "properties": {
                     "start": {
                         "type": "integer",
@@ -9421,10 +9119,6 @@
             "Pattern.Flow.Udp.Length.Counter": {
                 "description": "integer counter pattern",
                 "type": "object",
-                "required": [
-                    "start",
-                    "step"
-                ],
                 "properties": {
                     "start": {
                         "type": "integer",
@@ -9523,10 +9217,6 @@
             "Pattern.Flow.Gre.ChecksumPresent.Counter": {
                 "description": "integer counter pattern",
                 "type": "object",
-                "required": [
-                    "start",
-                    "step"
-                ],
                 "properties": {
                     "start": {
                         "type": "integer",
@@ -9592,10 +9282,6 @@
             "Pattern.Flow.Gre.Reserved0.Counter": {
                 "description": "integer counter pattern",
                 "type": "object",
-                "required": [
-                    "start",
-                    "step"
-                ],
                 "properties": {
                     "start": {
                         "type": "integer",
@@ -9661,10 +9347,6 @@
             "Pattern.Flow.Gre.Version.Counter": {
                 "description": "integer counter pattern",
                 "type": "object",
-                "required": [
-                    "start",
-                    "step"
-                ],
                 "properties": {
                     "start": {
                         "type": "integer",
@@ -9730,10 +9412,6 @@
             "Pattern.Flow.Gre.Protocol.Counter": {
                 "description": "integer counter pattern",
                 "type": "object",
-                "required": [
-                    "start",
-                    "step"
-                ],
                 "properties": {
                     "start": {
                         "type": "integer",
@@ -9840,10 +9518,6 @@
             "Pattern.Flow.Gre.Reserved1.Counter": {
                 "description": "integer counter pattern",
                 "type": "object",
-                "required": [
-                    "start",
-                    "step"
-                ],
                 "properties": {
                     "start": {
                         "type": "integer",
@@ -9909,10 +9583,6 @@
             "Pattern.Flow.Gtpv1.Version.Counter": {
                 "description": "integer counter pattern",
                 "type": "object",
-                "required": [
-                    "start",
-                    "step"
-                ],
                 "properties": {
                     "start": {
                         "type": "integer",
@@ -9978,10 +9648,6 @@
             "Pattern.Flow.Gtpv1.ProtocolType.Counter": {
                 "description": "integer counter pattern",
                 "type": "object",
-                "required": [
-                    "start",
-                    "step"
-                ],
                 "properties": {
                     "start": {
                         "type": "integer",
@@ -10047,10 +9713,6 @@
             "Pattern.Flow.Gtpv1.Reserved.Counter": {
                 "description": "integer counter pattern",
                 "type": "object",
-                "required": [
-                    "start",
-                    "step"
-                ],
                 "properties": {
                     "start": {
                         "type": "integer",
@@ -10116,10 +9778,6 @@
             "Pattern.Flow.Gtpv1.EFlag.Counter": {
                 "description": "integer counter pattern",
                 "type": "object",
-                "required": [
-                    "start",
-                    "step"
-                ],
                 "properties": {
                     "start": {
                         "type": "integer",
@@ -10185,10 +9843,6 @@
             "Pattern.Flow.Gtpv1.SFlag.Counter": {
                 "description": "integer counter pattern",
                 "type": "object",
-                "required": [
-                    "start",
-                    "step"
-                ],
                 "properties": {
                     "start": {
                         "type": "integer",
@@ -10254,10 +9908,6 @@
             "Pattern.Flow.Gtpv1.PnFlag.Counter": {
                 "description": "integer counter pattern",
                 "type": "object",
-                "required": [
-                    "start",
-                    "step"
-                ],
                 "properties": {
                     "start": {
                         "type": "integer",
@@ -10323,10 +9973,6 @@
             "Pattern.Flow.Gtpv1.MessageType.Counter": {
                 "description": "integer counter pattern",
                 "type": "object",
-                "required": [
-                    "start",
-                    "step"
-                ],
                 "properties": {
                     "start": {
                         "type": "integer",
@@ -10392,10 +10038,6 @@
             "Pattern.Flow.Gtpv1.MessageLength.Counter": {
                 "description": "integer counter pattern",
                 "type": "object",
-                "required": [
-                    "start",
-                    "step"
-                ],
                 "properties": {
                     "start": {
                         "type": "integer",
@@ -10461,10 +10103,6 @@
             "Pattern.Flow.Gtpv1.Teid.Counter": {
                 "description": "integer counter pattern",
                 "type": "object",
-                "required": [
-                    "start",
-                    "step"
-                ],
                 "properties": {
                     "start": {
                         "type": "integer",
@@ -10530,10 +10168,6 @@
             "Pattern.Flow.Gtpv1.SquenceNumber.Counter": {
                 "description": "integer counter pattern",
                 "type": "object",
-                "required": [
-                    "start",
-                    "step"
-                ],
                 "properties": {
                     "start": {
                         "type": "integer",
@@ -10599,10 +10233,6 @@
             "Pattern.Flow.Gtpv1.NPduNumber.Counter": {
                 "description": "integer counter pattern",
                 "type": "object",
-                "required": [
-                    "start",
-                    "step"
-                ],
                 "properties": {
                     "start": {
                         "type": "integer",
@@ -10668,10 +10298,6 @@
             "Pattern.Flow.Gtpv1.NextExtensionHeaderType.Counter": {
                 "description": "integer counter pattern",
                 "type": "object",
-                "required": [
-                    "start",
-                    "step"
-                ],
                 "properties": {
                     "start": {
                         "type": "integer",
@@ -10737,10 +10363,6 @@
             "Pattern.Flow.GtpExtension.ExtensionLength.Counter": {
                 "description": "integer counter pattern",
                 "type": "object",
-                "required": [
-                    "start",
-                    "step"
-                ],
                 "properties": {
                     "start": {
                         "type": "integer",
@@ -10806,10 +10428,6 @@
             "Pattern.Flow.GtpExtension.Contents.Counter": {
                 "description": "integer counter pattern",
                 "type": "object",
-                "required": [
-                    "start",
-                    "step"
-                ],
                 "properties": {
                     "start": {
                         "type": "integer",
@@ -10875,10 +10493,6 @@
             "Pattern.Flow.GtpExtension.NextExtensionHeader.Counter": {
                 "description": "integer counter pattern",
                 "type": "object",
-                "required": [
-                    "start",
-                    "step"
-                ],
                 "properties": {
                     "start": {
                         "type": "integer",
@@ -10944,10 +10558,6 @@
             "Pattern.Flow.Gtpv2.Version.Counter": {
                 "description": "integer counter pattern",
                 "type": "object",
-                "required": [
-                    "start",
-                    "step"
-                ],
                 "properties": {
                     "start": {
                         "type": "integer",
@@ -11013,10 +10623,6 @@
             "Pattern.Flow.Gtpv2.PiggybackingFlag.Counter": {
                 "description": "integer counter pattern",
                 "type": "object",
-                "required": [
-                    "start",
-                    "step"
-                ],
                 "properties": {
                     "start": {
                         "type": "integer",
@@ -11082,10 +10688,6 @@
             "Pattern.Flow.Gtpv2.TeidFlag.Counter": {
                 "description": "integer counter pattern",
                 "type": "object",
-                "required": [
-                    "start",
-                    "step"
-                ],
                 "properties": {
                     "start": {
                         "type": "integer",
@@ -11151,10 +10753,6 @@
             "Pattern.Flow.Gtpv2.Spare1.Counter": {
                 "description": "integer counter pattern",
                 "type": "object",
-                "required": [
-                    "start",
-                    "step"
-                ],
                 "properties": {
                     "start": {
                         "type": "integer",
@@ -11220,10 +10818,6 @@
             "Pattern.Flow.Gtpv2.MessageType.Counter": {
                 "description": "integer counter pattern",
                 "type": "object",
-                "required": [
-                    "start",
-                    "step"
-                ],
                 "properties": {
                     "start": {
                         "type": "integer",
@@ -11289,10 +10883,6 @@
             "Pattern.Flow.Gtpv2.MessageLength.Counter": {
                 "description": "integer counter pattern",
                 "type": "object",
-                "required": [
-                    "start",
-                    "step"
-                ],
                 "properties": {
                     "start": {
                         "type": "integer",
@@ -11358,10 +10948,6 @@
             "Pattern.Flow.Gtpv2.Teid.Counter": {
                 "description": "integer counter pattern",
                 "type": "object",
-                "required": [
-                    "start",
-                    "step"
-                ],
                 "properties": {
                     "start": {
                         "type": "integer",
@@ -11427,10 +11013,6 @@
             "Pattern.Flow.Gtpv2.SequenceNumber.Counter": {
                 "description": "integer counter pattern",
                 "type": "object",
-                "required": [
-                    "start",
-                    "step"
-                ],
                 "properties": {
                     "start": {
                         "type": "integer",
@@ -11496,10 +11078,6 @@
             "Pattern.Flow.Gtpv2.Spare2.Counter": {
                 "description": "integer counter pattern",
                 "type": "object",
-                "required": [
-                    "start",
-                    "step"
-                ],
                 "properties": {
                     "start": {
                         "type": "integer",
@@ -11565,10 +11143,6 @@
             "Pattern.Flow.Arp.HardwareType.Counter": {
                 "description": "integer counter pattern",
                 "type": "object",
-                "required": [
-                    "start",
-                    "step"
-                ],
                 "properties": {
                     "start": {
                         "type": "integer",
@@ -11640,10 +11214,6 @@
             "Pattern.Flow.Arp.ProtocolType.Counter": {
                 "description": "integer counter pattern",
                 "type": "object",
-                "required": [
-                    "start",
-                    "step"
-                ],
                 "properties": {
                     "start": {
                         "type": "integer",
@@ -11717,10 +11287,6 @@
             "Pattern.Flow.Arp.HardwareLength.Counter": {
                 "description": "integer counter pattern",
                 "type": "object",
-                "required": [
-                    "start",
-                    "step"
-                ],
                 "properties": {
                     "start": {
                         "type": "integer",
@@ -11786,10 +11352,6 @@
             "Pattern.Flow.Arp.ProtocolLength.Counter": {
                 "description": "integer counter pattern",
                 "type": "object",
-                "required": [
-                    "start",
-                    "step"
-                ],
                 "properties": {
                     "start": {
                         "type": "integer",
@@ -11855,10 +11417,6 @@
             "Pattern.Flow.Arp.Operation.Counter": {
                 "description": "integer counter pattern",
                 "type": "object",
-                "required": [
-                    "start",
-                    "step"
-                ],
                 "properties": {
                     "start": {
                         "type": "integer",
@@ -11932,10 +11490,6 @@
             "Pattern.Flow.Arp.SenderHardwareAddr.Counter": {
                 "description": "mac counter pattern",
                 "type": "object",
-                "required": [
-                    "start",
-                    "step"
-                ],
                 "properties": {
                     "start": {
                         "type": "string",
@@ -11997,10 +11551,6 @@
             "Pattern.Flow.Arp.SenderProtocolAddr.Counter": {
                 "description": "ipv4 counter pattern",
                 "type": "object",
-                "required": [
-                    "start",
-                    "step"
-                ],
                 "properties": {
                     "start": {
                         "type": "string",
@@ -12062,10 +11612,6 @@
             "Pattern.Flow.Arp.TargetHardwareAddr.Counter": {
                 "description": "mac counter pattern",
                 "type": "object",
-                "required": [
-                    "start",
-                    "step"
-                ],
                 "properties": {
                     "start": {
                         "type": "string",
@@ -12127,10 +11673,6 @@
             "Pattern.Flow.Arp.TargetProtocolAddr.Counter": {
                 "description": "ipv4 counter pattern",
                 "type": "object",
-                "required": [
-                    "start",
-                    "step"
-                ],
                 "properties": {
                     "start": {
                         "type": "string",
@@ -12192,10 +11734,6 @@
             "Pattern.Flow.Icmp.Echo.Type.Counter": {
                 "description": "integer counter pattern",
                 "type": "object",
-                "required": [
-                    "start",
-                    "step"
-                ],
                 "properties": {
                     "start": {
                         "type": "integer",
@@ -12269,10 +11807,6 @@
             "Pattern.Flow.Icmp.Echo.Code.Counter": {
                 "description": "integer counter pattern",
                 "type": "object",
-                "required": [
-                    "start",
-                    "step"
-                ],
                 "properties": {
                     "start": {
                         "type": "integer",
@@ -12371,10 +11905,6 @@
             "Pattern.Flow.Icmp.Echo.Identifier.Counter": {
                 "description": "integer counter pattern",
                 "type": "object",
-                "required": [
-                    "start",
-                    "step"
-                ],
                 "properties": {
                     "start": {
                         "type": "integer",
@@ -12440,10 +11970,6 @@
             "Pattern.Flow.Icmp.Echo.SequenceNumber.Counter": {
                 "description": "integer counter pattern",
                 "type": "object",
-                "required": [
-                    "start",
-                    "step"
-                ],
                 "properties": {
                     "start": {
                         "type": "integer",
@@ -12542,10 +12068,6 @@
             "Pattern.Flow.Icmp.NextFields.Identifier.Counter": {
                 "description": "integer counter pattern",
                 "type": "object",
-                "required": [
-                    "start",
-                    "step"
-                ],
                 "properties": {
                     "start": {
                         "type": "integer",
@@ -12611,10 +12133,6 @@
             "Pattern.Flow.Icmp.NextFields.SequenceNumber.Counter": {
                 "description": "integer counter pattern",
                 "type": "object",
-                "required": [
-                    "start",
-                    "step"
-                ],
                 "properties": {
                     "start": {
                         "type": "integer",
@@ -12680,10 +12198,6 @@
             "Pattern.Flow.Icmpv6.Echo.Type.Counter": {
                 "description": "integer counter pattern",
                 "type": "object",
-                "required": [
-                    "start",
-                    "step"
-                ],
                 "properties": {
                     "start": {
                         "type": "integer",
@@ -12757,10 +12271,6 @@
             "Pattern.Flow.Icmpv6.Echo.Code.Counter": {
                 "description": "integer counter pattern",
                 "type": "object",
-                "required": [
-                    "start",
-                    "step"
-                ],
                 "properties": {
                     "start": {
                         "type": "integer",
@@ -12826,10 +12336,6 @@
             "Pattern.Flow.Icmpv6.Echo.Identifier.Counter": {
                 "description": "integer counter pattern",
                 "type": "object",
-                "required": [
-                    "start",
-                    "step"
-                ],
                 "properties": {
                     "start": {
                         "type": "integer",
@@ -12895,10 +12401,6 @@
             "Pattern.Flow.Icmpv6.Echo.SequenceNumber.Counter": {
                 "description": "integer counter pattern",
                 "type": "object",
-                "required": [
-                    "start",
-                    "step"
-                ],
                 "properties": {
                     "start": {
                         "type": "integer",
@@ -13030,10 +12532,6 @@
             "Pattern.Flow.Ppp.Address.Counter": {
                 "description": "integer counter pattern",
                 "type": "object",
-                "required": [
-                    "start",
-                    "step"
-                ],
                 "properties": {
                     "start": {
                         "type": "integer",
@@ -13105,10 +12603,6 @@
             "Pattern.Flow.Ppp.Control.Counter": {
                 "description": "integer counter pattern",
                 "type": "object",
-                "required": [
-                    "start",
-                    "step"
-                ],
                 "properties": {
                     "start": {
                         "type": "integer",
@@ -13180,10 +12674,6 @@
             "Pattern.Flow.Ppp.ProtocolType.Counter": {
                 "description": "integer counter pattern",
                 "type": "object",
-                "required": [
-                    "start",
-                    "step"
-                ],
                 "properties": {
                     "start": {
                         "type": "integer",
@@ -13251,10 +12741,6 @@
             "Pattern.Flow.Igmpv1.Version.Counter": {
                 "description": "integer counter pattern",
                 "type": "object",
-                "required": [
-                    "start",
-                    "step"
-                ],
                 "properties": {
                     "start": {
                         "type": "integer",
@@ -13320,10 +12806,6 @@
             "Pattern.Flow.Igmpv1.Type.Counter": {
                 "description": "integer counter pattern",
                 "type": "object",
-                "required": [
-                    "start",
-                    "step"
-                ],
                 "properties": {
                     "start": {
                         "type": "integer",
@@ -13397,10 +12879,6 @@
             "Pattern.Flow.Igmpv1.Unused.Counter": {
                 "description": "integer counter pattern",
                 "type": "object",
-                "required": [
-                    "start",
-                    "step"
-                ],
                 "properties": {
                     "start": {
                         "type": "integer",
@@ -13499,10 +12977,6 @@
             "Pattern.Flow.Igmpv1.GroupAddress.Counter": {
                 "description": "ipv4 counter pattern",
                 "type": "object",
-                "required": [
-                    "start",
-                    "step"
-                ],
                 "properties": {
                     "start": {
                         "type": "string",
