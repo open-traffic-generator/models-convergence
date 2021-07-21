@@ -11245,58 +11245,81 @@ message PatternFlowIgmpv1GroupAddress {
   ];
 }
 
+message Success {
+  option (msg_meta).description = "The request has succeeded with no application content but the server \nmay return a list of detailed warnings.";
+  ResponseWarning response_warning = 1;
+}
+
+message BadRequest {
+  option (msg_meta).description = "This indicates that the server cannot or will not process the request \ndue to something that is perceived to be a client error.\nAdditional details are in the errors.";
+  ResponseError response_error = 1;
+}
+
+message InternalServerError {
+  option (msg_meta).description = "This indicates that the server encountered an unexpected condition that \nprevented it from fulfilling the request.\nAdditional details are in the errors.";
+  ResponseError response_error = 1;
+}
+
 message SetConfigRequest {
-  ConvergenceConfig convergenceconfig = 1;
+  ConvergenceConfig convergence_config = 1;
 }
 
 message SetConfigResponse {
   message StatusCode200 {
+    Success success = 1;
   }
   message StatusCode400 {
+    BadRequest bad_request = 1;
   }
   message StatusCode500 {
+    InternalServerError internal_server_error = 1;
   }
   oneof statuscode {
-    StatusCode200 statuscode200 = 1;
-    StatusCode400 statuscode400 = 2;
-    StatusCode500 statuscode500 = 3;
+    StatusCode200 status_code_200 = 1;
+    StatusCode400 status_code_400 = 2;
+    StatusCode500 status_code_500 = 3;
   }
 }
 
 message SetStateRequest {
-  ConvergenceState convergencestate = 1;
+  ConvergenceState convergence_state = 1;
 }
 
 message SetStateResponse {
   message StatusCode200 {
+    Success success = 1;
   }
   message StatusCode400 {
+    BadRequest bad_request = 1;
   }
   message StatusCode500 {
+    InternalServerError internal_server_error = 1;
   }
   oneof statuscode {
-    StatusCode200 statuscode200 = 1;
-    StatusCode400 statuscode400 = 2;
-    StatusCode500 statuscode500 = 3;
+    StatusCode200 status_code_200 = 1;
+    StatusCode400 status_code_400 = 2;
+    StatusCode500 status_code_500 = 3;
   }
 }
 
 message GetResultsRequest {
-  ConvergenceRequest convergencerequest = 1;
+  ConvergenceRequest convergence_request = 1;
 }
 
 message GetResultsResponse {
   message StatusCode200 {
-    ConvergenceResponse convergenceresponse = 1;
+    ConvergenceResponse convergence_response = 1;
   }
   message StatusCode400 {
+    BadRequest bad_request = 1;
   }
   message StatusCode500 {
+    InternalServerError internal_server_error = 1;
   }
   oneof statuscode {
-    StatusCode200 statuscode200 = 1;
-    StatusCode400 statuscode400 = 2;
-    StatusCode500 statuscode500 = 3;
+    StatusCode200 status_code_200 = 1;
+    StatusCode400 status_code_400 = 2;
+    StatusCode500 status_code_500 = 3;
   }
 }
 
