@@ -9,6 +9,8 @@ import openapiart
 
 openapiart.OpenApiArt(
     api_files=["./api/info.yaml", "./api/api.yaml"],
-    protobuf_name="otg.convergence",
-    artifact_dir="./artifacts",
-).GeneratePythonSdk(package_name="otg_convergence")
+    python_module_name="otg_convergence",
+    protobuf_file_name="otg_convergence",
+    protobuf_package_name="otg.convergence",
+    output_dir="./artifacts",
+)
