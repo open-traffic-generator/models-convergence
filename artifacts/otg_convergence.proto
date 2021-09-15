@@ -11929,6 +11929,16 @@ message SetStateResponse {
 }
 
 
+message SendPingRequest {
+  PingRequest ping_request = 1;
+}
+message SendPingResponse {
+  optional PingResponse status_code_200 = 1;
+  optional ResponseError status_code_400 = 2;
+  optional ResponseError status_code_500 = 3;
+}
+
+
 message GetResultsRequest {
   ConvergenceRequest convergence_request = 1;
 }
@@ -11947,6 +11957,9 @@ service Openapi {
   }
   rpc SetState(SetStateRequest) returns (SetStateResponse) {
     option (rpc_meta).description = "Updates the state of the traffic generator.";
+  }
+  rpc SendPing(SendPingRequest) returns (SendPingResponse) {
+    option (rpc_meta).description = "API to send an IPv4 and/or IPv6 ICMP Echo Request(s) between endpoints. For each endpoint 1 ping packet will be sent and API shall wait for ping response to either be successful or timeout. The API wait timeout for each request is 300ms.";
   }
   rpc GetResults(GetResultsRequest) returns (GetResultsResponse) {
     option (rpc_meta).description = "Request flow metrics or flow convergence measurements.";
