@@ -1830,7 +1830,7 @@
                     "overwrite": {
                         "description": "Overwrite the capture buffer.",
                         "type": "boolean",
-                        "default": false
+                        "default": true
                     },
                     "packet_size": {
                         "description": "The maximum size of each captured packet. If no value is specified or it is null then the entire packet will be captured.",
@@ -2991,30 +2991,35 @@
                         "description": "Packets per second.",
                         "type": "integer",
                         "format": "int64",
+                        "minimum": 1,
                         "default": 1000
                     },
                     "bps": {
                         "description": "Bits per second.",
                         "type": "integer",
                         "format": "int64",
+                        "minimum": 672,
                         "default": 1000000000
                     },
                     "kbps": {
                         "description": "Kilobits per second.",
                         "type": "integer",
                         "format": "int64",
+                        "minimum": 1,
                         "default": 1000000
                     },
                     "mbps": {
                         "description": "Megabits per second. ",
                         "type": "integer",
                         "format": "int64",
+                        "minimum": 1,
                         "default": 1000
                     },
                     "gbps": {
                         "description": "Gigabits per second.",
                         "type": "integer",
                         "format": "int32",
+                        "minimum": 1,
                         "default": 1
                     },
                     "percentage": {
@@ -3537,6 +3542,111 @@
                             "withdraw",
                             "advertise"
                         ]
+                    }
+                }
+            },
+            "Ping.Request": {
+                "description": "Ping request details",
+                "type": "object",
+                "properties": {
+                    "endpoints": {
+                        "description": "Array of ping requests",
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Ping"
+                        }
+                    }
+                }
+            },
+            "Ping": {
+                "type": "object",
+                "properties": {
+                    "choice": {
+                        "description": "IPv4 or IPv6 ping.",
+                        "type": "string",
+                        "enum": [
+                            "ipv4",
+                            "ipv6"
+                        ],
+                        "default": "ipv4"
+                    },
+                    "ipv4": {
+                        "$ref": "#/components/schemas/Ping.Ipv4"
+                    },
+                    "ipv6": {
+                        "$ref": "#/components/schemas/Ping.Ipv6"
+                    }
+                }
+            },
+            "Ping.Ipv4": {
+                "type": "object",
+                "properties": {
+                    "src_name": {
+                        "description": "A base IPv4 interface\n\nx-constraint:\n- /components/schemas/Device.Ipv4Base/properties/name\n",
+                        "type": "string",
+                        "x-constraint": [
+                            "/components/schemas/Device.Ipv4Base/properties/name"
+                        ]
+                    },
+                    "dst_ip": {
+                        "description": "IPv4 address to ping",
+                        "type": "string",
+                        "format": "ipv4"
+                    }
+                }
+            },
+            "Ping.Ipv6": {
+                "type": "object",
+                "properties": {
+                    "src_name": {
+                        "description": "A base IPv6 interface\n\nx-constraint:\n- /components/schemas/Device.Ipv6Base/properties/name\n",
+                        "type": "string",
+                        "x-constraint": [
+                            "/components/schemas/Device.Ipv6Base/properties/name"
+                        ]
+                    },
+                    "dst_ip": {
+                        "description": "IPv6 addresses to ping.",
+                        "type": "string",
+                        "format": "ipv6"
+                    }
+                }
+            },
+            "Ping.Response": {
+                "description": "A container for ping responses.",
+                "type": "object",
+                "properties": {
+                    "responses": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Response"
+                        }
+                    }
+                }
+            },
+            "Response": {
+                "type": "object",
+                "properties": {
+                    "src_name": {
+                        "description": "The name of the source IPv4 or IPv6 interface from which ping was sent.\n\nx-constraint:\n- /components/schemas/Device.Ipv4Base/properties/name\n- /components/schemas/Device.Ipv6Base/properties/name\n",
+                        "type": "string",
+                        "x-constraint": [
+                            "/components/schemas/Device.Ipv4Base/properties/name",
+                            "/components/schemas/Device.Ipv6Base/properties/name"
+                        ]
+                    },
+                    "dst_ip": {
+                        "description": "Destination address.",
+                        "type": "string"
+                    },
+                    "result": {
+                        "description": "Result of the ping request.",
+                        "type": "string",
+                        "enum": [
+                            "success",
+                            "failure"
+                        ],
+                        "default": "failure"
                     }
                 }
             },

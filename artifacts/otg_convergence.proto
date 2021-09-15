@@ -1475,7 +1475,7 @@ message Capture {
   ];
 
   optional bool overwrite = 3 [
-    (fld_meta).default = "False",
+    (fld_meta).default = "True",
     (fld_meta).description = "Overwrite the capture buffer."
   ];
 
@@ -3191,6 +3191,94 @@ message RouteState {
   }
   State.Enum state = 2 [
     (fld_meta).description = "Route specific states"
+  ];
+}
+
+message PingRequest {
+  option (msg_meta).description = "Ping request details";
+
+  repeated Ping endpoints = 1 [
+    (fld_meta).description = "Array of ping requests"
+  ];
+}
+
+message Ping {
+  option (msg_meta).description = "Description missing in models";
+
+  message Choice {
+    enum Enum {
+      unspecified = 0;
+      ipv4 = 1;
+      ipv6 = 2;
+    }
+  }
+  optional Choice.Enum choice = 1 [
+    (fld_meta).default = "Choice.Enum.ipv4",
+    (fld_meta).description = "IPv4 or IPv6 ping."
+  ];
+
+  optional PingIpv4 ipv4 = 2 [
+    (fld_meta).description = "Description missing in models"
+  ];
+
+  optional PingIpv6 ipv6 = 3 [
+    (fld_meta).description = "Description missing in models"
+  ];
+}
+
+message PingIpv4 {
+  option (msg_meta).description = "Description missing in models";
+
+  optional string src_name = 1 [
+    (fld_meta).description = "A base IPv4 interface\n\nx-constraint:\n- /components/schemas/Device.Ipv4Base/properties/name\n"
+  ];
+
+  optional string dst_ip = 2 [
+    (fld_meta).description = "IPv4 address to ping"
+  ];
+}
+
+message PingIpv6 {
+  option (msg_meta).description = "Description missing in models";
+
+  optional string src_name = 1 [
+    (fld_meta).description = "A base IPv6 interface\n\nx-constraint:\n- /components/schemas/Device.Ipv6Base/properties/name\n"
+  ];
+
+  optional string dst_ip = 2 [
+    (fld_meta).description = "IPv6 addresses to ping."
+  ];
+}
+
+message PingResponse {
+  option (msg_meta).description = "A container for ping responses.";
+
+  repeated Response responses = 1 [
+    (fld_meta).description = "Description missing in models"
+  ];
+}
+
+message Response {
+  option (msg_meta).description = "Description missing in models";
+
+  optional string src_name = 1 [
+    (fld_meta).description = "The name of the source IPv4 or IPv6 interface from which ping was sent.\n\nx-constraint:\n- /components/schemas/Device.Ipv4Base/properties/name\n- /components/schemas/Device.Ipv6Base/properties/name\n"
+  ];
+
+  optional string dst_ip = 2 [
+    (fld_meta).description = "Destination address."
+  ];
+
+  message Result {
+    enum Enum {
+      unspecified = 0;
+      success = 1;
+      failure = 2;
+    }
+  }
+  optional Result.Enum result = 3 [
+    (fld_meta).default = "Result.Enum.failure",
+    (fld_meta).description = "Result of the ping request."
   ];
 }
 
