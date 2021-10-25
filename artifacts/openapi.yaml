@@ -4504,6 +4504,7 @@ components:
           - transmit
           - link
           - route
+          - protocol
           default: transmit
         transmit:
           $ref: '#/components/schemas/Transmit.State'
@@ -4511,6 +4512,8 @@ components:
           $ref: '#/components/schemas/Link.State'
         route:
           $ref: '#/components/schemas/Route.State'
+        protocol:
+          $ref: '#/components/schemas/Protocol.State'
     Link.State:
       description: |-
         Port link state.

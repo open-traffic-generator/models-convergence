@@ -4219,6 +4219,7 @@ message ConvergenceState {
       transmit = 1;
       link = 2;
       route = 3;
+      protocol = 4;
     }
   }
   optional Choice.Enum choice = 1 [
@@ -4235,6 +4236,10 @@ message ConvergenceState {
   ];
 
   optional RouteState route = 4 [
+    (fld_meta).description = "Description missing in models"
+  ];
+
+  optional ProtocolState protocol = 5 [
     (fld_meta).description = "Description missing in models"
   ];
 }

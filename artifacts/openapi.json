@@ -4971,7 +4971,8 @@
                         "enum": [
                             "transmit",
                             "link",
-                            "route"
+                            "route",
+                            "protocol"
                         ],
                         "default": "transmit"
                     },
@@ -4983,6 +4984,9 @@
                     },
                     "route": {
                         "$ref": "#/components/schemas/Route.State"
+                    },
+                    "protocol": {
+                        "$ref": "#/components/schemas/Protocol.State"
                     }
                 }
             },
