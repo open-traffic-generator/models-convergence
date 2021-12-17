@@ -573,7 +573,6 @@ components:
             The IPv6 gateway address.
           type: string
           format: ipv6
-          default: ::0
         address:
           description: |-
             The IPv6 address.
@@ -646,6 +645,7 @@ components:
           - speed_10_gbps
           - speed_25_gbps
           - speed_40_gbps
+          - speed_50_gbps
           - speed_100_gbps
           - speed_200_gbps
           - speed_400_gbps
@@ -667,18 +667,18 @@ components:
           description: |-
             Set the maximum transmission unit size if supported.
           type: integer
+          minimum: 64
+          maximum: 9000
           default: 1500
         ieee_media_defaults:
           description: |-
             Set to true to override the auto_negotiate, link_training
             and rs_fec settings for gigabit ethernet interfaces.
           type: boolean
-          default: true
         auto_negotiate:
           description: |-
             Enable/disable auto negotiation.
           type: boolean
-          default: true
         auto_negotiation:
           $ref: '#/components/schemas/Layer1.AutoNegotiation'
         flow_control:
@@ -1382,14 +1382,14 @@ components:
           description: |-
             MD5 key to be used for authentication.
           type: string
-          minimum: 0
-          maximum: 255
+          minLength: 0
+          maxLength: 255
         password:
           description: |-
             The password, in clear text, to be used for Authentication.
           type: string
-          minimum: 0
-          maximum: 255
+          minLength: 0
+          maxLength: 255
     IsisInterface.Advanced:
       description: |-
         Optional container for advanced interface properties.
@@ -1414,6 +1414,11 @@ components:
             \ router \nare changed to match exactly."
           type: boolean
           default: false
+        enable_3way_handshake:
+          description: |-
+            If it is true, the Point-to-Point circuit will include 3-way TLV in its Point-to-Point IIH  and attempt to establish the adjacency as specified in RFC 5303. This field is not applicable if network_type is set to 'broadcast' type in ISIS interface.
+          type: boolean
+          default: true
     IsisInterface.LinkProtection:
       description: |-
         Optional container for the link protection sub TLV (type 20).
@@ -1476,6 +1481,11 @@ components:
           description: |-
             Host name for the router. The host name is transmitted in all the packets sent from the router.
           type: string
+        enable_wide_metric:
+          description: |-
+            When set to true, it allows sending of more detailed metric information  for the routes using 32-bit wide values using TLV 135 IP reachability and  more detailed reachability information for IS reachability by using TLV 22.  The detailed usage is described in RFC3784.
+          type: boolean
+          default: true
     Isis.Advanced:
       description: |-
         Contains ISIS router advanced properties.
@@ -1542,6 +1552,11 @@ components:
           minimum: 1
           maximum: 60000
           default: 5000
+        enable_attached_bit:
+          description: |-
+            If the Attached bit is enabled, it indicates that the ISIS router is attached to another area  or the Level 2 backbone. The purpose of an Attached-Bit is to accomplish Inter-Area Routing.  When an L1/L2 router is connected to more than one area, it sets the Attached-bit on its L1 LSP. This can cause a default route ( 0.0.0.0/0 ) to be installed by the receiving router.
+          type: boolean
+          default: true
     Isis.Authentication:
       description: |-
         This contains ISIS Area/Domain authentication properties.
@@ -1580,14 +1595,14 @@ components:
           description: |-
             Authentication as an MD5 key.
           type: string
-          minimum: 0
-          maximum: 255
+          minLength: 0
+          maxLength: 255
         password:
           description: |-
             Authentication as a clear text password.
           type: string
-          minimum: 0
-          maximum: 255
+          minLength: 0
+          maxLength: 255
     Isis.V4RouteRange:
       description: |-
         Emulated ISIS IPv4 routes.
@@ -2582,8 +2597,8 @@ components:
           description: |-
             Symbolic name for the policy that should be a string of printable ASCII characters, without a NULL terminator.
           type: string
-          minimum: 1
-          maximum: 32
+          minLength: 1
+          maxLength: 32
     BgpSrte.ExplicitNullLabelPolicySubTlv:
       description: |-
         Configuration for BGP explicit null label policy sub TLV settings.
@@ -4161,6 +4176,9 @@ components:
           description: |-
             The percentage of a port location's available bandwidth.
           type: number
+          format: float
+          minimum: 0
+          maximum: 100
           default: 100
     Flow.Duration:
       description: "A container for different transmit durations. "
@@ -4192,6 +4210,7 @@ components:
           description: |-
             The minimum gap between packets expressed as bytes.
           type: integer
+          minimum: 0
           default: 12
         delay:
           $ref: '#/components/schemas/Flow.Delay'
@@ -4213,6 +4232,7 @@ components:
             A value of 0 indicates no delay.
           type: number
           format: float
+          minimum: 0
           default: 0
         nanoseconds:
           description: |-
@@ -4220,6 +4240,7 @@ components:
             A value of 0 indicates no delay.
           type: number
           format: float
+          minimum: 0
           default: 0
         microseconds:
           description: |-
@@ -4227,6 +4248,7 @@ components:
             A value of 0 indicates no delay.
           type: number
           format: float
+          minimum: 0
           default: 0
     Flow.FixedPackets:
       description: |-
@@ -4237,11 +4259,13 @@ components:
           description: |-
             Stop transmit of the flow after this number of packets.
           type: integer
+          minimum: 1
           default: 1
         gap:
           description: |-
             The minimum gap between packets expressed as bytes.
           type: integer
+          minimum: 0
           default: 12
         delay:
           $ref: '#/components/schemas/Flow.Delay'
@@ -4254,11 +4278,13 @@ components:
           description: |-
             Stop transmit of the flow after this number of seconds.
           type: number
+          minimum: 0
           default: 1
         gap:
           description: |-
             The minimum gap between packets expressed as bytes.
           type: integer
+          minimum: 0
           default: 12
         delay:
           $ref: '#/components/schemas/Flow.Delay'
@@ -4273,16 +4299,19 @@ components:
             The number of packet bursts transmitted per flow.
             A value of 0 implies continuous burst of packets.
           type: integer
+          minimum: 0
           default: 0
         packets:
           description: |-
             The number of packets transmitted per burst.
           type: integer
           minimum: 1
+          default: 1
         gap:
           description: |-
             The minimum gap between packets expressed as bytes.
           type: integer
+          minimum: 0
           default: 12
         inter_burst_gap:
           $ref: '#/components/schemas/Flow.Duration.InterBurstGap'
@@ -4306,6 +4335,7 @@ components:
             A value of 0 indicates no gap between bursts.
           type: number
           format: double
+          minimum: 0
           default: 12
         nanoseconds:
           description: |-
@@ -4313,6 +4343,7 @@ components:
             A value of 0 indicates no gap between bursts.
           type: number
           format: double
+          minimum: 0
           default: 96
         microseconds:
           description: |-
@@ -4320,6 +4351,7 @@ components:
             A value of 0 indicates no gap between bursts.
           type: number
           format: double
+          minimum: 0
           default: 0.096
     Flow.Metrics:
       description: |-
@@ -4565,7 +4597,6 @@ components:
           - start
           - stop
           - pause
-          default: start
     Capture.State:
       description: |-
         Control port capture state
@@ -4896,18 +4927,26 @@ components:
           description: |-
             The current total number of frames transmitted
           type: integer
+          format: int64
+          minimum: 0
         frames_rx:
           description: |-
             The current total number of valid frames received
           type: integer
+          format: int64
+          minimum: 0
         bytes_tx:
           description: |-
             The current total number of bytes transmitted
           type: integer
+          format: int64
+          minimum: 0
         bytes_rx:
           description: |-
             The current total number of bytes received
           type: integer
+          format: int64
+          minimum: 0
         frames_tx_rate:
           description: |-
             The current rate of frames transmitted
@@ -12381,7 +12420,7 @@ components:
       properties:
         start:
           type: integer
-          default: 17
+          default: 1
           minimum: 0
           maximum: 15
         step:
@@ -12393,8 +12432,8 @@ components:
           type: integer
           default: 1
       x-constants:
-        query: 17
-        report: 18
+        query: 1
+        report: 2
     Pattern.Flow.Igmpv1.Type:
       description: |-
         Type of message
@@ -12410,7 +12449,7 @@ components:
           default: value
         value:
           type: integer
-          default: 17
+          default: 1
           minimum: 0
           maximum: 15
         values:
@@ -12418,7 +12457,7 @@ components:
           items:
             type: integer
           default:
-          - 17
+          - 1
           minimum: 0
           maximum: 15
         metric_group:
@@ -12430,8 +12469,8 @@ components:
         decrement:
           $ref: '#/components/schemas/Pattern.Flow.Igmpv1.Type.Counter'
       x-constants:
-        query: 17
-        report: 18
+        query: 1
+        report: 2
     Pattern.Flow.Igmpv1.Unused.Counter:
       description: |-
         integer counter pattern
@@ -12522,14 +12561,10 @@ components:
           type: string
           default: 0.0.0.0
           format: ipv4
-          minimum: 0
-          maximum: 4294967295
         step:
           type: string
           default: 0.0.0.1
           format: ipv4
-          minimum: 0
-          maximum: 4294967295
         count:
           type: integer
           default: 1
@@ -12550,8 +12585,6 @@ components:
           type: string
           default: 0.0.0.0
           format: ipv4
-          minimum: 0
-          maximum: 4294967295
         values:
           type: array
           items:
@@ -12559,8 +12592,6 @@ components:
           default:
           - 0.0.0.0
           format: ipv4
-          minimum: 0
-          maximum: 4294967295
         metric_group:
           description: |-
             A unique name is used to indicate to the system that the field may extend the metric row key and create an aggregate metric row for every unique value. To have metric group columns appear in the flow metric rows the flow metric request allows for the metric_group value to be specified as part of the request.

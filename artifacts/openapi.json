@@ -657,8 +657,7 @@
                     "gateway": {
                         "description": "The IPv6 gateway address.",
                         "type": "string",
-                        "format": "ipv6",
-                        "default": "::0"
+                        "format": "ipv6"
                     },
                     "address": {
                         "description": "The IPv6 address.",
@@ -738,6 +737,7 @@
                             "speed_10_gbps",
                             "speed_25_gbps",
                             "speed_40_gbps",
+                            "speed_50_gbps",
                             "speed_100_gbps",
                             "speed_200_gbps",
                             "speed_400_gbps"
@@ -761,17 +761,17 @@
                     "mtu": {
                         "description": "Set the maximum transmission unit size if supported.",
                         "type": "integer",
+                        "minimum": 64,
+                        "maximum": 9000,
                         "default": 1500
                     },
                     "ieee_media_defaults": {
                         "description": "Set to true to override the auto_negotiate, link_training\nand rs_fec settings for gigabit ethernet interfaces.",
-                        "type": "boolean",
-                        "default": true
+                        "type": "boolean"
                     },
                     "auto_negotiate": {
                         "description": "Enable/disable auto negotiation.",
-                        "type": "boolean",
-                        "default": true
+                        "type": "boolean"
                     },
                     "auto_negotiation": {
                         "$ref": "#/components/schemas/Layer1.AutoNegotiation"
@@ -1538,14 +1538,14 @@
                     "md5": {
                         "description": "MD5 key to be used for authentication.",
                         "type": "string",
-                        "minimum": 0,
-                        "maximum": 255
+                        "minLength": 0,
+                        "maxLength": 255
                     },
                     "password": {
                         "description": "The password, in clear text, to be used for Authentication.",
                         "type": "string",
-                        "minimum": 0,
-                        "maximum": 255
+                        "minLength": 0,
+                        "maxLength": 255
                     }
                 }
             },
@@ -1567,6 +1567,11 @@
                         "description": "If a Hello message listing supported protocols is received on this \nemulated router, the supported protocols advertised by this router \nare changed to match exactly.",
                         "type": "boolean",
                         "default": false
+                    },
+                    "enable_3way_handshake": {
+                        "description": "If it is true, the Point-to-Point circuit will include 3-way TLV in its Point-to-Point IIH  and attempt to establish the adjacency as specified in RFC 5303. This field is not applicable if network_type is set to 'broadcast' type in ISIS interface.",
+                        "type": "boolean",
+                        "default": true
                     }
                 }
             },
@@ -1628,6 +1633,11 @@
                     "hostname": {
                         "description": "Host name for the router. The host name is transmitted in all the packets sent from the router.",
                         "type": "string"
+                    },
+                    "enable_wide_metric": {
+                        "description": "When set to true, it allows sending of more detailed metric information  for the routes using 32-bit wide values using TLV 135 IP reachability and  more detailed reachability information for IS reachability by using TLV 22.  The detailed usage is described in RFC3784.",
+                        "type": "boolean",
+                        "default": true
                     }
                 }
             },
@@ -1696,6 +1706,11 @@
                         "minimum": 1,
                         "maximum": 60000,
                         "default": 5000
+                    },
+                    "enable_attached_bit": {
+                        "description": "If the Attached bit is enabled, it indicates that the ISIS router is attached to another area  or the Level 2 backbone. The purpose of an Attached-Bit is to accomplish Inter-Area Routing.  When an L1/L2 router is connected to more than one area, it sets the Attached-bit on its L1 LSP. This can cause a default route ( 0.0.0.0/0 ) to be installed by the receiving router.",
+                        "type": "boolean",
+                        "default": true
                     }
                 }
             },
@@ -1736,14 +1751,14 @@
                     "md5": {
                         "description": "Authentication as an MD5 key.",
                         "type": "string",
-                        "minimum": 0,
-                        "maximum": 255
+                        "minLength": 0,
+                        "maxLength": 255
                     },
                     "password": {
                         "description": "Authentication as a clear text password.",
                         "type": "string",
-                        "minimum": 0,
-                        "maximum": 255
+                        "minLength": 0,
+                        "maxLength": 255
                     }
                 }
             },
@@ -2782,8 +2797,8 @@
                     "policy_name": {
                         "description": "Symbolic name for the policy that should be a string of printable ASCII characters, without a NULL terminator.",
                         "type": "string",
-                        "minimum": 1,
-                        "maximum": 32
+                        "minLength": 1,
+                        "maxLength": 32
                     }
                 }
             },
@@ -4605,6 +4620,9 @@
                     "percentage": {
                         "description": "The percentage of a port location's available bandwidth.",
                         "type": "number",
+                        "format": "float",
+                        "minimum": 0,
+                        "maximum": 100,
                         "default": 100
                     }
                 }
@@ -4645,6 +4663,7 @@
                     "gap": {
                         "description": "The minimum gap between packets expressed as bytes.",
                         "type": "integer",
+                        "minimum": 0,
                         "default": 12
                     },
                     "delay": {
@@ -4669,18 +4688,21 @@
                         "description": "The delay before starting transmission of packets.\nA value of 0 indicates no delay.",
                         "type": "number",
                         "format": "float",
+                        "minimum": 0,
                         "default": 0
                     },
                     "nanoseconds": {
                         "description": "The delay before starting transmission of packets.\nA value of 0 indicates no delay.",
                         "type": "number",
                         "format": "float",
+                        "minimum": 0,
                         "default": 0
                     },
                     "microseconds": {
                         "description": "The delay before starting transmission of packets.\nA value of 0 indicates no delay.",
                         "type": "number",
                         "format": "float",
+                        "minimum": 0,
                         "default": 0
                     }
                 }
@@ -4692,11 +4714,13 @@
                     "packets": {
                         "description": "Stop transmit of the flow after this number of packets.",
                         "type": "integer",
+                        "minimum": 1,
                         "default": 1
                     },
                     "gap": {
                         "description": "The minimum gap between packets expressed as bytes.",
                         "type": "integer",
+                        "minimum": 0,
                         "default": 12
                     },
                     "delay": {
@@ -4711,11 +4735,13 @@
                     "seconds": {
                         "description": "Stop transmit of the flow after this number of seconds.",
                         "type": "number",
+                        "minimum": 0,
                         "default": 1
                     },
                     "gap": {
                         "description": "The minimum gap between packets expressed as bytes.",
                         "type": "integer",
+                        "minimum": 0,
                         "default": 12
                     },
                     "delay": {
@@ -4730,16 +4756,19 @@
                     "bursts": {
                         "description": "The number of packet bursts transmitted per flow.\nA value of 0 implies continuous burst of packets.",
                         "type": "integer",
+                        "minimum": 0,
                         "default": 0
                     },
                     "packets": {
                         "description": "The number of packets transmitted per burst.",
                         "type": "integer",
-                        "minimum": 1
+                        "minimum": 1,
+                        "default": 1
                     },
                     "gap": {
                         "description": "The minimum gap between packets expressed as bytes.",
                         "type": "integer",
+                        "minimum": 0,
                         "default": 12
                     },
                     "inter_burst_gap": {
@@ -4765,18 +4794,21 @@
                         "description": "The amount of time between bursts expressed in bytes.\nA value of 0 indicates no gap between bursts.",
                         "type": "number",
                         "format": "double",
+                        "minimum": 0,
                         "default": 12
                     },
                     "nanoseconds": {
                         "description": "The amount of time between bursts expressed in nanoseconds.\nA value of 0 indicates no gap between bursts.",
                         "type": "number",
                         "format": "double",
+                        "minimum": 0,
                         "default": 96
                     },
                     "microseconds": {
                         "description": "The amount of time between bursts expressed in microseconds.\nA value of 0 indicates no gap between bursts.",
                         "type": "number",
                         "format": "double",
+                        "minimum": 0,
                         "default": 0.096
                     }
                 }
@@ -5041,8 +5073,7 @@
                             "start",
                             "stop",
                             "pause"
-                        ],
-                        "default": "start"
+                        ]
                     }
                 }
             },
@@ -5406,19 +5437,27 @@
                     },
                     "frames_tx": {
                         "description": "The current total number of frames transmitted",
-                        "type": "integer"
+                        "type": "integer",
+                        "format": "int64",
+                        "minimum": 0
                     },
                     "frames_rx": {
                         "description": "The current total number of valid frames received",
-                        "type": "integer"
+                        "type": "integer",
+                        "format": "int64",
+                        "minimum": 0
                     },
                     "bytes_tx": {
                         "description": "The current total number of bytes transmitted",
-                        "type": "integer"
+                        "type": "integer",
+                        "format": "int64",
+                        "minimum": 0
                     },
                     "bytes_rx": {
                         "description": "The current total number of bytes received",
-                        "type": "integer"
+                        "type": "integer",
+                        "format": "int64",
+                        "minimum": 0
                     },
                     "frames_tx_rate": {
                         "description": "The current rate of frames transmitted",
@@ -14675,7 +14714,7 @@
                 "properties": {
                     "start": {
                         "type": "integer",
-                        "default": 17,
+                        "default": 1,
                         "minimum": 0,
                         "maximum": 15
                     },
@@ -14691,8 +14730,8 @@
                     }
                 },
                 "x-constants": {
-                    "query": 17,
-                    "report": 18
+                    "query": 1,
+                    "report": 2
                 }
             },
             "Pattern.Flow.Igmpv1.Type": {
@@ -14711,7 +14750,7 @@
                     },
                     "value": {
                         "type": "integer",
-                        "default": 17,
+                        "default": 1,
                         "minimum": 0,
                         "maximum": 15
                     },
@@ -14721,7 +14760,7 @@
                             "type": "integer"
                         },
                         "default": [
-                            17
+                            1
                         ],
                         "minimum": 0,
                         "maximum": 15
@@ -14738,8 +14777,8 @@
                     }
                 },
                 "x-constants": {
-                    "query": 17,
-                    "report": 18
+                    "query": 1,
+                    "report": 2
                 }
             },
             "Pattern.Flow.Igmpv1.Unused.Counter": {
@@ -14847,16 +14886,12 @@
                     "start": {
                         "type": "string",
                         "default": "0.0.0.0",
-                        "format": "ipv4",
-                        "minimum": 0,
-                        "maximum": 4294967295
+                        "format": "ipv4"
                     },
                     "step": {
                         "type": "string",
                         "default": "0.0.0.1",
-                        "format": "ipv4",
-                        "minimum": 0,
-                        "maximum": 4294967295
+                        "format": "ipv4"
                     },
                     "count": {
                         "type": "integer",
@@ -14881,9 +14916,7 @@
                     "value": {
                         "type": "string",
                         "default": "0.0.0.0",
-                        "format": "ipv4",
-                        "minimum": 0,
-                        "maximum": 4294967295
+                        "format": "ipv4"
                     },
                     "values": {
                         "type": "array",
@@ -14893,9 +14926,7 @@
                         "default": [
                             "0.0.0.0"
                         ],
-                        "format": "ipv4",
-                        "minimum": 0,
-                        "maximum": 4294967295
+                        "format": "ipv4"
                     },
                     "metric_group": {
                         "description": "A unique name is used to indicate to the system that the field may extend the metric row key and create an aggregate metric row for every unique value. To have metric group columns appear in the flow metric rows the flow metric request allows for the metric_group value to be specified as part of the request.",
