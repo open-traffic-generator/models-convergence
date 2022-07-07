@@ -121,13 +121,22 @@ message PortOptions {
 }
 
 message Lag {
-  option (msg_meta).description = "The container for multiple LAG ports";
+  option (msg_meta).description = "The container for LAG (ports group) - aggregation of multiple LAG members (ports)";
 
   repeated LagPort ports = 1 [
     (fld_meta).description = "Description missing in models"
   ];
 
-  string name = 2 [
+  optional LagProtocol protocol = 2 [
+    (fld_meta).description = "Description missing in models"
+  ];
+
+  optional int32 min_links = 3 [
+    (fld_meta).default = "1",
+    (fld_meta).description = "Specifies the mininum number of member interfaces that must be active for the aggregate interface to be available"
+  ];
+
+  string name = 4 [
     (fld_meta).description = "Globally unique name of an object. It also serves as the primary key for arrays of objects."
   ];
 }
@@ -139,7 +148,7 @@ message LagPort {
     (fld_meta).description = "The name of a port object that will be part of the LAG. \n\nx-constraint:\n- /components/schemas/Port/properties/name\n"
   ];
 
-  LagProtocol protocol = 2 [
+  optional LagPortLacp lacp = 2 [
     (fld_meta).description = "Description missing in models"
   ];
 
@@ -160,19 +169,19 @@ message LagProtocol {
   }
   optional Choice.Enum choice = 1 [
     (fld_meta).default = "Choice.Enum.lacp",
-    (fld_meta).description = "The type of LAG protocol."
+    (fld_meta).description = "The type of controlling protocol for the LAG (ports group)."
   ];
 
-  optional LagLacp lacp = 2 [
+  optional LagProtocolLacp lacp = 2 [
     (fld_meta).description = "Description missing in models"
   ];
 
-  optional LagStatic static = 3 [
+  optional LagProtocolStatic static = 3 [
     (fld_meta).description = "Description missing in models"
   ];
 }
 
-message LagStatic {
+message LagProtocolStatic {
   option (msg_meta).description = "The container for static link aggregation protocol settings.";
 
   optional int32 lag_id = 1 [
@@ -181,42 +190,36 @@ message LagStatic {
   ];
 }
 
-message LagLacp {
-  option (msg_meta).description = "The container for link aggregation control protocol settings.";
+message LagProtocolLacp {
+  option (msg_meta).description = "The container for link aggregation control protocol settings of a LAG (ports group).";
 
-  optional int32 actor_key = 1 [
-    (fld_meta).default = "0",
-    (fld_meta).description = "The actor key"
-  ];
-
-  optional int32 actor_port_number = 2 [
-    (fld_meta).default = "0",
-    (fld_meta).description = "The actor port number"
-  ];
-
-  optional int32 actor_port_priority = 3 [
-    (fld_meta).default = "1",
-    (fld_meta).description = "The actor port priority"
-  ];
-
-  optional string actor_system_id = 4 [
+  optional string actor_system_id = 1 [
     (fld_meta).default = "00:00:00:00:00:00",
     (fld_meta).description = "The actor system id"
   ];
 
-  optional int32 actor_system_priority = 5 [
+  optional int32 actor_system_priority = 2 [
     (fld_meta).default = "0",
     (fld_meta).description = "The actor system priority"
   ];
 
-  optional int32 lacpdu_periodic_time_interval = 6 [
+  optional int32 actor_key = 3 [
     (fld_meta).default = "0",
-    (fld_meta).description = "This field defines how frequently LACPDUs are sent to the link partner"
+    (fld_meta).description = "The actor key"
+  ];
+}
+
+message LagPortLacp {
+  option (msg_meta).description = "The container for link aggregation control protocol settings of a LAG member (port).";
+
+  optional int32 actor_port_number = 1 [
+    (fld_meta).default = "0",
+    (fld_meta).description = "The actor port number"
   ];
 
-  optional int32 lacpdu_timeout = 7 [
-    (fld_meta).default = "0",
-    (fld_meta).description = "This timer is used to detect whether received protocol information has expired"
+  optional int32 actor_port_priority = 2 [
+    (fld_meta).default = "1",
+    (fld_meta).description = "The actor port priority"
   ];
 
   message ActorActivity {
@@ -226,9 +229,19 @@ message LagLacp {
       active = 2;
     }
   }
-  optional ActorActivity.Enum actor_activity = 8 [
+  optional ActorActivity.Enum actor_activity = 3 [
     (fld_meta).default = "ActorActivity.Enum.active",
-    (fld_meta).description = "Sets the value of LACP actor activity as either passive or active\nPassive indicates the port's preference for not transmitting  LACPDUs unless its partner's control is Active\nActive indicates the port's preference to participate in the  protocol regardless of the partner's control value"
+    (fld_meta).description = "Sets the value of LACP actor activity as either passive or active.\nPassive indicates the port's preference for not transmitting  LACPDUs unless its partner's control is Active.\nActive indicates the port's preference to participate in the  protocol regardless of the partner's control value."
+  ];
+
+  optional int32 lacpdu_periodic_time_interval = 4 [
+    (fld_meta).default = "0",
+    (fld_meta).description = "This field defines how frequently LACPDUs are sent to the link partner"
+  ];
+
+  optional int32 lacpdu_timeout = 5 [
+    (fld_meta).default = "0",
+    (fld_meta).description = "This timer is used to detect whether received protocol information has expired"
   ];
 }
 
@@ -256,33 +269,65 @@ message DeviceEthernetBase {
 message DeviceEthernet {
   option (msg_meta).description = "An Ethernet interface with IPv4 and IPv6 addresses.\nBase Ethernet interface.";
 
-  string port_name = 1 [
-    (fld_meta).description = "The unique name of a Port or a LAG that will emulate this interface.\n\nx-constraint:\n- /components/schemas/Port/properties/name\n- /components/schemas/Lag/properties/name\n"
+  optional string port_name = 1 [
+    (fld_meta).description = "Status: deprecated\nThe unique name of a Port or a LAG that will emulate this interface.\nport_name is deprecated and will be removed in future release.port_name and connection can't be used together, use either port_name or connection.\n\nx-constraint:\n- /components/schemas/Port/properties/name\n- /components/schemas/Lag/properties/name\n"
   ];
 
-  repeated DeviceIpv4 ipv4_addresses = 2 [
+  optional EthernetConnection connection = 2 [
+    (fld_meta).description = "Device connection to physical, LAG or another device."
+  ];
+
+  repeated DeviceIpv4 ipv4_addresses = 3 [
     (fld_meta).description = "List of IPv4 addresses and their gateways. "
   ];
 
-  repeated DeviceIpv6 ipv6_addresses = 3 [
+  repeated DeviceIpv6 ipv6_addresses = 4 [
     (fld_meta).description = "List of global IPv6 addresses and their gateways.\nThe Link Local IPv6 address will be automatically generated."
   ];
 
-  string mac = 4 [
+  string mac = 5 [
     (fld_meta).description = "Media Access Control address."
   ];
 
-  optional int32 mtu = 5 [
+  optional int32 mtu = 6 [
     (fld_meta).default = "1500",
     (fld_meta).description = "Maximum Transmission Unit."
   ];
 
-  repeated DeviceVlan vlans = 6 [
+  repeated DeviceVlan vlans = 7 [
     (fld_meta).description = "List of VLANs"
   ];
 
-  string name = 7 [
+  string name = 8 [
     (fld_meta).description = "Globally unique name of an object. It also serves as the primary key for arrays of objects."
+  ];
+}
+
+message EthernetConnection {
+  option (msg_meta).description = "Ethernet interface connection to a port, LAG or VXLAN tunnel.";
+
+  message Choice {
+    enum Enum {
+      unspecified = 0;
+      port_name = 1;
+      lag_name = 2;
+      vxlan_name = 3;
+    }
+  }
+  optional Choice.Enum choice = 1 [
+    (fld_meta).description = "port_name, lag_name or vxlan_name"
+  ];
+
+  optional string port_name = 2 [
+    (fld_meta).description = "Name of the port that the Ethernet interface is configured on.\n\nx-constraint:\n- /components/schemas/Port/properties/name\n"
+  ];
+
+  optional string lag_name = 3 [
+    (fld_meta).description = "Name of the LAG that the Ethernet interface is configured on.\n\nx-constraint:\n- /components/schemas/Lag/properties/name\n"
+  ];
+
+  optional string vxlan_name = 4 [
+    (fld_meta).description = "Name of the VXLAN instance (or VXLAN tunnel) that this Ethernet interface is connected to.\n\nx-constraint:\n- #/components/schemas/VXlan.V4Tunnel/properties/name\n- #/components/schemas/VXlan.V6Tunnel/properties/name\n"
   ];
 }
 
@@ -871,7 +916,11 @@ message Device {
     (fld_meta).description = "The properties of BGP router and its children,  such as BGPv4, BGPv6 peers and their route ranges."
   ];
 
-  string name = 6 [
+  optional DeviceVxlan vxlan = 6 [
+    (fld_meta).description = "Configuration of VXLAN tunnel interfaces RFC Ref: https://datatracker.ietf.org/doc/html/rfc7348"
+  ];
+
+  string name = 7 [
     (fld_meta).description = "Globally unique name of an object. It also serves as the primary key for arrays of objects."
   ];
 }
@@ -1153,6 +1202,11 @@ message IsisInterfaceAdvanced {
     (fld_meta).default = "True",
     (fld_meta).description = "If it is true, the Point-to-Point circuit will include 3-way TLV in its Point-to-Point IIH  and attempt to establish the adjacency as specified in RFC 5303. This field is not applicable if network_type is set to 'broadcast' type in ISIS interface."
   ];
+
+  optional bool p2p_hellos_to_unicast_mac = 5 [
+    (fld_meta).default = "False",
+    (fld_meta).description = "If it is true, the Point-to-Point Hello messages will be sent to the unicast MAC address. "
+  ];
 }
 
 message IsisInterfaceLinkProtection {
@@ -1416,6 +1470,29 @@ message V6RouteAddress {
   ];
 }
 
+message MACRouteAddress {
+  option (msg_meta).description = "A container for MAC route addresses.";
+
+  string address = 1 [
+    (fld_meta).description = "The starting address of the MAC Range."
+  ];
+
+  optional int32 prefix = 2 [
+    (fld_meta).default = "48",
+    (fld_meta).description = "The MAC prefix length to be applied to the address. "
+  ];
+
+  optional int32 count = 3 [
+    (fld_meta).default = "1",
+    (fld_meta).description = "The total number of mac addresses in the range."
+  ];
+
+  optional int32 step = 4 [
+    (fld_meta).default = "1",
+    (fld_meta).description = "Increments the mac address prefixes within a mac range  where multiple routes are present.  The value is incremented according to the mac prefix Length and Step."
+  ];
+}
+
 message IsisV6RouteRange {
   option (msg_meta).description = "Emulated ISIS IPv6 routes.\nConfiguration for ISIS route ranges.\nThis contains the properties of ISIS Prefix attributes for  the extended IPv4 and IPv6 reachability. https://www.rfc-editor.org/rfc/rfc7794.html";
 
@@ -1500,6 +1577,10 @@ message BgpV4Peer {
     (fld_meta).description = "IPv4 address of the BGP peer for the session."
   ];
 
+  repeated BgpV4EthernetSegment evpn_ethernet_segments = 2 [
+    (fld_meta).description = "This contains the list of Ethernet Virtual Private Network (EVPN) Ethernet Segments (ES) Per BGP Peer for IPv4 Address Family Identifier (AFI).\n\nEach Ethernet Segment contains a list of EVPN Instances (EVIs) . \nEach EVI contains a list of Broadcast Domains. \nEach Broadcast Domain contains a list of MAC/IP Ranges. \n\n<Ethernet Segment, EVI, Broadcast Domain> is responsible for advertising Ethernet Auto-discovery Route Per EVI (Type 1).\n\n<Ethernet Segment, EVI> is responsible for advertising Ethernet Auto-discovery Route Per Ethernet Segment (Type 1).\n\n<Ethernet Segment, EVI, Broadcast Domain, MAC/IP> is responsible for advertising MAC/IP Advertisement Route (Type 2).\n\n<Ethernet Segment, EVI, Broadcast Domain> is responsible for advertising Inclusive Multicast Ethernet Tag Route (Type 3).\n\nEthernet Segment is responsible for advertising Ethernet Segment Route (Type 4)."
+  ];
+
   message AsType {
     enum Enum {
       unspecified = 0;
@@ -1507,11 +1588,11 @@ message BgpV4Peer {
       ebgp = 2;
     }
   }
-  AsType.Enum as_type = 2 [
+  AsType.Enum as_type = 3 [
     (fld_meta).description = "The type of BGP autonomous system. External BGP is used for BGP links between two or more autonomous systems (ebgp). Internal BGP is used within a single autonomous system (ibgp). BGP property defaults are aligned with this object defined as an internal BGP peer. If the as_type is specified as 'ebgp' then other properties will need to be specified as per an external BGP peer. Specifically, for 'ebgp',  'as_set_mode' attribute in 'as_path' field  in any Route Range should be changed from default value 'do_not_include_local_as' to any other value."
   ];
 
-  int32 as_number = 3 [
+  int32 as_number = 4 [
     (fld_meta).description = "Autonomous System Number (AS number or ASN)"
   ];
 
@@ -1522,36 +1603,40 @@ message BgpV4Peer {
       four = 2;
     }
   }
-  optional AsNumberWidth.Enum as_number_width = 4 [
+  optional AsNumberWidth.Enum as_number_width = 5 [
     (fld_meta).default = "AsNumberWidth.Enum.four",
     (fld_meta).description = "The width in bytes of the as_number values. Any as_number values that exceeds the width MUST result in an error."
   ];
 
-  optional BgpAdvanced advanced = 5 [
+  optional BgpAdvanced advanced = 6 [
     (fld_meta).description = "Description missing in models"
   ];
 
-  optional BgpCapability capability = 6 [
+  optional BgpCapability capability = 7 [
     (fld_meta).description = "Description missing in models"
   ];
 
-  repeated BgpV4RouteRange v4_routes = 7 [
+  optional BgpLearnedInformationFilter learned_information_filter = 8 [
+    (fld_meta).description = "Description missing in models"
+  ];
+
+  repeated BgpV4RouteRange v4_routes = 9 [
     (fld_meta).description = "Emulated BGPv4 route ranges."
   ];
 
-  repeated BgpV6RouteRange v6_routes = 8 [
+  repeated BgpV6RouteRange v6_routes = 10 [
     (fld_meta).description = "Emulated BGPv6 route ranges."
   ];
 
-  repeated BgpSrteV4Policy v4_srte_policies = 9 [
+  repeated BgpSrteV4Policy v4_srte_policies = 11 [
     (fld_meta).description = "Segment Routing Traffic Engineering (SR TE) Policies for IPv4 Address Family Identifier (AFI)."
   ];
 
-  repeated BgpSrteV6Policy v6_srte_policies = 10 [
+  repeated BgpSrteV6Policy v6_srte_policies = 12 [
     (fld_meta).description = "Segment Routing Traffic Engineering (SR TE) Policies for IPv6 Address Family Identifier (AFI)."
   ];
 
-  string name = 11 [
+  string name = 13 [
     (fld_meta).description = "Globally unique name of an object. It also serves as the primary key for arrays of objects."
   ];
 }
@@ -1722,6 +1807,20 @@ message BgpCapability {
   optional bool ipv6_unicast_add_path = 25 [
     (fld_meta).default = "False",
     (fld_meta).description = "Support for IPv6 Unicast Add Path Capability."
+  ];
+}
+
+message BgpLearnedInformationFilter {
+  option (msg_meta).description = "Status: under-review\nConfiguration for controlling storage of BGP learned information recieved from the peer.";
+
+  optional bool unicast_ipv4_prefix = 1 [
+    (fld_meta).default = "False",
+    (fld_meta).description = "If enabled, will store the information related to Unicast IPv4 Prefixes recieved from the peer."
+  ];
+
+  optional bool unicast_ipv6_prefix = 2 [
+    (fld_meta).default = "False",
+    (fld_meta).description = "If enabled, will store the information related to Unicast IPv6 Prefixes recieved from the peer."
   ];
 }
 
@@ -2771,6 +2870,264 @@ message BgpSrteV6TunnelTlv {
   ];
 }
 
+message BgpV4EthernetSegment {
+  option (msg_meta).description = "Configuration for BGP Ethernet Segment ranges. Advertises following routes - \n\nType 4 - Ethernet Segment Route";
+
+  optional BgpEthernetSegmentDfElection df_election = 1 [
+    (fld_meta).description = "Designated Forwarder (DF) election configuration."
+  ];
+
+  repeated BgpV4EvpnEvis evis = 2 [
+    (fld_meta).description = "This contains the list of EVIs."
+  ];
+
+  optional string esi = 3 [
+    (fld_meta).default = "00000000000000000000",
+    (fld_meta).description = "10-octet Ethernet Segment Identifier (ESI) Example - For multi-home scenario nonZero ESI is '10000000000000000000' ."
+  ];
+
+  message ActiveMode {
+    enum Enum {
+      unspecified = 0;
+      single_active = 1;
+      all_active = 2;
+    }
+  }
+  optional ActiveMode.Enum active_mode = 4 [
+    (fld_meta).default = "ActiveMode.Enum.all_active",
+    (fld_meta).description = "Single Active or All Active mode Redundancy mode selection for Multi-home."
+  ];
+
+  optional int32 esi_label = 5 [
+    (fld_meta).default = "0",
+    (fld_meta).description = "The label value to be advertised as ESI Label in ESI Label Extended Community. This is included in Ethernet Auto-discovery per ES Routes advertised by a router. "
+  ];
+
+  optional BgpRouteAdvanced advanced = 6 [
+    (fld_meta).description = "Description missing in models"
+  ];
+
+  repeated BgpCommunity communities = 7 [
+    (fld_meta).description = "Optional community settings."
+  ];
+
+  repeated BgpExtCommunity ext_communities = 8 [
+    (fld_meta).description = "Optional Extended Community settings."
+  ];
+
+  optional BgpAsPath as_path = 9 [
+    (fld_meta).description = "Optional AS PATH settings."
+  ];
+}
+
+message BgpEthernetSegmentDfElection {
+  option (msg_meta).description = "Configuration for Designated Forwarder (DF) election among the Provider Edge (PE) routers on the same Ethernet Segment.";
+
+  optional int32 election_timer = 1 [
+    (fld_meta).default = "3",
+    (fld_meta).description = "The DF election timer in seconds."
+  ];
+}
+
+message BgpV4EvpnEvis {
+  option (msg_meta).description = "This contains a list of different flavors of EVPN. \nFor example EVPN over VXLAN or EVPN over MPLS etc to be configured per Ethernet segment. \nNeed to instantiate correct type of EVPN instance as per requirement.";
+
+  message Choice {
+    enum Enum {
+      unspecified = 0;
+      evi_vxlan = 1;
+    }
+  }
+  optional Choice.Enum choice = 1 [
+    (fld_meta).default = "Choice.Enum.evi_vxlan",
+    (fld_meta).description = "Description missing in models"
+  ];
+
+  optional BgpV4EviVxlan evi_vxlan = 2 [
+    (fld_meta).description = "EVPN VXLAN instance to be configured per Ethernet Segment.                  "
+  ];
+}
+
+message BgpV4EviVxlan {
+  option (msg_meta).description = "Configuration for BGP EVPN EVI. Advertises following routes - \n\nType 3 - Inclusive Multicast Ethernet Tag Route\n\nType 1 -  Ethernet Auto-discovery Route (Per EVI)\n\nType 1 -  Ethernet Auto-discovery Route (Per ES)";
+
+  repeated BgpV4EviVxlanBroadcastDomain broadcast_domains = 1 [
+    (fld_meta).description = "This contains the list of Broadcast Domains to be configured per EVI."
+  ];
+
+  message ReplicationType {
+    enum Enum {
+      unspecified = 0;
+      ingress_replication = 1;
+    }
+  }
+  optional ReplicationType.Enum replication_type = 2 [
+    (fld_meta).default = "ReplicationType.Enum.ingress_replication",
+    (fld_meta).description = "This model only supports Ingress Replication"
+  ];
+
+  optional int32 pmsi_label = 3 [
+    (fld_meta).default = "16",
+    (fld_meta).description = "Downstream assigned VNI to be carried as Part of P-Multicast Service Interface Tunnel attribute (PMSI Tunnel Attribute) in Type 3 Inclusive Multicast Ethernet Tag Route."
+  ];
+
+  optional int32 ad_label = 4 [
+    (fld_meta).default = "0",
+    (fld_meta).description = "The Auto-discovery Route label (AD label) value, which gets advertised in the Ethernet Auto-discovery Route per <EVI, ESI>"
+  ];
+
+  optional BgpRouteDistinguisher route_distinguisher = 5 [
+    (fld_meta).description = "Colon separated Extended Community value of 6 Bytes - AS number: Value identifying an EVI.            Example - for the as_2octet 60005:100."
+  ];
+
+  repeated BgpRouteTarget route_target_export = 6 [
+    (fld_meta).description = "List of Layer 2 Virtual Network Identifier (L2VNI) export targets associated with this EVI. "
+  ];
+
+  repeated BgpRouteTarget route_target_import = 7 [
+    (fld_meta).description = "List of L2VNI import targets associated with this EVI. "
+  ];
+
+  repeated BgpRouteTarget l3_route_target_export = 8 [
+    (fld_meta).description = "List of Layer 3 Virtual Network Identifier (L3VNI) Export Route Targets."
+  ];
+
+  repeated BgpRouteTarget l3_route_target_import = 9 [
+    (fld_meta).description = "List of L3VNI Import Route Targets."
+  ];
+
+  optional BgpRouteAdvanced advanced = 10 [
+    (fld_meta).description = "Description missing in models"
+  ];
+
+  repeated BgpCommunity communities = 11 [
+    (fld_meta).description = "Optional community settings."
+  ];
+
+  repeated BgpExtCommunity ext_communities = 12 [
+    (fld_meta).description = "Optional Extended Community settings."
+  ];
+
+  optional BgpAsPath as_path = 13 [
+    (fld_meta).description = "Optional AS PATH settings."
+  ];
+}
+
+message BgpRouteDistinguisher {
+  option (msg_meta).description = "BGP Route Distinguisher.";
+
+  message RdType {
+    enum Enum {
+      unspecified = 0;
+      as_2octet = 1;
+      ipv4_address = 2;
+      as_4octet = 3;
+    }
+  }
+  optional RdType.Enum rd_type = 1 [
+    (fld_meta).default = "RdType.Enum.as_2octet",
+    (fld_meta).description = "Route Distinguisher Type field of 2 Byte.\n - as_2octet: Two-Octet AS Specific Extended Community (RFC 4360).\n - ipv4_address: IPv4 Address Specific Extended Community (RFC 4360).\n - as_4octet:  4-Octet AS Specific Extended Community (RFC 5668). "
+  ];
+
+  optional bool auto_config_rd_ip_addr = 2 [
+    (fld_meta).default = "False",
+    (fld_meta).description = "Allow to automatically configure RD IP address  from local ip."
+  ];
+
+  optional string rd_value = 3 [
+    (fld_meta).description = "Colon separated Extended Community value of 6 Bytes - AS number: Value.  Example - for the as_2octet or as_4octet 60005:100,  for ipv4_address 1.1.1.1:100"
+  ];
+}
+
+message BgpRouteTarget {
+  option (msg_meta).description = "BGP Route Target.";
+
+  message RtType {
+    enum Enum {
+      unspecified = 0;
+      as_2octet = 1;
+      ipv4_address = 2;
+      as_4octet = 3;
+    }
+  }
+  optional RtType.Enum rt_type = 1 [
+    (fld_meta).description = "Extended Community Type field of 2 Byte.\n - as_2octet: Two-Octet AS Specific Extended Community (RFC 4360).\n - ipv4_address: IPv4 Address Specific Extended Community (RFC 4360).\n - as_4octet:  4-Octet AS Specific Extended Community (RFC 5668). "
+  ];
+
+  optional string rt_value = 2 [
+    (fld_meta).description = "Colon separated Extended Community value of 6 Bytes - AS number: Assigned Number.   Example - for the as_2octet or as_4octet 60005:100,  for ipv4_address 1.1.1.1:100"
+  ];
+}
+
+message BgpV4EviVxlanBroadcastDomain {
+  option (msg_meta).description = "Configuration for Broadcast Domains per EVI.";
+
+  repeated BgpCMacIpRange cmac_ip_range = 1 [
+    (fld_meta).description = "This contains the list of Customer MAC/IP Ranges to be configured per Broadcast Domain. \n\nAdvertises following route - \nType 2 - MAC/IP Advertisement Route."
+  ];
+
+  optional int64 ethernet_tag_id = 2 [
+    (fld_meta).default = "0",
+    (fld_meta).description = "The Ethernet Tag ID of the Broadcast Domain."
+  ];
+
+  optional bool vlan_aware_service = 3 [
+    (fld_meta).default = "False",
+    (fld_meta).description = "VLAN-Aware service to be enabled or disabled."
+  ];
+}
+
+message BgpCMacIpRange {
+  option (msg_meta).description = "Configuration for MAC/IP Ranges per Broadcast Domain. \n\nAdvertises following route -\n\nType 2 - MAC/IP Advertisement Route.";
+
+  optional MACRouteAddress mac_addresses = 1 [
+    (fld_meta).description = "Host MAC address range per Broadcast Domain. "
+  ];
+
+  optional int32 l2vni = 2 [
+    (fld_meta).default = "0",
+    (fld_meta).description = "Layer 2 Virtual Network Identifier (L2VNI) to be advertised with MAC/IP Advertisement Route (Type 2)"
+  ];
+
+  optional V4RouteAddress ipv4_addresses = 3 [
+    (fld_meta).description = "Host IPv4 address range per Broadcast Domain.         "
+  ];
+
+  optional V6RouteAddress ipv6_addresses = 4 [
+    (fld_meta).description = "Host IPv6 address range per Broadcast Domain.                 "
+  ];
+
+  optional int32 l3vni = 5 [
+    (fld_meta).default = "0",
+    (fld_meta).description = "Layer 3 Virtual Network Identifier (L3VNI) to be advertised with MAC/IP Advertisement Route (Type 2)."
+  ];
+
+  optional bool include_default_gateway = 6 [
+    (fld_meta).default = "False",
+    (fld_meta).description = "Include default Gateway Extended Community in MAC/IP Advertisement Route (Type 2)."
+  ];
+
+  optional BgpRouteAdvanced advanced = 7 [
+    (fld_meta).description = "Description missing in models"
+  ];
+
+  repeated BgpCommunity communities = 8 [
+    (fld_meta).description = "Optional community settings."
+  ];
+
+  repeated BgpExtCommunity ext_communities = 9 [
+    (fld_meta).description = "Optional Extended Community settings."
+  ];
+
+  optional BgpAsPath as_path = 10 [
+    (fld_meta).description = "Optional AS PATH settings."
+  ];
+
+  string name = 11 [
+    (fld_meta).description = "Globally unique name of an object. It also serves as the primary key for arrays of objects."
+  ];
+}
+
 message BgpV6Peer {
   option (msg_meta).description = "Status: under-review\nConfiguration for BGPv6 peer settings and routes.\nConfiguration for basic emulated BGP peer settings.";
 
@@ -2782,6 +3139,10 @@ message BgpV6Peer {
     (fld_meta).description = "Description missing in models"
   ];
 
+  repeated BgpV6EthernetSegment evpn_ethernet_segments = 3 [
+    (fld_meta).description = "This contains the list of Ethernet Virtual Private Network (EVPN) Ethernet Segments (ES) Per BGP Peer for IPv6 Address Family Identifier (AFI).\n\nEach Ethernet Segment contains a list of EVPN Instances (EVIs) . \nEach EVI contains a list of Broadcast Domains. \nEach Broadcast Domain contains a list of MAC/IP Ranges. \n\n<Ethernet Segment, EVI, Broadcast Domain> is responsible for advertising Ethernet Auto-discovery Route Per EVI (Type 1).\n\n<Ethernet Segment, EVI> is responsible for advertising Ethernet Auto-discovery Route Per Ethernet Segment (Type 1).\n\n<Ethernet Segment, EVI, Broadcast Domain, MAC/IP> is responsible for advertising MAC/IP Advertisement Route (Type 2).\n\n<Ethernet Segment, EVI, Broadcast Domain> is responsible for advertising Inclusive Multicast Ethernet Tag Route (Type 3).\n\nEthernet Segment is responsible for advertising Ethernet Segment Route (Type 4)."
+  ];
+
   message AsType {
     enum Enum {
       unspecified = 0;
@@ -2789,11 +3150,11 @@ message BgpV6Peer {
       ebgp = 2;
     }
   }
-  AsType.Enum as_type = 3 [
+  AsType.Enum as_type = 4 [
     (fld_meta).description = "The type of BGP autonomous system. External BGP is used for BGP links between two or more autonomous systems (ebgp). Internal BGP is used within a single autonomous system (ibgp). BGP property defaults are aligned with this object defined as an internal BGP peer. If the as_type is specified as 'ebgp' then other properties will need to be specified as per an external BGP peer. Specifically, for 'ebgp',  'as_set_mode' attribute in 'as_path' field  in any Route Range should be changed from default value 'do_not_include_local_as' to any other value."
   ];
 
-  int32 as_number = 4 [
+  int32 as_number = 5 [
     (fld_meta).description = "Autonomous System Number (AS number or ASN)"
   ];
 
@@ -2804,36 +3165,40 @@ message BgpV6Peer {
       four = 2;
     }
   }
-  optional AsNumberWidth.Enum as_number_width = 5 [
+  optional AsNumberWidth.Enum as_number_width = 6 [
     (fld_meta).default = "AsNumberWidth.Enum.four",
     (fld_meta).description = "The width in bytes of the as_number values. Any as_number values that exceeds the width MUST result in an error."
   ];
 
-  optional BgpAdvanced advanced = 6 [
+  optional BgpAdvanced advanced = 7 [
     (fld_meta).description = "Description missing in models"
   ];
 
-  optional BgpCapability capability = 7 [
+  optional BgpCapability capability = 8 [
     (fld_meta).description = "Description missing in models"
   ];
 
-  repeated BgpV4RouteRange v4_routes = 8 [
+  optional BgpLearnedInformationFilter learned_information_filter = 9 [
+    (fld_meta).description = "Description missing in models"
+  ];
+
+  repeated BgpV4RouteRange v4_routes = 10 [
     (fld_meta).description = "Emulated BGPv4 route ranges."
   ];
 
-  repeated BgpV6RouteRange v6_routes = 9 [
+  repeated BgpV6RouteRange v6_routes = 11 [
     (fld_meta).description = "Emulated BGPv6 route ranges."
   ];
 
-  repeated BgpSrteV4Policy v4_srte_policies = 10 [
+  repeated BgpSrteV4Policy v4_srte_policies = 12 [
     (fld_meta).description = "Segment Routing Traffic Engineering (SR TE) Policies for IPv4 Address Family Identifier (AFI)."
   ];
 
-  repeated BgpSrteV6Policy v6_srte_policies = 11 [
+  repeated BgpSrteV6Policy v6_srte_policies = 13 [
     (fld_meta).description = "Segment Routing Traffic Engineering (SR TE) Policies for IPv6 Address Family Identifier (AFI)."
   ];
 
-  string name = 12 [
+  string name = 14 [
     (fld_meta).description = "Globally unique name of an object. It also serves as the primary key for arrays of objects."
   ];
 }
@@ -2891,6 +3256,326 @@ message BgpV6SegmentRouting {
   optional bool advertise_sr_te_policy = 8 [
     (fld_meta).default = "False",
     (fld_meta).description = "TBD"
+  ];
+}
+
+message BgpV6EthernetSegment {
+  option (msg_meta).description = "Configuration for BGP Ethernet Segment ranges. Advertises following routes -\n\nType 4 - Ethernet Segment Route";
+
+  optional BgpEthernetSegmentDfElection df_election = 1 [
+    (fld_meta).description = "Designated Forwarder (DF) election configuration."
+  ];
+
+  repeated BgpV6EvpnEvis evis = 2 [
+    (fld_meta).description = "This contains the list of EVIs."
+  ];
+
+  optional string esi = 3 [
+    (fld_meta).default = "00000000000000000000",
+    (fld_meta).description = "10-octet Ethernet Segment Identifier (ESI) Example - For multi-home scenario nonZero ESI is '10000000000000000000' ."
+  ];
+
+  message ActiveMode {
+    enum Enum {
+      unspecified = 0;
+      single_active = 1;
+      all_active = 2;
+    }
+  }
+  optional ActiveMode.Enum active_mode = 4 [
+    (fld_meta).default = "ActiveMode.Enum.all_active",
+    (fld_meta).description = "Single Active or All Active mode Redundancy mode selection for Multi-home."
+  ];
+
+  optional int32 esi_label = 5 [
+    (fld_meta).default = "0",
+    (fld_meta).description = "The label value to be advertised as ESI Label in ESI Label Extended Community. This is included in Ethernet Auto-discovery per ES Routes advertised by a router. "
+  ];
+
+  optional BgpRouteAdvanced advanced = 6 [
+    (fld_meta).description = "Description missing in models"
+  ];
+
+  repeated BgpCommunity communities = 7 [
+    (fld_meta).description = "Optional community settings."
+  ];
+
+  repeated BgpExtCommunity ext_communities = 8 [
+    (fld_meta).description = "Optional Extended Community settings."
+  ];
+
+  optional BgpAsPath as_path = 9 [
+    (fld_meta).description = "Optional AS PATH settings."
+  ];
+}
+
+message BgpV6EvpnEvis {
+  option (msg_meta).description = "This contains a list of different flavors of EVPN. \nFor example EVPN over VXLAN or EVPN over MPLS etc to be configured per Ethernet segment. \nNeed to instantiate correct type of EVPN instance as per requirement.";
+
+  message Choice {
+    enum Enum {
+      unspecified = 0;
+      evi_vxlan = 1;
+    }
+  }
+  optional Choice.Enum choice = 1 [
+    (fld_meta).default = "Choice.Enum.evi_vxlan",
+    (fld_meta).description = "Description missing in models"
+  ];
+
+  optional BgpV6EviVxlan evi_vxlan = 2 [
+    (fld_meta).description = "EVPN VXLAN instance to be configured per Ethernet Segment.                    "
+  ];
+}
+
+message BgpV6EviVxlan {
+  option (msg_meta).description = "Configuration for BGP EVPN EVI. Advertises following routes -\n\nType 3 - Inclusive Multicast Ethernet Tag Route\n\nType 1 -  Ethernet Auto-discovery Route (Per EVI)\n\nType 1 -  Ethernet Auto-discovery Route (Per ES)";
+
+  repeated BgpV6EviVxlanBroadcastDomain broadcast_domains = 1 [
+    (fld_meta).description = "This contains the list of Broadcast Domains to be configured per EVI."
+  ];
+
+  message ReplicationType {
+    enum Enum {
+      unspecified = 0;
+      ingress_replication = 1;
+    }
+  }
+  optional ReplicationType.Enum replication_type = 2 [
+    (fld_meta).default = "ReplicationType.Enum.ingress_replication",
+    (fld_meta).description = "This model only supports Ingress Replication"
+  ];
+
+  optional int32 pmsi_label = 3 [
+    (fld_meta).default = "16",
+    (fld_meta).description = "Downstream assigned VNI to be carried as Part of P-Multicast Service Interface Tunnel attribute (PMSI Tunnel Attribute) in Type 3 Inclusive Multicast Ethernet Tag Route."
+  ];
+
+  optional int32 ad_label = 4 [
+    (fld_meta).default = "0",
+    (fld_meta).description = "The Auto-discovery Route label (AD label) value, which gets advertised in the Ethernet Auto-discovery Route per <EVI, ESI>"
+  ];
+
+  optional BgpRouteDistinguisher route_distinguisher = 5 [
+    (fld_meta).description = "Colon separated Extended Community value of 6 Bytes - AS number: Value identifying an EVI.            Example - for the as_2octet 60005:100."
+  ];
+
+  repeated BgpRouteTarget route_target_export = 6 [
+    (fld_meta).description = "List of Layer 2 Virtual Network Identifier (L2VNI) export targets associated with this EVI. "
+  ];
+
+  repeated BgpRouteTarget route_target_import = 7 [
+    (fld_meta).description = "List of L2VNI import targets associated with this EVI. "
+  ];
+
+  repeated BgpRouteTarget l3_route_target_export = 8 [
+    (fld_meta).description = "List of Layer 3 Virtual Network Identifier (L3VNI) Export Route Targets."
+  ];
+
+  repeated BgpRouteTarget l3_route_target_import = 9 [
+    (fld_meta).description = "List of L3VNI Import Route Targets."
+  ];
+
+  optional BgpRouteAdvanced advanced = 10 [
+    (fld_meta).description = "Description missing in models"
+  ];
+
+  repeated BgpCommunity communities = 11 [
+    (fld_meta).description = "Optional community settings."
+  ];
+
+  repeated BgpExtCommunity ext_communities = 12 [
+    (fld_meta).description = "Optional Extended Community settings."
+  ];
+
+  optional BgpAsPath as_path = 13 [
+    (fld_meta).description = "Optional AS PATH settings."
+  ];
+}
+
+message BgpV6EviVxlanBroadcastDomain {
+  option (msg_meta).description = "Configuration for Broadcast Domains per EVI.";
+
+  repeated BgpCMacIpRange cmac_ip_range = 1 [
+    (fld_meta).description = "This contains the list of Customer MAC/IP Ranges to be configured per Broadcast Domain. \n\nAdvertises following route - \nType 2 - MAC/IP Advertisement Route."
+  ];
+
+  optional int64 ethernet_tag_id = 2 [
+    (fld_meta).default = "0",
+    (fld_meta).description = "The Ethernet Tag ID of the Broadcast Domain."
+  ];
+
+  optional bool vlan_aware_service = 3 [
+    (fld_meta).default = "False",
+    (fld_meta).description = "VLAN-Aware service to be enabled or disabled."
+  ];
+}
+
+message DeviceVxlan {
+  option (msg_meta).description = "Description missing in models";
+
+  repeated VxlanV4Tunnel v4_tunnels = 1 [
+    (fld_meta).description = "IPv4 VXLAN Tunnels"
+  ];
+
+  repeated VxlanV6Tunnel v6_tunnels = 2 [
+    (fld_meta).description = "IPv6 VXLAN Tunnels"
+  ];
+}
+
+message VxlanV4Tunnel {
+  option (msg_meta).description = "Configuration and operational state parameters relating to IPv4 VXLAN tunnel end-point interface.";
+
+  string source_interface = 1 [
+    (fld_meta).description = "Determines the source interface.\n\nx-constraint:\n- /components/schemas/Device.Ipv4/properties/name\n- /components/schemas/Device.Ipv4Loopback/properties/name\n"
+  ];
+
+  optional VxlanV4TunnelDestinationIPMode destination_ip_mode = 2 [
+    (fld_meta).description = "Description missing in models"
+  ];
+
+  int32 vni = 3 [
+    (fld_meta).description = "VXLAN Network Identifier (VNI) to distinguish network instances on the wire"
+  ];
+
+  string name = 4 [
+    (fld_meta).description = "Globally unique name of an object. It also serves as the primary key for arrays of objects."
+  ];
+}
+
+message VxlanV6Tunnel {
+  option (msg_meta).description = "Configuration and operational state parameters relating to IPv6 VXLAN tunnel end-point interface.";
+
+  string source_interface = 1 [
+    (fld_meta).description = "Determines the source interface.\n\nx-constraint:\n- /components/schemas/Device.Ipv6/properties/name\n- /components/schemas/Device.Ipv6Loopback/properties/name\n"
+  ];
+
+  optional VxlanV6TunnelDestinationIPMode destination_ip_mode = 2 [
+    (fld_meta).description = "Description missing in models"
+  ];
+
+  int32 vni = 3 [
+    (fld_meta).description = "VXLAN Network Identifier (VNI) to distinguish network instances on the wire"
+  ];
+
+  string name = 4 [
+    (fld_meta).description = "Globally unique name of an object. It also serves as the primary key for arrays of objects."
+  ];
+}
+
+message VxlanV4TunnelDestinationIPMode {
+  option (msg_meta).description = "Communication mode between the VTEPs, either unicast or multicast.";
+
+  message Choice {
+    enum Enum {
+      unspecified = 0;
+      unicast = 1;
+      multicast = 2;
+    }
+  }
+  optional Choice.Enum choice = 1 [
+    (fld_meta).default = "Choice.Enum.multicast",
+    (fld_meta).description = "unicast or multicast"
+  ];
+
+  optional VxlanV4TunnelDestinationIPModeUnicast unicast = 2 [
+    (fld_meta).description = "Description missing in models"
+  ];
+
+  optional VxlanV4TunnelDestinationIPModeMulticast multicast = 3 [
+    (fld_meta).description = "Description missing in models"
+  ];
+}
+
+message VxlanV6TunnelDestinationIPMode {
+  option (msg_meta).description = "Communication mode between the VTEPs, either unicast or multicast.";
+
+  message Choice {
+    enum Enum {
+      unspecified = 0;
+      unicast = 1;
+      multicast = 2;
+    }
+  }
+  optional Choice.Enum choice = 1 [
+    (fld_meta).default = "Choice.Enum.multicast",
+    (fld_meta).description = "unicast or multicast"
+  ];
+
+  optional VxlanV6TunnelDestinationIPModeUnicast unicast = 2 [
+    (fld_meta).description = "Description missing in models"
+  ];
+
+  optional VxlanV6TunnelDestinationIPModeMulticast multicast = 3 [
+    (fld_meta).description = "Description missing in models"
+  ];
+}
+
+message VxlanV4TunnelDestinationIPModeUnicast {
+  option (msg_meta).description = "Description missing in models";
+
+  repeated VxlanV4TunnelDestinationIPModeUnicastVtep vteps = 1 [
+    (fld_meta).description = "List of VTEPs for member VNI(VXLAN Network Identifier)"
+  ];
+}
+
+message VxlanV6TunnelDestinationIPModeUnicast {
+  option (msg_meta).description = "Description missing in models";
+
+  repeated VxlanV6TunnelDestinationIPModeUnicastVtep vteps = 1 [
+    (fld_meta).description = "List of VTEPs for member VNI(VXLAN Network Identifier)"
+  ];
+}
+
+message VxlanTunnelDestinationIPModeUnicastArpSuppressionCache {
+  option (msg_meta).description = "Each VTEP maintains an ARP suppression cache table for known IP hosts and their associated MAC addresses in the VNI segment.  When an end host in the VNI sends an ARP request for another end-host IP address,  its local VTEP intercepts the ARP request and checks for the ARP-resolved IP address in its ARP suppression cache table.  If it finds a match, the local VTEP sends an ARP response on behalf of the remote end host.";
+
+  optional string remote_vm_mac = 1 [
+    (fld_meta).description = "Remote VM MAC address bound to Remote VM IPv4 address"
+  ];
+
+  optional string remote_vm_ipv4 = 2 [
+    (fld_meta).description = "Remote VM IPv4 address"
+  ];
+}
+
+message VxlanV4TunnelDestinationIPModeUnicastVtep {
+  option (msg_meta).description = "VTEP (VXLAN Tunnel End Point (VTEP)) parameters\nDestinationIPMode Unicast VTEP Base";
+
+  optional string remote_vtep_address = 1 [
+    (fld_meta).description = "Remote VXLAN Tunnel End Point address"
+  ];
+
+  repeated VxlanTunnelDestinationIPModeUnicastArpSuppressionCache arp_suppression_cache = 2 [
+    (fld_meta).description = "Each VTEP maintains an ARP suppression cache table for known IP hosts and their associated MAC addresses in the VNI segment.  When an end host in the VNI sends an ARP request for another end-host IP address,  its local VTEP intercepts the ARP request and checks for the ARP-resolved IP address in its ARP suppression cache table.  If it finds a match, the local VTEP sends an ARP response on behalf of the remote end host."
+  ];
+}
+
+message VxlanV6TunnelDestinationIPModeUnicastVtep {
+  option (msg_meta).description = "VTEP (VXLAN Tunnel End Point (VTEP)) parameters\nDestinationIPMode Unicast VTEP Base";
+
+  optional string remote_vtep_address = 1 [
+    (fld_meta).description = "Remote VXLAN Tunnel End Point address"
+  ];
+
+  repeated VxlanTunnelDestinationIPModeUnicastArpSuppressionCache arp_suppression_cache = 2 [
+    (fld_meta).description = "Each VTEP maintains an ARP suppression cache table for known IP hosts and their associated MAC addresses in the VNI segment.  When an end host in the VNI sends an ARP request for another end-host IP address,  its local VTEP intercepts the ARP request and checks for the ARP-resolved IP address in its ARP suppression cache table.  If it finds a match, the local VTEP sends an ARP response on behalf of the remote end host."
+  ];
+}
+
+message VxlanV4TunnelDestinationIPModeMulticast {
+  option (msg_meta).description = "Multicast Group address for member VNI(VXLAN Network Identifier)";
+
+  optional string address = 1 [
+    (fld_meta).description = "IPv4 Multicast address"
+  ];
+}
+
+message VxlanV6TunnelDestinationIPModeMulticast {
+  option (msg_meta).description = "Multicast Group address for member VNI(VXLAN Network Identifier)";
+
+  optional string address = 1 [
+    (fld_meta).description = "IPv6 Multicast address"
   ];
 }
 
@@ -2978,11 +3663,11 @@ message FlowRouter {
   ];
 
   repeated string tx_names = 2 [
-    (fld_meta).description = "TBD\n\nx-constraint:\n- /components/schemas/Device.Ethernet/properties/name\n- /components/schemas/Device.Ipv4/properties/name\n- /components/schemas/Device.Ipv6/properties/name\n- /components/schemas/Bgp.V4RouteRange/properties/name\n- /components/schemas/Bgp.V6RouteRange/properties/name\n"
+    (fld_meta).description = "TBD\n\nx-constraint:\n- /components/schemas/Device.Ethernet/properties/name\n- /components/schemas/Device.Ipv4/properties/name\n- /components/schemas/Device.Ipv6/properties/name\n- /components/schemas/Bgp.V4RouteRange/properties/name\n- /components/schemas/Bgp.V6RouteRange/properties/name\n- /components/schemas/Bgp.CMacIpRange/properties/name\n"
   ];
 
   repeated string rx_names = 3 [
-    (fld_meta).description = "TBD\n\nx-constraint:\n- /components/schemas/Device.Ethernet/properties/name\n- /components/schemas/Device.Ipv4/properties/name\n- /components/schemas/Device.Ipv6/properties/name\n- /components/schemas/Bgp.V4RouteRange/properties/name\n- /components/schemas/Bgp.V6RouteRange/properties/name\n"
+    (fld_meta).description = "TBD\n\nx-constraint:\n- /components/schemas/Device.Ethernet/properties/name\n- /components/schemas/Device.Ipv4/properties/name\n- /components/schemas/Device.Ipv6/properties/name\n- /components/schemas/Bgp.V4RouteRange/properties/name\n- /components/schemas/Bgp.V6RouteRange/properties/name\n- /components/schemas/Bgp.CMacIpRange/properties/name\n"
   ];
 }
 
@@ -3010,6 +3695,7 @@ message FlowHeader {
       icmpv6 = 16;
       ppp = 17;
       igmpv1 = 18;
+      mpls = 19;
     }
   }
   optional Choice.Enum choice = 1 [
@@ -3086,6 +3772,10 @@ message FlowHeader {
   ];
 
   optional FlowIgmpv1 igmpv1 = 19 [
+    (fld_meta).description = "Description missing in models"
+  ];
+
+  optional FlowMpls mpls = 20 [
     (fld_meta).description = "Description missing in models"
   ];
 }
@@ -3793,6 +4483,26 @@ message FlowIgmpv1 {
   ];
 }
 
+message FlowMpls {
+  option (msg_meta).description = "Mpls packet header";
+
+  optional PatternFlowMplsLabel label = 1 [
+    (fld_meta).description = "Description missing in models"
+  ];
+
+  optional PatternFlowMplsTrafficClass traffic_class = 2 [
+    (fld_meta).description = "Description missing in models"
+  ];
+
+  optional PatternFlowMplsBottomOfStack bottom_of_stack = 3 [
+    (fld_meta).description = "Description missing in models"
+  ];
+
+  optional PatternFlowMplsTimeToLive time_to_live = 4 [
+    (fld_meta).description = "Description missing in models"
+  ];
+}
+
 message FlowSize {
   option (msg_meta).description = "The frame size which overrides the total length of the packet";
 
@@ -4278,10 +4988,10 @@ message LinkState {
 }
 
 message TransmitState {
-  option (msg_meta).description = "Control the transmit state of flows.";
+  option (msg_meta).description = "Flow transmit state.";
 
   repeated string flow_names = 1 [
-    (fld_meta).description = "The names of flows to which the transmit state will be applied to. If the list of flow_names is empty or null the state will be applied to all configured flows.\n\nx-constraint:\n- /components/schemas/Flow/properties/name\n"
+    (fld_meta).description = "The names of flows to which the transmit state will be applied to. If the list of flow_names is empty or null the state will be applied to all configured flows.\nIf the list is not empty any flow that is not included in the list of flow_names MUST be ignored and not included in the state change.\n\nx-constraint:\n- /components/schemas/Flow/properties/name\n"
   ];
 
   message State {
@@ -4290,10 +5000,11 @@ message TransmitState {
       start = 1;
       stop = 2;
       pause = 3;
+      resume = 4;
     }
   }
   State.Enum state = 2 [
-    (fld_meta).description = "The transmit state."
+    (fld_meta).description = "The transmit state.\nIf the value of the state property is 'start' then all flows defined by the 'flow_names' property will be started and the metric counters MUST be cleared prior to starting the flow(s).\nIf the value of the state property is 'stop' then all flows defined by the 'flow_names' property will be stopped and the metric counters MUST NOT be cleared.\nIf the value of the state property is 'pause' then all flows defined by the 'flow_names' property will be paused and the metric counters MUST NOT be cleared.\nIf the value of the state property is 'resume' then any paused flows defined by the 'flow_names' property will start transmit at the point at which they were paused. Any flow that is stopped will start transmit at the beginning of the flow. The flow(s) MUST NOT have their metric counters cleared."
   ];
 }
 
@@ -4301,7 +5012,7 @@ message CaptureState {
   option (msg_meta).description = "Control port capture state";
 
   repeated string port_names = 1 [
-    (fld_meta).description = "The name of ports to start capturing packets on. An empty or null list will control all port objects.\n\nx-constraint:\n- /components/schemas/Port/properties/name\n"
+    (fld_meta).description = "The names of ports to which the capture state will be applied to. If the list of port_names is empty or null the state will be applied to all configured ports.\nIf the list is not empty any port that is not included in the list of port_names MUST be ignored and not included in the state change.\n\nx-constraint:\n- /components/schemas/Port/properties/name\n"
   ];
 
   message State {
@@ -4317,7 +5028,7 @@ message CaptureState {
 }
 
 message FlowsUpdate {
-  option (msg_meta).description = "A container of flows with associated properties to be updated without affecting the transmit state";
+  option (msg_meta).description = "A container of flows with associated properties to be updated without affecting the flows current transmit state.";
 
   message PropertyNames {
     enum Enum {
@@ -4327,7 +5038,7 @@ message FlowsUpdate {
     }
   }
   repeated PropertyNames.Enum property_names = 1 [
-    (fld_meta).description = "Flow properties to be updated without affecting the transmit state"
+    (fld_meta).description = "Flow properties to be updated without affecting the transmit state."
   ];
 
   repeated Flow flows = 2 [
@@ -4339,7 +5050,7 @@ message RouteState {
   option (msg_meta).description = "Sets the device route state";
 
   repeated string names = 1 [
-    (fld_meta).description = "The names of device route objects to control. If no names are specified then all route objects that match the x-constraint will be affected.\n\nx-constraint:\n- /components/schemas/Bgp.V4RouteRange/properties/name\n- /components/schemas/Bgp.V6RouteRange/properties/name\n"
+    (fld_meta).description = "The names of device route objects to control. If no names are specified then all route objects that match the x-constraint will be affected.\n\nx-constraint:\n- /components/schemas/Bgp.V4RouteRange/properties/name\n- /components/schemas/Bgp.V6RouteRange/properties/name\n- /components/schemas/Isis.V4RouteRange/properties/name\n- /components/schemas/Isis.V6RouteRange/properties/name\n"
   ];
 
   message State {
@@ -4374,6 +5085,24 @@ message ProtocolState {
   }
   State.Enum state = 1 [
     (fld_meta).description = "Protocol specific states"
+  ];
+}
+
+message DeviceState {
+  option (msg_meta).description = "Sets attributes for the requested state/actions to be performed on device(s)";
+
+  message Choice {
+    enum Enum {
+      unspecified = 0;
+      lacp_member_state = 1;
+    }
+  }
+  optional Choice.Enum choice = 1 [
+    (fld_meta).description = "Description missing in models"
+  ];
+
+  optional LacpMemberState lacp_member_state = 2 [
+    (fld_meta).description = "Description missing in models"
   ];
 }
 
@@ -4454,6 +5183,25 @@ message Response {
   optional Result.Enum result = 3 [
     (fld_meta).default = "Result.Enum.failure",
     (fld_meta).description = "Result of the ping request."
+  ];
+}
+
+message LacpMemberState {
+  option (msg_meta).description = "Set LACP state for specified LAG Member Port(s).";
+
+  repeated string lag_member_port_names = 1 [
+    (fld_meta).description = "The names of LAG members (ports) for which the state has to be applied. An empty or null list will control all LAG members.\n\nx-constraint:\n- /components/schemas/Port/properties/name\n"
+  ];
+
+  message State {
+    enum Enum {
+      unspecified = 0;
+      up = 1;
+      down = 2;
+    }
+  }
+  State.Enum state = 2 [
+    (fld_meta).description = "The LACP Member admin state. 'up' will start transmission of LACPDUs on selected member ports. 'down' will send a LACPDU with 'sync' flag unset and then stop transmission of LACPDUs on selected member ports."
   ];
 }
 
@@ -4996,12 +5744,13 @@ message PatternFlowEthernetDst {
       unspecified = 0;
       value = 1;
       values = 2;
-      increment = 3;
-      decrement = 4;
+      auto = 3;
+      increment = 4;
+      decrement = 5;
     }
   }
   optional Choice.Enum choice = 1 [
-    (fld_meta).default = "Choice.Enum.value",
+    (fld_meta).default = "Choice.Enum.auto",
     (fld_meta).description = "Description missing in models"
   ];
 
@@ -5015,15 +5764,26 @@ message PatternFlowEthernetDst {
     (fld_meta).description = "Description missing in models"
   ];
 
-  optional string metric_group = 4 [
-    (fld_meta).description = "A unique name is used to indicate to the system that the field may extend the metric row key and create an aggregate metric row for every unique value. To have metric group columns appear in the flow metric rows the flow metric request allows for the metric_group value to be specified as part of the request."
-  ];
-
-  optional PatternFlowEthernetDstCounter increment = 5 [
+  message Auto {
+    enum Enum {
+      unspecified = 0;
+      auto = 1;
+    }
+  }
+  optional Auto.Enum auto = 4 [
+    (fld_meta).default = "Auto.Enum.auto",
     (fld_meta).description = "Description missing in models"
   ];
 
-  optional PatternFlowEthernetDstCounter decrement = 6 [
+  optional string metric_group = 5 [
+    (fld_meta).description = "A unique name is used to indicate to the system that the field may extend the metric row key and create an aggregate metric row for every unique value. To have metric group columns appear in the flow metric rows the flow metric request allows for the metric_group value to be specified as part of the request."
+  ];
+
+  optional PatternFlowEthernetDstCounter increment = 6 [
+    (fld_meta).description = "Description missing in models"
+  ];
+
+  optional PatternFlowEthernetDstCounter decrement = 7 [
     (fld_meta).description = "Description missing in models"
   ];
 }
@@ -5598,12 +6358,13 @@ message PatternFlowVxlanVni {
       unspecified = 0;
       value = 1;
       values = 2;
-      increment = 3;
-      decrement = 4;
+      auto = 3;
+      increment = 4;
+      decrement = 5;
     }
   }
   optional Choice.Enum choice = 1 [
-    (fld_meta).default = "Choice.Enum.value",
+    (fld_meta).default = "Choice.Enum.auto",
     (fld_meta).description = "Description missing in models"
   ];
 
@@ -5617,15 +6378,26 @@ message PatternFlowVxlanVni {
     (fld_meta).description = "Description missing in models"
   ];
 
-  optional string metric_group = 4 [
-    (fld_meta).description = "A unique name is used to indicate to the system that the field may extend the metric row key and create an aggregate metric row for every unique value. To have metric group columns appear in the flow metric rows the flow metric request allows for the metric_group value to be specified as part of the request."
-  ];
-
-  optional PatternFlowVxlanVniCounter increment = 5 [
+  message Auto {
+    enum Enum {
+      unspecified = 0;
+      auto = 1;
+    }
+  }
+  optional Auto.Enum auto = 4 [
+    (fld_meta).default = "Auto.Enum.auto",
     (fld_meta).description = "Description missing in models"
   ];
 
-  optional PatternFlowVxlanVniCounter decrement = 6 [
+  optional string metric_group = 5 [
+    (fld_meta).description = "A unique name is used to indicate to the system that the field may extend the metric row key and create an aggregate metric row for every unique value. To have metric group columns appear in the flow metric rows the flow metric request allows for the metric_group value to be specified as part of the request."
+  ];
+
+  optional PatternFlowVxlanVniCounter increment = 6 [
+    (fld_meta).description = "Description missing in models"
+  ];
+
+  optional PatternFlowVxlanVniCounter decrement = 7 [
     (fld_meta).description = "Description missing in models"
   ];
 }
@@ -7271,12 +8043,13 @@ message PatternFlowIpv6NextHeader {
       unspecified = 0;
       value = 1;
       values = 2;
-      increment = 3;
-      decrement = 4;
+      auto = 3;
+      increment = 4;
+      decrement = 5;
     }
   }
   optional Choice.Enum choice = 1 [
-    (fld_meta).default = "Choice.Enum.value",
+    (fld_meta).default = "Choice.Enum.auto",
     (fld_meta).description = "Description missing in models"
   ];
 
@@ -7290,15 +8063,26 @@ message PatternFlowIpv6NextHeader {
     (fld_meta).description = "Description missing in models"
   ];
 
-  optional string metric_group = 4 [
-    (fld_meta).description = "A unique name is used to indicate to the system that the field may extend the metric row key and create an aggregate metric row for every unique value. To have metric group columns appear in the flow metric rows the flow metric request allows for the metric_group value to be specified as part of the request."
-  ];
-
-  optional PatternFlowIpv6NextHeaderCounter increment = 5 [
+  message Auto {
+    enum Enum {
+      unspecified = 0;
+      auto = 1;
+    }
+  }
+  optional Auto.Enum auto = 4 [
+    (fld_meta).default = "Auto.Enum.auto",
     (fld_meta).description = "Description missing in models"
   ];
 
-  optional PatternFlowIpv6NextHeaderCounter decrement = 6 [
+  optional string metric_group = 5 [
+    (fld_meta).description = "A unique name is used to indicate to the system that the field may extend the metric row key and create an aggregate metric row for every unique value. To have metric group columns appear in the flow metric rows the flow metric request allows for the metric_group value to be specified as part of the request."
+  ];
+
+  optional PatternFlowIpv6NextHeaderCounter increment = 6 [
+    (fld_meta).description = "Description missing in models"
+  ];
+
+  optional PatternFlowIpv6NextHeaderCounter decrement = 7 [
     (fld_meta).description = "Description missing in models"
   ];
 }
@@ -12750,10 +13534,12 @@ message PatternFlowPppProtocolTypeCounter {
   option (msg_meta).description = "integer counter pattern";
 
   optional int32 start = 1 [
+    (fld_meta).default = "33",
     (fld_meta).description = "Description missing in models"
   ];
 
   optional int32 step = 2 [
+    (fld_meta).default = "1",
     (fld_meta).description = "Description missing in models"
   ];
 
@@ -12782,10 +13568,12 @@ message PatternFlowPppProtocolType {
   ];
 
   optional int32 value = 2 [
+    (fld_meta).default = "33",
     (fld_meta).description = "Description missing in models"
   ];
 
   repeated int32 values = 3 [
+    (fld_meta).default = "[33]",
     (fld_meta).description = "Description missing in models"
   ];
 
@@ -13077,6 +13865,254 @@ message PatternFlowIgmpv1GroupAddress {
   ];
 
   optional PatternFlowIgmpv1GroupAddressCounter decrement = 6 [
+    (fld_meta).description = "Description missing in models"
+  ];
+}
+
+message PatternFlowMplsLabelCounter {
+  option (msg_meta).description = "integer counter pattern";
+
+  optional int32 start = 1 [
+    (fld_meta).default = "16",
+    (fld_meta).description = "Description missing in models"
+  ];
+
+  optional int32 step = 2 [
+    (fld_meta).default = "1",
+    (fld_meta).description = "Description missing in models"
+  ];
+
+  optional int32 count = 3 [
+    (fld_meta).default = "1",
+    (fld_meta).description = "Description missing in models"
+  ];
+}
+
+message PatternFlowMplsLabel {
+  option (msg_meta).description = "Label of routers";
+
+  message Choice {
+    enum Enum {
+      unspecified = 0;
+      value = 1;
+      values = 2;
+      auto = 3;
+      increment = 4;
+      decrement = 5;
+    }
+  }
+  optional Choice.Enum choice = 1 [
+    (fld_meta).default = "Choice.Enum.auto",
+    (fld_meta).description = "Description missing in models"
+  ];
+
+  optional int32 value = 2 [
+    (fld_meta).default = "16",
+    (fld_meta).description = "Description missing in models"
+  ];
+
+  repeated int32 values = 3 [
+    (fld_meta).default = "[16]",
+    (fld_meta).description = "Description missing in models"
+  ];
+
+  message Auto {
+    enum Enum {
+      unspecified = 0;
+      auto = 1;
+    }
+  }
+  optional Auto.Enum auto = 4 [
+    (fld_meta).default = "Auto.Enum.auto",
+    (fld_meta).description = "Description missing in models"
+  ];
+
+  optional string metric_group = 5 [
+    (fld_meta).description = "A unique name is used to indicate to the system that the field may extend the metric row key and create an aggregate metric row for every unique value. To have metric group columns appear in the flow metric rows the flow metric request allows for the metric_group value to be specified as part of the request."
+  ];
+
+  optional PatternFlowMplsLabelCounter increment = 6 [
+    (fld_meta).description = "Description missing in models"
+  ];
+
+  optional PatternFlowMplsLabelCounter decrement = 7 [
+    (fld_meta).description = "Description missing in models"
+  ];
+}
+
+message PatternFlowMplsTrafficClassCounter {
+  option (msg_meta).description = "integer counter pattern";
+
+  optional int32 start = 1 [
+    (fld_meta).default = "0",
+    (fld_meta).description = "Description missing in models"
+  ];
+
+  optional int32 step = 2 [
+    (fld_meta).default = "1",
+    (fld_meta).description = "Description missing in models"
+  ];
+
+  optional int32 count = 3 [
+    (fld_meta).default = "1",
+    (fld_meta).description = "Description missing in models"
+  ];
+}
+
+message PatternFlowMplsTrafficClass {
+  option (msg_meta).description = "Traffic class";
+
+  message Choice {
+    enum Enum {
+      unspecified = 0;
+      value = 1;
+      values = 2;
+      increment = 3;
+      decrement = 4;
+    }
+  }
+  optional Choice.Enum choice = 1 [
+    (fld_meta).default = "Choice.Enum.value",
+    (fld_meta).description = "Description missing in models"
+  ];
+
+  optional int32 value = 2 [
+    (fld_meta).default = "0",
+    (fld_meta).description = "Description missing in models"
+  ];
+
+  repeated int32 values = 3 [
+    (fld_meta).default = "[0]",
+    (fld_meta).description = "Description missing in models"
+  ];
+
+  optional string metric_group = 4 [
+    (fld_meta).description = "A unique name is used to indicate to the system that the field may extend the metric row key and create an aggregate metric row for every unique value. To have metric group columns appear in the flow metric rows the flow metric request allows for the metric_group value to be specified as part of the request."
+  ];
+
+  optional PatternFlowMplsTrafficClassCounter increment = 5 [
+    (fld_meta).description = "Description missing in models"
+  ];
+
+  optional PatternFlowMplsTrafficClassCounter decrement = 6 [
+    (fld_meta).description = "Description missing in models"
+  ];
+}
+
+message PatternFlowMplsBottomOfStackCounter {
+  option (msg_meta).description = "integer counter pattern";
+
+  optional int32 start = 1 [
+    (fld_meta).default = "1",
+    (fld_meta).description = "Description missing in models"
+  ];
+
+  optional int32 step = 2 [
+    (fld_meta).default = "1",
+    (fld_meta).description = "Description missing in models"
+  ];
+
+  optional int32 count = 3 [
+    (fld_meta).default = "1",
+    (fld_meta).description = "Description missing in models"
+  ];
+}
+
+message PatternFlowMplsBottomOfStack {
+  option (msg_meta).description = "Bottom of stack";
+
+  message Choice {
+    enum Enum {
+      unspecified = 0;
+      value = 1;
+      values = 2;
+      increment = 3;
+      decrement = 4;
+    }
+  }
+  optional Choice.Enum choice = 1 [
+    (fld_meta).default = "Choice.Enum.value",
+    (fld_meta).description = "Description missing in models"
+  ];
+
+  optional int32 value = 2 [
+    (fld_meta).default = "1",
+    (fld_meta).description = "Description missing in models"
+  ];
+
+  repeated int32 values = 3 [
+    (fld_meta).default = "[1]",
+    (fld_meta).description = "Description missing in models"
+  ];
+
+  optional string metric_group = 4 [
+    (fld_meta).description = "A unique name is used to indicate to the system that the field may extend the metric row key and create an aggregate metric row for every unique value. To have metric group columns appear in the flow metric rows the flow metric request allows for the metric_group value to be specified as part of the request."
+  ];
+
+  optional PatternFlowMplsBottomOfStackCounter increment = 5 [
+    (fld_meta).description = "Description missing in models"
+  ];
+
+  optional PatternFlowMplsBottomOfStackCounter decrement = 6 [
+    (fld_meta).description = "Description missing in models"
+  ];
+}
+
+message PatternFlowMplsTimeToLiveCounter {
+  option (msg_meta).description = "integer counter pattern";
+
+  optional int32 start = 1 [
+    (fld_meta).default = "64",
+    (fld_meta).description = "Description missing in models"
+  ];
+
+  optional int32 step = 2 [
+    (fld_meta).default = "1",
+    (fld_meta).description = "Description missing in models"
+  ];
+
+  optional int32 count = 3 [
+    (fld_meta).default = "1",
+    (fld_meta).description = "Description missing in models"
+  ];
+}
+
+message PatternFlowMplsTimeToLive {
+  option (msg_meta).description = "Time to live";
+
+  message Choice {
+    enum Enum {
+      unspecified = 0;
+      value = 1;
+      values = 2;
+      increment = 3;
+      decrement = 4;
+    }
+  }
+  optional Choice.Enum choice = 1 [
+    (fld_meta).default = "Choice.Enum.value",
+    (fld_meta).description = "Description missing in models"
+  ];
+
+  optional int32 value = 2 [
+    (fld_meta).default = "64",
+    (fld_meta).description = "Description missing in models"
+  ];
+
+  repeated int32 values = 3 [
+    (fld_meta).default = "[64]",
+    (fld_meta).description = "Description missing in models"
+  ];
+
+  optional string metric_group = 4 [
+    (fld_meta).description = "A unique name is used to indicate to the system that the field may extend the metric row key and create an aggregate metric row for every unique value. To have metric group columns appear in the flow metric rows the flow metric request allows for the metric_group value to be specified as part of the request."
+  ];
+
+  optional PatternFlowMplsTimeToLiveCounter increment = 5 [
+    (fld_meta).description = "Description missing in models"
+  ];
+
+  optional PatternFlowMplsTimeToLiveCounter decrement = 6 [
     (fld_meta).description = "Description missing in models"
   ];
 }

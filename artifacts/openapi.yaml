@@ -242,13 +242,25 @@ components:
           default: false
     Lag:
       description: |-
-        The container for multiple LAG ports
+        The container for LAG (ports group) - aggregation of multiple LAG members (ports)
       type: object
       properties:
         ports:
           type: array
           items:
             $ref: '#/components/schemas/Lag.Port'
+          minItems: 1
+          maxItems: 32
+        protocol:
+          $ref: '#/components/schemas/Lag.Protocol'
+        min_links:
+          description: |-
+            Specifies the mininum number of member interfaces that must be active for the aggregate interface to be available
+          type: integer
+          format: int32
+          minimum: 0
+          maximum: 32
+          default: 1
         name:
           description: |-
             Globally unique name of an object. It also serves as the primary key for arrays of objects.
@@ -262,7 +274,6 @@ components:
       type: object
       required:
       - port_name
-      - protocol
       - ethernet
       properties:
         port_name:
@@ -271,8 +282,8 @@ components:
           type: string
           x-constraint:
           - /components/schemas/Port/properties/name
-        protocol:
-          $ref: '#/components/schemas/Lag.Protocol'
+        lacp:
+          $ref: '#/components/schemas/Lag.Port.Lacp'
         ethernet:
           $ref: '#/components/schemas/Device.EthernetBase'
     Lag.Protocol:
@@ -280,17 +291,17 @@ components:
       properties:
         choice:
           description: |-
-            The type of LAG protocol.
+            The type of controlling protocol for the LAG (ports group).
           type: string
           enum:
           - lacp
           - static
           default: lacp
         lacp:
-          $ref: '#/components/schemas/Lag.Lacp'
+          $ref: '#/components/schemas/Lag.Protocol.Lacp'
         static:
-          $ref: '#/components/schemas/Lag.Static'
-    Lag.Static:
+          $ref: '#/components/schemas/Lag.Protocol.Static'
+    Lag.Protocol.Static:
       description: |-
         The container for static link aggregation protocol settings.
       type: object
@@ -302,11 +313,24 @@ components:
           minimum: 0
           maximum: 65535
           default: 0
-    Lag.Lacp:
+    Lag.Protocol.Lacp:
       description: |-
-        The container for link aggregation control protocol settings.
+        The container for link aggregation control protocol settings of a LAG (ports group).
       type: object
       properties:
+        actor_system_id:
+          description: |-
+            The actor system id
+          type: string
+          format: mac
+          default: 00:00:00:00:00:00
+        actor_system_priority:
+          description: |-
+            The actor system priority
+          type: integer
+          minimum: 0
+          maximum: 65535
+          default: 0
         actor_key:
           description: |-
             The actor key
@@ -314,6 +338,11 @@ components:
           minimum: 0
           maximum: 65535
           default: 0
+    Lag.Port.Lacp:
+      description: |-
+        The container for link aggregation control protocol settings of a LAG member (port).
+      type: object
+      properties:
         actor_port_number:
           description: |-
             The actor port number
@@ -328,19 +357,16 @@ components:
           minimum: 0
           maximum: 65535
           default: 1
-        actor_system_id:
+        actor_activity:
           description: |-
-            The actor system id
+            Sets the value of LACP actor activity as either passive or active.
+            Passive indicates the port's preference for not transmitting  LACPDUs unless its partner's control is Active.
+            Active indicates the port's preference to participate in the  protocol regardless of the partner's control value.
           type: string
-          format: mac
-          default: 00:00:00:00:00:00
-        actor_system_priority:
-          description: |-
-            The actor system priority
-          type: integer
-          minimum: 0
-          maximum: 65535
-          default: 0
+          enum:
+          - passive
+          - active
+          default: active
         lacpdu_periodic_time_interval:
           x-constants:
             fast: 1
@@ -363,16 +389,6 @@ components:
           minimum: 0
           maximum: 65535
           default: 0
-        actor_activity:
-          description: |-
-            Sets the value of LACP actor activity as either passive or active
-            Passive indicates the port's preference for not transmitting  LACPDUs unless its partner's control is Active
-            Active indicates the port's preference to participate in the  protocol regardless of the partner's control value
-          type: string
-          enum:
-          - passive
-          - active
-          default: active
     Device.EthernetBase:
       description: |-
         Base Ethernet interface.
@@ -409,22 +425,25 @@ components:
         An Ethernet interface with IPv4 and IPv6 addresses.
         Base Ethernet interface.
       type: object
-      required:
-      - port_name
-      - mac
-      - name
       properties:
         port_name:
           description: |
+            Status: deprecated
             The unique name of a Port or a LAG that will emulate this interface.
+            port_name is deprecated and will be removed in future release.port_name and connection can't be used together, use either port_name or connection.
 
             x-constraint:
             - /components/schemas/Port/properties/name
             - /components/schemas/Lag/properties/name
+          x-status: deprecated
           type: string
           x-constraint:
           - /components/schemas/Port/properties/name
           - /components/schemas/Lag/properties/name
+        connection:
+          description: |-
+            Device connection to physical, LAG or another device.
+          $ref: '#/components/schemas/Ethernet.Connection'
         ipv4_addresses:
           description: "List of IPv4 addresses and their gateways. "
           type: array
@@ -460,6 +479,51 @@ components:
             Globally unique name of an object. It also serves as the primary key for arrays of objects.
           type: string
           pattern: ^[\sa-zA-Z0-9-_()><\[\]]+$
+      required:
+      - mac
+      - name
+    Ethernet.Connection:
+      description: |-
+        Ethernet interface connection to a port, LAG or VXLAN tunnel.
+      type: object
+      properties:
+        choice:
+          description: |-
+            port_name, lag_name or vxlan_name
+          type: string
+          enum:
+          - port_name
+          - lag_name
+          - vxlan_name
+        port_name:
+          description: |
+            Name of the port that the Ethernet interface is configured on.
+
+            x-constraint:
+            - /components/schemas/Port/properties/name
+          type: string
+          x-constraint:
+          - /components/schemas/Port/properties/name
+        lag_name:
+          description: |
+            Name of the LAG that the Ethernet interface is configured on.
+
+            x-constraint:
+            - /components/schemas/Lag/properties/name
+          type: string
+          x-constraint:
+          - /components/schemas/Lag/properties/name
+        vxlan_name:
+          description: |
+            Name of the VXLAN instance (or VXLAN tunnel) that this Ethernet interface is connected to.
+
+            x-constraint:
+            - #/components/schemas/VXlan.V4Tunnel/properties/name
+            - #/components/schemas/VXlan.V6Tunnel/properties/name
+          type: string
+          x-constraint:
+          - '#/components/schemas/VXlan.V4Tunnel/properties/name'
+          - '#/components/schemas/VXlan.V6Tunnel/properties/name'
     Device.Vlan:
       description: |-
         Emulated VLAN protocol.
@@ -1041,6 +1105,10 @@ components:
           description: |-
             The properties of BGP router and its children,  such as BGPv4, BGPv6 peers and their route ranges.
           $ref: '#/components/schemas/Device.BgpRouter'
+        vxlan:
+          description: |-
+            Configuration of VXLAN tunnel interfaces RFC Ref: https://datatracker.ietf.org/doc/html/rfc7348
+          $ref: '#/components/schemas/Device.Vxlan'
         name:
           description: |-
             Globally unique name of an object. It also serves as the primary key for arrays of objects.
@@ -1419,6 +1487,11 @@ components:
             If it is true, the Point-to-Point circuit will include 3-way TLV in its Point-to-Point IIH  and attempt to establish the adjacency as specified in RFC 5303. This field is not applicable if network_type is set to 'broadcast' type in ISIS interface.
           type: boolean
           default: true
+        p2p_hellos_to_unicast_mac:
+          description: "If it is true, the Point-to-Point Hello messages will be sent\
+            \ to the unicast MAC address. "
+          type: boolean
+          default: false
     IsisInterface.LinkProtection:
       description: |-
         Optional container for the link protection sub TLV (type 20).
@@ -1734,6 +1807,36 @@ components:
           type: integer
           default: 1
           minimum: 1
+    MACRouteAddress:
+      description: |-
+        A container for MAC route addresses.
+      type: object
+      required:
+      - address
+      properties:
+        address:
+          description: |-
+            The starting address of the MAC Range.
+          type: string
+          format: mac
+        prefix:
+          description: "The MAC prefix length to be applied to the address. "
+          type: integer
+          default: 48
+          minimum: 0
+          maximum: 48
+        count:
+          description: |-
+            The total number of mac addresses in the range.
+          type: integer
+          default: 1
+          minimum: 1
+        step:
+          description: |-
+            Increments the mac address prefixes within a mac range  where multiple routes are present.  The value is incremented according to the mac prefix Length and Step.
+          type: integer
+          default: 1
+          minimum: 1
     Isis.V6RouteRange:
       description: |-
         Emulated ISIS IPv6 routes.
@@ -1846,6 +1949,23 @@ components:
             IPv4 address of the BGP peer for the session.
           type: string
           format: ipv4
+        evpn_ethernet_segments:
+          description: "This contains the list of Ethernet Virtual Private Network\
+            \ (EVPN) Ethernet Segments (ES) Per BGP Peer for IPv4 Address Family Identifier\
+            \ (AFI).\n\nEach Ethernet Segment contains a list of EVPN Instances (EVIs)\
+            \ . \nEach EVI contains a list of Broadcast Domains. \nEach Broadcast\
+            \ Domain contains a list of MAC/IP Ranges. \n\n<Ethernet Segment, EVI,\
+            \ Broadcast Domain> is responsible for advertising Ethernet Auto-discovery\
+            \ Route Per EVI (Type 1).\n\n<Ethernet Segment, EVI> is responsible for\
+            \ advertising Ethernet Auto-discovery Route Per Ethernet Segment (Type\
+            \ 1).\n\n<Ethernet Segment, EVI, Broadcast Domain, MAC/IP> is responsible\
+            \ for advertising MAC/IP Advertisement Route (Type 2).\n\n<Ethernet Segment,\
+            \ EVI, Broadcast Domain> is responsible for advertising Inclusive Multicast\
+            \ Ethernet Tag Route (Type 3).\n\nEthernet Segment is responsible for\
+            \ advertising Ethernet Segment Route (Type 4)."
+          type: array
+          items:
+            $ref: '#/components/schemas/BgpV4.EthernetSegment'
         as_type:
           description: |-
             The type of BGP autonomous system. External BGP is used for BGP links between two or more autonomous systems (ebgp). Internal BGP is used within a single autonomous system (ibgp). BGP property defaults are aligned with this object defined as an internal BGP peer. If the as_type is specified as 'ebgp' then other properties will need to be specified as per an external BGP peer. Specifically, for 'ebgp',  'as_set_mode' attribute in 'as_path' field  in any Route Range should be changed from default value 'do_not_include_local_as' to any other value.
@@ -1869,6 +1989,8 @@ components:
           $ref: '#/components/schemas/Bgp.Advanced'
         capability:
           $ref: '#/components/schemas/Bgp.Capability'
+        learned_information_filter:
+          $ref: '#/components/schemas/Bgp.LearnedInformationFilter'
         v4_routes:
           description: |-
             Emulated BGPv4 route ranges.
@@ -2084,6 +2206,23 @@ components:
         ipv6_unicast_add_path:
           description: |-
             Support for IPv6 Unicast Add Path Capability.
+          type: boolean
+          default: false
+    Bgp.LearnedInformationFilter:
+      x-status: under-review
+      description: |-
+        Status: under-review
+        Configuration for controlling storage of BGP learned information recieved from the peer.
+      type: object
+      properties:
+        unicast_ipv4_prefix:
+          description: |-
+            If enabled, will store the information related to Unicast IPv4 Prefixes recieved from the peer.
+          type: boolean
+          default: false
+        unicast_ipv6_prefix:
+          description: |-
+            If enabled, will store the information related to Unicast IPv6 Prefixes recieved from the peer.
           type: boolean
           default: false
     Bgp.V4RouteRange:
@@ -3254,6 +3393,294 @@ components:
           default: true
       required:
       - name
+    BgpV4.EthernetSegment:
+      description: "Configuration for BGP Ethernet Segment ranges. Advertises following\
+        \ routes - \n\nType 4 - Ethernet Segment Route"
+      type: object
+      properties:
+        df_election:
+          description: |-
+            Designated Forwarder (DF) election configuration.
+          $ref: '#/components/schemas/Bgp.EthernetSegment.DfElection'
+        evis:
+          description: |-
+            This contains the list of EVIs.
+          type: array
+          items:
+            $ref: '#/components/schemas/BgpV4.EvpnEvis'
+        esi:
+          description: |-
+            10-octet Ethernet Segment Identifier (ESI) Example - For multi-home scenario nonZero ESI is '10000000000000000000' .
+          type: string
+          format: hex
+          default: '00000000000000000000'
+        active_mode:
+          description: |-
+            Single Active or All Active mode Redundancy mode selection for Multi-home.
+          type: string
+          enum:
+          - single_active
+          - all_active
+          default: all_active
+        esi_label:
+          description: "The label value to be advertised as ESI Label in ESI Label\
+            \ Extended Community. This is included in Ethernet Auto-discovery per\
+            \ ES Routes advertised by a router. "
+          type: integer
+          minimum: 0
+          maximum: 16777215
+          default: 0
+        advanced:
+          $ref: '#/components/schemas/Bgp.RouteAdvanced'
+        communities:
+          description: |-
+            Optional community settings.
+          type: array
+          items:
+            $ref: '#/components/schemas/Bgp.Community'
+        ext_communities:
+          description: |-
+            Optional Extended Community settings.
+          type: array
+          items:
+            $ref: '#/components/schemas/Bgp.ExtCommunity'
+        as_path:
+          description: |-
+            Optional AS PATH settings.
+          $ref: '#/components/schemas/Bgp.AsPath'
+    Bgp.EthernetSegment.DfElection:
+      description: |-
+        Configuration for Designated Forwarder (DF) election among the Provider Edge (PE) routers on the same Ethernet Segment.
+      type: object
+      properties:
+        election_timer:
+          description: |-
+            The DF election timer in seconds.
+          type: integer
+          minimum: 1
+          maximum: 300
+          default: 3
+    BgpV4.EvpnEvis:
+      description: "This contains a list of different flavors of EVPN. \nFor example\
+        \ EVPN over VXLAN or EVPN over MPLS etc to be configured per Ethernet segment.\
+        \ \nNeed to instantiate correct type of EVPN instance as per requirement."
+      type: object
+      properties:
+        choice:
+          type: string
+          enum:
+          - evi_vxlan
+          default: evi_vxlan
+        evi_vxlan:
+          description: "EVPN VXLAN instance to be configured per Ethernet Segment.\
+            \                  "
+          $ref: '#/components/schemas/BgpV4.EviVxlan'
+    BgpV4.EviVxlan:
+      description: "Configuration for BGP EVPN EVI. Advertises following routes -\
+        \ \n\nType 3 - Inclusive Multicast Ethernet Tag Route\n\nType 1 -  Ethernet\
+        \ Auto-discovery Route (Per EVI)\n\nType 1 -  Ethernet Auto-discovery Route\
+        \ (Per ES)"
+      type: object
+      properties:
+        broadcast_domains:
+          description: |-
+            This contains the list of Broadcast Domains to be configured per EVI.
+          type: array
+          items:
+            $ref: '#/components/schemas/BgpV4.EviVxlan.BroadcastDomain'
+        replication_type:
+          description: |-
+            This model only supports Ingress Replication
+          type: string
+          enum:
+          - ingress_replication
+          default: ingress_replication
+        pmsi_label:
+          description: |-
+            Downstream assigned VNI to be carried as Part of P-Multicast Service Interface Tunnel attribute (PMSI Tunnel Attribute) in Type 3 Inclusive Multicast Ethernet Tag Route.
+          type: integer
+          minimum: 0
+          maximum: 16777215
+          default: 16
+        ad_label:
+          description: |-
+            The Auto-discovery Route label (AD label) value, which gets advertised in the Ethernet Auto-discovery Route per <EVI, ESI>
+          type: integer
+          minimum: 0
+          maximum: 16777215
+          default: 0
+        route_distinguisher:
+          description: |-
+            Colon separated Extended Community value of 6 Bytes - "AS number: Value" identifying an EVI.            Example - for the as_2octet "60005:100".
+          $ref: '#/components/schemas/Bgp.RouteDistinguisher'
+        route_target_export:
+          description: "List of Layer 2 Virtual Network Identifier (L2VNI) export\
+            \ targets associated with this EVI. "
+          type: array
+          items:
+            $ref: '#/components/schemas/Bgp.RouteTarget'
+        route_target_import:
+          description: "List of L2VNI import targets associated with this EVI. "
+          type: array
+          items:
+            $ref: '#/components/schemas/Bgp.RouteTarget'
+        l3_route_target_export:
+          description: |-
+            List of Layer 3 Virtual Network Identifier (L3VNI) Export Route Targets.
+          type: array
+          items:
+            $ref: '#/components/schemas/Bgp.RouteTarget'
+        l3_route_target_import:
+          description: |-
+            List of L3VNI Import Route Targets.
+          type: array
+          items:
+            $ref: '#/components/schemas/Bgp.RouteTarget'
+        advanced:
+          $ref: '#/components/schemas/Bgp.RouteAdvanced'
+        communities:
+          description: |-
+            Optional community settings.
+          type: array
+          items:
+            $ref: '#/components/schemas/Bgp.Community'
+        ext_communities:
+          description: |-
+            Optional Extended Community settings.
+          type: array
+          items:
+            $ref: '#/components/schemas/Bgp.ExtCommunity'
+        as_path:
+          description: |-
+            Optional AS PATH settings.
+          $ref: '#/components/schemas/Bgp.AsPath'
+    Bgp.RouteDistinguisher:
+      description: |-
+        BGP Route Distinguisher.
+      type: object
+      properties:
+        rd_type:
+          description: "Route Distinguisher Type field of 2 Byte.\n - as_2octet: Two-Octet\
+            \ AS Specific Extended Community (RFC 4360).\n - ipv4_address: IPv4 Address\
+            \ Specific Extended Community (RFC 4360).\n - as_4octet:  4-Octet AS Specific\
+            \ Extended Community (RFC 5668). "
+          type: string
+          enum:
+          - as_2octet
+          - ipv4_address
+          - as_4octet
+          default: as_2octet
+        auto_config_rd_ip_addr:
+          description: |-
+            Allow to automatically configure RD IP address  from local ip.
+          type: boolean
+          default: false
+        rd_value:
+          description: |-
+            Colon separated Extended Community value of 6 Bytes - "AS number: Value".  Example - for the as_2octet or as_4octet "60005:100",  for ipv4_address "1.1.1.1:100"
+          type: string
+    Bgp.RouteTarget:
+      description: |-
+        BGP Route Target.
+      type: object
+      properties:
+        rt_type:
+          description: "Extended Community Type field of 2 Byte.\n - as_2octet: Two-Octet\
+            \ AS Specific Extended Community (RFC 4360).\n - ipv4_address: IPv4 Address\
+            \ Specific Extended Community (RFC 4360).\n - as_4octet:  4-Octet AS Specific\
+            \ Extended Community (RFC 5668). "
+          type: string
+          enum:
+          - as_2octet
+          - ipv4_address
+          - as_4octet
+        rt_value:
+          description: |-
+            Colon separated Extended Community value of 6 Bytes - AS number: Assigned Number.   Example - for the as_2octet or as_4octet "60005:100",  for ipv4_address "1.1.1.1:100"
+          type: string
+    BgpV4.EviVxlan.BroadcastDomain:
+      description: |-
+        Configuration for Broadcast Domains per EVI.
+      type: object
+      properties:
+        cmac_ip_range:
+          description: "This contains the list of Customer MAC/IP Ranges to be configured\
+            \ per Broadcast Domain. \n\nAdvertises following route - \nType 2 - MAC/IP\
+            \ Advertisement Route."
+          type: array
+          items:
+            $ref: '#/components/schemas/Bgp.CMacIpRange'
+        ethernet_tag_id:
+          description: |-
+            The Ethernet Tag ID of the Broadcast Domain.
+          type: integer
+          minimum: 0
+          maximum: 4294967295
+          default: 0
+        vlan_aware_service:
+          description: |-
+            VLAN-Aware service to be enabled or disabled.
+          type: boolean
+          default: false
+    Bgp.CMacIpRange:
+      description: "Configuration for MAC/IP Ranges per Broadcast Domain. \n\nAdvertises\
+        \ following route -\n\nType 2 - MAC/IP Advertisement Route."
+      type: object
+      properties:
+        mac_addresses:
+          description: "Host MAC address range per Broadcast Domain. "
+          $ref: '#/components/schemas/MACRouteAddress'
+        l2vni:
+          description: |-
+            Layer 2 Virtual Network Identifier (L2VNI) to be advertised with MAC/IP Advertisement Route (Type 2)
+          type: integer
+          minimum: 0
+          maximum: 16777215
+          default: 0
+        ipv4_addresses:
+          description: "Host IPv4 address range per Broadcast Domain.         "
+          $ref: '#/components/schemas/V4RouteAddress'
+        ipv6_addresses:
+          description: "Host IPv6 address range per Broadcast Domain.            \
+            \     "
+          $ref: '#/components/schemas/V6RouteAddress'
+        l3vni:
+          description: |-
+            Layer 3 Virtual Network Identifier (L3VNI) to be advertised with MAC/IP Advertisement Route (Type 2).
+          type: integer
+          minimum: 0
+          maximum: 16777215
+          default: 0
+        include_default_gateway:
+          description: |-
+            Include default Gateway Extended Community in MAC/IP Advertisement Route (Type 2).
+          type: boolean
+          default: false
+        advanced:
+          $ref: '#/components/schemas/Bgp.RouteAdvanced'
+        communities:
+          description: |-
+            Optional community settings.
+          type: array
+          items:
+            $ref: '#/components/schemas/Bgp.Community'
+        ext_communities:
+          description: |-
+            Optional Extended Community settings.
+          type: array
+          items:
+            $ref: '#/components/schemas/Bgp.ExtCommunity'
+        as_path:
+          description: |-
+            Optional AS PATH settings.
+          $ref: '#/components/schemas/Bgp.AsPath'
+        name:
+          description: |-
+            Globally unique name of an object. It also serves as the primary key for arrays of objects.
+          type: string
+          pattern: ^[\sa-zA-Z0-9-_()><\[\]]+$
+      required:
+      - name
     Bgp.V6Peer:
       x-status: under-review
       description: |-
@@ -3274,6 +3701,23 @@ components:
           format: ipv6
         segment_routing:
           $ref: '#/components/schemas/Bgp.V6SegmentRouting'
+        evpn_ethernet_segments:
+          description: "This contains the list of Ethernet Virtual Private Network\
+            \ (EVPN) Ethernet Segments (ES) Per BGP Peer for IPv6 Address Family Identifier\
+            \ (AFI).\n\nEach Ethernet Segment contains a list of EVPN Instances (EVIs)\
+            \ . \nEach EVI contains a list of Broadcast Domains. \nEach Broadcast\
+            \ Domain contains a list of MAC/IP Ranges. \n\n<Ethernet Segment, EVI,\
+            \ Broadcast Domain> is responsible for advertising Ethernet Auto-discovery\
+            \ Route Per EVI (Type 1).\n\n<Ethernet Segment, EVI> is responsible for\
+            \ advertising Ethernet Auto-discovery Route Per Ethernet Segment (Type\
+            \ 1).\n\n<Ethernet Segment, EVI, Broadcast Domain, MAC/IP> is responsible\
+            \ for advertising MAC/IP Advertisement Route (Type 2).\n\n<Ethernet Segment,\
+            \ EVI, Broadcast Domain> is responsible for advertising Inclusive Multicast\
+            \ Ethernet Tag Route (Type 3).\n\nEthernet Segment is responsible for\
+            \ advertising Ethernet Segment Route (Type 4)."
+          type: array
+          items:
+            $ref: '#/components/schemas/BgpV6.EthernetSegment'
         as_type:
           description: |-
             The type of BGP autonomous system. External BGP is used for BGP links between two or more autonomous systems (ebgp). Internal BGP is used within a single autonomous system (ibgp). BGP property defaults are aligned with this object defined as an internal BGP peer. If the as_type is specified as 'ebgp' then other properties will need to be specified as per an external BGP peer. Specifically, for 'ebgp',  'as_set_mode' attribute in 'as_path' field  in any Route Range should be changed from default value 'do_not_include_local_as' to any other value.
@@ -3297,6 +3741,8 @@ components:
           $ref: '#/components/schemas/Bgp.Advanced'
         capability:
           $ref: '#/components/schemas/Bgp.Capability'
+        learned_information_filter:
+          $ref: '#/components/schemas/Bgp.LearnedInformationFilter'
         v4_routes:
           description: |-
             Emulated BGPv4 route ranges.
@@ -3397,6 +3843,384 @@ components:
             TBD
           type: boolean
           default: false
+    BgpV6.EthernetSegment:
+      description: |-
+        Configuration for BGP Ethernet Segment ranges. Advertises following routes -
+
+        Type 4 - Ethernet Segment Route
+      type: object
+      properties:
+        df_election:
+          description: |-
+            Designated Forwarder (DF) election configuration.
+          $ref: '#/components/schemas/Bgp.EthernetSegment.DfElection'
+        evis:
+          description: |-
+            This contains the list of EVIs.
+          type: array
+          items:
+            $ref: '#/components/schemas/BgpV6.EvpnEvis'
+        esi:
+          description: |-
+            10-octet Ethernet Segment Identifier (ESI) Example - For multi-home scenario nonZero ESI is '10000000000000000000' .
+          type: string
+          format: hex
+          default: '00000000000000000000'
+        active_mode:
+          description: |-
+            Single Active or All Active mode Redundancy mode selection for Multi-home.
+          type: string
+          enum:
+          - single_active
+          - all_active
+          default: all_active
+        esi_label:
+          description: "The label value to be advertised as ESI Label in ESI Label\
+            \ Extended Community. This is included in Ethernet Auto-discovery per\
+            \ ES Routes advertised by a router. "
+          type: integer
+          minimum: 0
+          maximum: 16777215
+          default: 0
+        advanced:
+          $ref: '#/components/schemas/Bgp.RouteAdvanced'
+        communities:
+          description: |-
+            Optional community settings.
+          type: array
+          items:
+            $ref: '#/components/schemas/Bgp.Community'
+        ext_communities:
+          description: |-
+            Optional Extended Community settings.
+          type: array
+          items:
+            $ref: '#/components/schemas/Bgp.ExtCommunity'
+        as_path:
+          description: |-
+            Optional AS PATH settings.
+          $ref: '#/components/schemas/Bgp.AsPath'
+    BgpV6.EvpnEvis:
+      description: "This contains a list of different flavors of EVPN. \nFor example\
+        \ EVPN over VXLAN or EVPN over MPLS etc to be configured per Ethernet segment.\
+        \ \nNeed to instantiate correct type of EVPN instance as per requirement."
+      type: object
+      properties:
+        choice:
+          type: string
+          enum:
+          - evi_vxlan
+          default: evi_vxlan
+        evi_vxlan:
+          description: "EVPN VXLAN instance to be configured per Ethernet Segment.\
+            \                    "
+          $ref: '#/components/schemas/BgpV6.EviVxlan'
+    BgpV6.EviVxlan:
+      description: |-
+        Configuration for BGP EVPN EVI. Advertises following routes -
+
+        Type 3 - Inclusive Multicast Ethernet Tag Route
+
+        Type 1 -  Ethernet Auto-discovery Route (Per EVI)
+
+        Type 1 -  Ethernet Auto-discovery Route (Per ES)
+      type: object
+      properties:
+        broadcast_domains:
+          description: |-
+            This contains the list of Broadcast Domains to be configured per EVI.
+          type: array
+          items:
+            $ref: '#/components/schemas/BgpV6.EviVxlan.BroadcastDomain'
+        replication_type:
+          description: |-
+            This model only supports Ingress Replication
+          type: string
+          enum:
+          - ingress_replication
+          default: ingress_replication
+        pmsi_label:
+          description: |-
+            Downstream assigned VNI to be carried as Part of P-Multicast Service Interface Tunnel attribute (PMSI Tunnel Attribute) in Type 3 Inclusive Multicast Ethernet Tag Route.
+          type: integer
+          minimum: 0
+          maximum: 16777215
+          default: 16
+        ad_label:
+          description: |-
+            The Auto-discovery Route label (AD label) value, which gets advertised in the Ethernet Auto-discovery Route per <EVI, ESI>
+          type: integer
+          minimum: 0
+          maximum: 16777215
+          default: 0
+        route_distinguisher:
+          description: |-
+            Colon separated Extended Community value of 6 Bytes - "AS number: Value" identifying an EVI.            Example - for the as_2octet "60005:100".
+          $ref: '#/components/schemas/Bgp.RouteDistinguisher'
+        route_target_export:
+          description: "List of Layer 2 Virtual Network Identifier (L2VNI) export\
+            \ targets associated with this EVI. "
+          type: array
+          items:
+            $ref: '#/components/schemas/Bgp.RouteTarget'
+        route_target_import:
+          description: "List of L2VNI import targets associated with this EVI. "
+          type: array
+          items:
+            $ref: '#/components/schemas/Bgp.RouteTarget'
+        l3_route_target_export:
+          description: |-
+            List of Layer 3 Virtual Network Identifier (L3VNI) Export Route Targets.
+          type: array
+          items:
+            $ref: '#/components/schemas/Bgp.RouteTarget'
+        l3_route_target_import:
+          description: |-
+            List of L3VNI Import Route Targets.
+          type: array
+          items:
+            $ref: '#/components/schemas/Bgp.RouteTarget'
+        advanced:
+          $ref: '#/components/schemas/Bgp.RouteAdvanced'
+        communities:
+          description: |-
+            Optional community settings.
+          type: array
+          items:
+            $ref: '#/components/schemas/Bgp.Community'
+        ext_communities:
+          description: |-
+            Optional Extended Community settings.
+          type: array
+          items:
+            $ref: '#/components/schemas/Bgp.ExtCommunity'
+        as_path:
+          description: |-
+            Optional AS PATH settings.
+          $ref: '#/components/schemas/Bgp.AsPath'
+    BgpV6.EviVxlan.BroadcastDomain:
+      description: |-
+        Configuration for Broadcast Domains per EVI.
+      type: object
+      properties:
+        cmac_ip_range:
+          description: "This contains the list of Customer MAC/IP Ranges to be configured\
+            \ per Broadcast Domain. \n\nAdvertises following route - \nType 2 - MAC/IP\
+            \ Advertisement Route."
+          type: array
+          items:
+            $ref: '#/components/schemas/Bgp.CMacIpRange'
+        ethernet_tag_id:
+          description: |-
+            The Ethernet Tag ID of the Broadcast Domain.
+          type: integer
+          minimum: 0
+          maximum: 4294967295
+          default: 0
+        vlan_aware_service:
+          description: |-
+            VLAN-Aware service to be enabled or disabled.
+          type: boolean
+          default: false
+    Device.Vxlan:
+      properties:
+        v4_tunnels:
+          description: |-
+            IPv4 VXLAN Tunnels
+          type: array
+          items:
+            $ref: '#/components/schemas/Vxlan.V4Tunnel'
+        v6_tunnels:
+          description: |-
+            IPv6 VXLAN Tunnels
+          type: array
+          items:
+            $ref: '#/components/schemas/Vxlan.V6Tunnel'
+    Vxlan.V4Tunnel:
+      description: |-
+        Configuration and operational state parameters relating to IPv4 VXLAN tunnel end-point interface.
+      type: object
+      required:
+      - source_interface
+      - vni
+      - name
+      properties:
+        source_interface:
+          description: |
+            Determines the source interface.
+
+            x-constraint:
+            - /components/schemas/Device.Ipv4/properties/name
+            - /components/schemas/Device.Ipv4Loopback/properties/name
+          type: string
+          x-constraint:
+          - /components/schemas/Device.Ipv4/properties/name
+          - /components/schemas/Device.Ipv4Loopback/properties/name
+        destination_ip_mode:
+          $ref: '#/components/schemas/Vxlan.V4Tunnel.DestinationIPMode'
+        vni:
+          description: |-
+            VXLAN Network Identifier (VNI) to distinguish network instances on the wire
+          type: integer
+          minimum: 1
+          maximum: 16777215
+        name:
+          description: |-
+            Globally unique name of an object. It also serves as the primary key for arrays of objects.
+          type: string
+          pattern: ^[\sa-zA-Z0-9-_()><\[\]]+$
+    Vxlan.V6Tunnel:
+      description: |-
+        Configuration and operational state parameters relating to IPv6 VXLAN tunnel end-point interface.
+      type: object
+      required:
+      - source_interface
+      - vni
+      - name
+      properties:
+        source_interface:
+          description: |
+            Determines the source interface.
+
+            x-constraint:
+            - /components/schemas/Device.Ipv6/properties/name
+            - /components/schemas/Device.Ipv6Loopback/properties/name
+          type: string
+          x-constraint:
+          - /components/schemas/Device.Ipv6/properties/name
+          - /components/schemas/Device.Ipv6Loopback/properties/name
+        destination_ip_mode:
+          $ref: '#/components/schemas/Vxlan.V6Tunnel.DestinationIPMode'
+        vni:
+          description: |-
+            VXLAN Network Identifier (VNI) to distinguish network instances on the wire
+          type: integer
+          minimum: 1
+          maximum: 16777215
+        name:
+          description: |-
+            Globally unique name of an object. It also serves as the primary key for arrays of objects.
+          type: string
+          pattern: ^[\sa-zA-Z0-9-_()><\[\]]+$
+    Vxlan.V4Tunnel.DestinationIPMode:
+      description: |-
+        Communication mode between the VTEPs, either unicast or multicast.
+      type: object
+      properties:
+        choice:
+          description: |-
+            unicast or multicast
+          type: string
+          enum:
+          - unicast
+          - multicast
+          default: multicast
+        unicast:
+          $ref: '#/components/schemas/Vxlan.V4Tunnel.DestinationIPMode.Unicast'
+        multicast:
+          $ref: '#/components/schemas/Vxlan.V4Tunnel.DestinationIPMode.Multicast'
+    Vxlan.V6Tunnel.DestinationIPMode:
+      description: |-
+        Communication mode between the VTEPs, either unicast or multicast.
+      type: object
+      properties:
+        choice:
+          description: |-
+            unicast or multicast
+          type: string
+          enum:
+          - unicast
+          - multicast
+          default: multicast
+        unicast:
+          $ref: '#/components/schemas/Vxlan.V6Tunnel.DestinationIPMode.Unicast'
+        multicast:
+          $ref: '#/components/schemas/Vxlan.V6Tunnel.DestinationIPMode.Multicast'
+    Vxlan.V4Tunnel.DestinationIPMode.Unicast:
+      properties:
+        vteps:
+          description: |-
+            List of VTEPs for member VNI(VXLAN Network Identifier)
+          type: array
+          items:
+            $ref: '#/components/schemas/Vxlan.V4Tunnel.DestinationIPMode.Unicast.Vtep'
+    Vxlan.V6Tunnel.DestinationIPMode.Unicast:
+      properties:
+        vteps:
+          description: |-
+            List of VTEPs for member VNI(VXLAN Network Identifier)
+          type: array
+          items:
+            $ref: '#/components/schemas/Vxlan.V6Tunnel.DestinationIPMode.Unicast.Vtep'
+    Vxlan.Tunnel.DestinationIPMode.Unicast.ArpSuppressionCache:
+      description: |-
+        Each VTEP maintains an ARP suppression cache table for known IP hosts and their associated MAC addresses in the VNI segment.  When an end host in the VNI sends an ARP request for another end-host IP address,  its local VTEP intercepts the ARP request and checks for the ARP-resolved IP address in its ARP suppression cache table.  If it finds a match, the local VTEP sends an ARP response on behalf of the remote end host.
+      type: object
+      properties:
+        remote_vm_mac:
+          description: |-
+            Remote VM MAC address bound to Remote VM IPv4 address
+          type: string
+          format: mac
+        remote_vm_ipv4:
+          description: |-
+            Remote VM IPv4 address
+          type: string
+          format: ipv4
+    Vxlan.V4Tunnel.DestinationIPMode.Unicast.Vtep:
+      description: |-
+        VTEP (VXLAN Tunnel End Point (VTEP)) parameters
+        DestinationIPMode Unicast VTEP Base
+      type: object
+      properties:
+        remote_vtep_address:
+          description: |-
+            Remote VXLAN Tunnel End Point address
+          type: string
+          format: ipv4
+        arp_suppression_cache:
+          description: |-
+            Each VTEP maintains an ARP suppression cache table for known IP hosts and their associated MAC addresses in the VNI segment.  When an end host in the VNI sends an ARP request for another end-host IP address,  its local VTEP intercepts the ARP request and checks for the ARP-resolved IP address in its ARP suppression cache table.  If it finds a match, the local VTEP sends an ARP response on behalf of the remote end host.
+          type: array
+          items:
+            $ref: '#/components/schemas/Vxlan.Tunnel.DestinationIPMode.Unicast.ArpSuppressionCache'
+    Vxlan.V6Tunnel.DestinationIPMode.Unicast.Vtep:
+      description: |-
+        VTEP (VXLAN Tunnel End Point (VTEP)) parameters
+        DestinationIPMode Unicast VTEP Base
+      type: object
+      properties:
+        remote_vtep_address:
+          description: |-
+            Remote VXLAN Tunnel End Point address
+          type: string
+          format: ipv6
+        arp_suppression_cache:
+          description: |-
+            Each VTEP maintains an ARP suppression cache table for known IP hosts and their associated MAC addresses in the VNI segment.  When an end host in the VNI sends an ARP request for another end-host IP address,  its local VTEP intercepts the ARP request and checks for the ARP-resolved IP address in its ARP suppression cache table.  If it finds a match, the local VTEP sends an ARP response on behalf of the remote end host.
+          type: array
+          items:
+            $ref: '#/components/schemas/Vxlan.Tunnel.DestinationIPMode.Unicast.ArpSuppressionCache'
+    Vxlan.V4Tunnel.DestinationIPMode.Multicast:
+      description: |-
+        Multicast Group address for member VNI(VXLAN Network Identifier)
+      type: object
+      properties:
+        address:
+          description: |-
+            IPv4 Multicast address
+          type: string
+          format: ipv4
+    Vxlan.V6Tunnel.DestinationIPMode.Multicast:
+      description: |-
+        Multicast Group address for member VNI(VXLAN Network Identifier)
+      type: object
+      properties:
+        address:
+          description: |-
+            IPv6 Multicast address
+          type: string
+          format: ipv6
     Flow:
       description: |-
         A high level data plane traffic flow.
@@ -3525,6 +4349,7 @@ components:
           - /components/schemas/Device.Ipv6/properties/name
           - /components/schemas/Bgp.V4RouteRange/properties/name
           - /components/schemas/Bgp.V6RouteRange/properties/name
+          - /components/schemas/Bgp.CMacIpRange/properties/name
           example:
           - Eth 1
           - Eth 2
@@ -3542,6 +4367,7 @@ components:
             - /components/schemas/Device.Ipv6/properties/name
             - /components/schemas/Bgp.V4RouteRange/properties/name
             - /components/schemas/Bgp.V6RouteRange/properties/name
+            - /components/schemas/Bgp.CMacIpRange/properties/name
         rx_names:
           type: array
           items:
@@ -3554,6 +4380,7 @@ components:
           - /components/schemas/Device.Ipv6/properties/name
           - /components/schemas/Bgp.V4RouteRange/properties/name
           - /components/schemas/Bgp.V6RouteRange/properties/name
+          - /components/schemas/Bgp.CMacIpRange/properties/name
           example:
           - Eth 1
           - Eth 2
@@ -3571,6 +4398,7 @@ components:
             - /components/schemas/Device.Ipv6/properties/name
             - /components/schemas/Bgp.V4RouteRange/properties/name
             - /components/schemas/Bgp.V6RouteRange/properties/name
+            - /components/schemas/Bgp.CMacIpRange/properties/name
     Flow.Header:
       description: |-
         Configuration for all traffic packet headers
@@ -3599,6 +4427,7 @@ components:
           - icmpv6
           - ppp
           - igmpv1
+          - mpls
           default: ethernet
         custom:
           $ref: '#/components/schemas/Flow.Custom'
@@ -3636,6 +4465,8 @@ components:
           $ref: '#/components/schemas/Flow.Ppp'
         igmpv1:
           $ref: '#/components/schemas/Flow.Igmpv1'
+        mpls:
+          $ref: '#/components/schemas/Flow.Mpls'
     Flow.Custom:
       type: object
       description: |-
@@ -4069,6 +4900,19 @@ components:
           $ref: '#/components/schemas/Pattern.Flow.Igmpv1.Checksum'
         group_address:
           $ref: '#/components/schemas/Pattern.Flow.Igmpv1.GroupAddress'
+    Flow.Mpls:
+      description: |-
+        Mpls packet header
+      type: object
+      properties:
+        label:
+          $ref: '#/components/schemas/Pattern.Flow.Mpls.Label'
+        traffic_class:
+          $ref: '#/components/schemas/Pattern.Flow.Mpls.TrafficClass'
+        bottom_of_stack:
+          $ref: '#/components/schemas/Pattern.Flow.Mpls.BottomOfStack'
+        time_to_live:
+          $ref: '#/components/schemas/Pattern.Flow.Mpls.TimeToLive'
     Flow.Size:
       description: |-
         The frame size which overrides the total length of the packet
@@ -4573,7 +5417,7 @@ components:
           - down
     Transmit.State:
       description: |-
-        Control the transmit state of flows.
+        Flow transmit state.
       type: object
       required:
       - state
@@ -4581,6 +5425,7 @@ components:
         flow_names:
           description: |
             The names of flows to which the transmit state will be applied to. If the list of flow_names is empty or null the state will be applied to all configured flows.
+            If the list is not empty any flow that is not included in the list of flow_names MUST be ignored and not included in the state change.
 
             x-constraint:
             - /components/schemas/Flow/properties/name
@@ -4592,11 +5437,16 @@ components:
         state:
           description: |-
             The transmit state.
+            If the value of the state property is 'start' then all flows defined by the 'flow_names' property will be started and the metric counters MUST be cleared prior to starting the flow(s).
+            If the value of the state property is 'stop' then all flows defined by the 'flow_names' property will be stopped and the metric counters MUST NOT be cleared.
+            If the value of the state property is 'pause' then all flows defined by the 'flow_names' property will be paused and the metric counters MUST NOT be cleared.
+            If the value of the state property is 'resume' then any paused flows defined by the 'flow_names' property will start transmit at the point at which they were paused. Any flow that is stopped will start transmit at the beginning of the flow. The flow(s) MUST NOT have their metric counters cleared.
           type: string
           enum:
           - start
           - stop
           - pause
+          - resume
     Capture.State:
       description: |-
         Control port capture state
@@ -4606,7 +5456,8 @@ components:
       properties:
         port_names:
           description: |
-            The name of ports to start capturing packets on. An empty or null list will control all port objects.
+            The names of ports to which the capture state will be applied to. If the list of port_names is empty or null the state will be applied to all configured ports.
+            If the list is not empty any port that is not included in the list of port_names MUST be ignored and not included in the state change.
 
             x-constraint:
             - /components/schemas/Port/properties/name
@@ -4624,7 +5475,7 @@ components:
           - stop
     Flows.Update:
       description: |-
-        A container of flows with associated properties to be updated without affecting the transmit state
+        A container of flows with associated properties to be updated without affecting the flows current transmit state.
       type: object
       required:
       - property_names
@@ -4632,7 +5483,7 @@ components:
       properties:
         property_names:
           description: |-
-            Flow properties to be updated without affecting the transmit state
+            Flow properties to be updated without affecting the transmit state.
           type: array
           items:
             type: string
@@ -4659,12 +5510,16 @@ components:
             x-constraint:
             - /components/schemas/Bgp.V4RouteRange/properties/name
             - /components/schemas/Bgp.V6RouteRange/properties/name
+            - /components/schemas/Isis.V4RouteRange/properties/name
+            - /components/schemas/Isis.V6RouteRange/properties/name
           type: array
           items:
             type: string
           x-constraint:
           - /components/schemas/Bgp.V4RouteRange/properties/name
           - /components/schemas/Bgp.V6RouteRange/properties/name
+          - /components/schemas/Isis.V4RouteRange/properties/name
+          - /components/schemas/Isis.V6RouteRange/properties/name
         state:
           description: |-
             Route specific states
@@ -4697,6 +5552,17 @@ components:
           enum:
           - start
           - stop
+    Device.State:
+      description: |-
+        Sets attributes for the requested state/actions to be performed on device(s)
+      type: object
+      properties:
+        choice:
+          type: string
+          enum:
+          - lacp_member_state
+        lacp_member_state:
+          $ref: '#/components/schemas/LacpMember.State'
     Ping:
       type: object
       properties:
@@ -4781,6 +5647,31 @@ components:
           - success
           - failure
           default: failure
+    LacpMember.State:
+      description: |-
+        Set LACP state for specified LAG Member Port(s).
+      type: object
+      required:
+      - state
+      properties:
+        lag_member_port_names:
+          description: |
+            The names of LAG members (ports) for which the state has to be applied. An empty or null list will control all LAG members.
+
+            x-constraint:
+            - /components/schemas/Port/properties/name
+          type: array
+          items:
+            type: string
+          x-constraint:
+          - /components/schemas/Port/properties/name
+        state:
+          description: |-
+            The LACP Member admin state. 'up' will start transmission of LACPDUs on selected member ports. 'down' will send a LACPDU with 'sync' flag unset and then stop transmission of LACPDUs on selected member ports.
+          type: string
+          enum:
+          - up
+          - down
     Convergence.Request:
       description: |-
         The request container for flow metrics or flow convergence measurements.
@@ -5363,9 +6254,10 @@ components:
           enum:
           - value
           - values
+          - auto
           - increment
           - decrement
-          default: value
+          default: auto
         value:
           type: string
           default: 00:00:00:00:00:00
@@ -5377,6 +6269,11 @@ components:
           default:
           - 00:00:00:00:00:00
           format: mac
+        auto:
+          type: string
+          enum:
+          - auto
+          default: auto
         metric_group:
           description: |-
             A unique name is used to indicate to the system that the field may extend the metric row key and create an aggregate metric row for every unique value. To have metric group columns appear in the flow metric rows the flow metric request allows for the metric_group value to be specified as part of the request.
@@ -5907,9 +6804,10 @@ components:
           enum:
           - value
           - values
+          - auto
           - increment
           - decrement
-          default: value
+          default: auto
         value:
           type: integer
           default: 0
@@ -5923,6 +6821,11 @@ components:
           - 0
           minimum: 0
           maximum: 16777215
+        auto:
+          type: string
+          enum:
+          - auto
+          default: auto
         metric_group:
           description: |-
             A unique name is used to indicate to the system that the field may extend the metric row key and create an aggregate metric row for every unique value. To have metric group columns appear in the flow metric rows the flow metric request allows for the metric_group value to be specified as part of the request.
@@ -7464,9 +8367,10 @@ components:
           enum:
           - value
           - values
+          - auto
           - increment
           - decrement
-          default: value
+          default: auto
         value:
           type: integer
           default: 59
@@ -7480,6 +8384,11 @@ components:
           - 59
           minimum: 0
           maximum: 255
+        auto:
+          type: string
+          enum:
+          - auto
+          default: auto
         metric_group:
           description: |-
             A unique name is used to indicate to the system that the field may extend the metric row key and create an aggregate metric row for every unique value. To have metric group columns appear in the flow metric rows the flow metric request allows for the metric_group value to be specified as part of the request.
@@ -12315,10 +13224,12 @@ components:
       properties:
         start:
           type: integer
+          default: 33
           minimum: 0
           maximum: 65535
         step:
           type: integer
+          default: 1
           minimum: 0
           maximum: 65535
         count:
@@ -12340,12 +13251,15 @@ components:
           default: auto
         value:
           type: integer
+          default: 33
           minimum: 0
           maximum: 65535
         values:
           type: array
           items:
             type: integer
+          default:
+          - 33
           minimum: 0
           maximum: 65535
         auto:
@@ -12600,3 +13514,217 @@ components:
           $ref: '#/components/schemas/Pattern.Flow.Igmpv1.GroupAddress.Counter'
         decrement:
           $ref: '#/components/schemas/Pattern.Flow.Igmpv1.GroupAddress.Counter'
+    Pattern.Flow.Mpls.Label.Counter:
+      description: |-
+        integer counter pattern
+      type: object
+      properties:
+        start:
+          type: integer
+          default: 16
+          minimum: 0
+          maximum: 1048575
+        step:
+          type: integer
+          default: 1
+          minimum: 0
+          maximum: 1048575
+        count:
+          type: integer
+          default: 1
+    Pattern.Flow.Mpls.Label:
+      description: |-
+        Label of routers
+      type: object
+      properties:
+        choice:
+          type: string
+          enum:
+          - value
+          - values
+          - auto
+          - increment
+          - decrement
+          default: auto
+        value:
+          type: integer
+          default: 16
+          minimum: 0
+          maximum: 1048575
+        values:
+          type: array
+          items:
+            type: integer
+          default:
+          - 16
+          minimum: 0
+          maximum: 1048575
+        auto:
+          type: string
+          enum:
+          - auto
+          default: auto
+        metric_group:
+          description: |-
+            A unique name is used to indicate to the system that the field may extend the metric row key and create an aggregate metric row for every unique value. To have metric group columns appear in the flow metric rows the flow metric request allows for the metric_group value to be specified as part of the request.
+          type: string
+        increment:
+          $ref: '#/components/schemas/Pattern.Flow.Mpls.Label.Counter'
+        decrement:
+          $ref: '#/components/schemas/Pattern.Flow.Mpls.Label.Counter'
+    Pattern.Flow.Mpls.TrafficClass.Counter:
+      description: |-
+        integer counter pattern
+      type: object
+      properties:
+        start:
+          type: integer
+          default: 0
+          minimum: 0
+          maximum: 7
+        step:
+          type: integer
+          default: 1
+          minimum: 0
+          maximum: 7
+        count:
+          type: integer
+          default: 1
+    Pattern.Flow.Mpls.TrafficClass:
+      description: |-
+        Traffic class
+      type: object
+      properties:
+        choice:
+          type: string
+          enum:
+          - value
+          - values
+          - increment
+          - decrement
+          default: value
+        value:
+          type: integer
+          default: 0
+          minimum: 0
+          maximum: 7
+        values:
+          type: array
+          items:
+            type: integer
+          default:
+          - 0
+          minimum: 0
+          maximum: 7
+        metric_group:
+          description: |-
+            A unique name is used to indicate to the system that the field may extend the metric row key and create an aggregate metric row for every unique value. To have metric group columns appear in the flow metric rows the flow metric request allows for the metric_group value to be specified as part of the request.
+          type: string
+        increment:
+          $ref: '#/components/schemas/Pattern.Flow.Mpls.TrafficClass.Counter'
+        decrement:
+          $ref: '#/components/schemas/Pattern.Flow.Mpls.TrafficClass.Counter'
+    Pattern.Flow.Mpls.BottomOfStack.Counter:
+      description: |-
+        integer counter pattern
+      type: object
+      properties:
+        start:
+          type: integer
+          default: 1
+          minimum: 0
+          maximum: 1
+        step:
+          type: integer
+          default: 1
+          minimum: 0
+          maximum: 1
+        count:
+          type: integer
+          default: 1
+    Pattern.Flow.Mpls.BottomOfStack:
+      description: |-
+        Bottom of stack
+      type: object
+      properties:
+        choice:
+          type: string
+          enum:
+          - value
+          - values
+          - increment
+          - decrement
+          default: value
+        value:
+          type: integer
+          default: 1
+          minimum: 0
+          maximum: 1
+        values:
+          type: array
+          items:
+            type: integer
+          default:
+          - 1
+          minimum: 0
+          maximum: 1
+        metric_group:
+          description: |-
+            A unique name is used to indicate to the system that the field may extend the metric row key and create an aggregate metric row for every unique value. To have metric group columns appear in the flow metric rows the flow metric request allows for the metric_group value to be specified as part of the request.
+          type: string
+        increment:
+          $ref: '#/components/schemas/Pattern.Flow.Mpls.BottomOfStack.Counter'
+        decrement:
+          $ref: '#/components/schemas/Pattern.Flow.Mpls.BottomOfStack.Counter'
+    Pattern.Flow.Mpls.TimeToLive.Counter:
+      description: |-
+        integer counter pattern
+      type: object
+      properties:
+        start:
+          type: integer
+          default: 64
+          minimum: 0
+          maximum: 255
+        step:
+          type: integer
+          default: 1
+          minimum: 0
+          maximum: 255
+        count:
+          type: integer
+          default: 1
+    Pattern.Flow.Mpls.TimeToLive:
+      description: |-
+        Time to live
+      type: object
+      properties:
+        choice:
+          type: string
+          enum:
+          - value
+          - values
+          - increment
+          - decrement
+          default: value
+        value:
+          type: integer
+          default: 64
+          minimum: 0
+          maximum: 255
+        values:
+          type: array
+          items:
+            type: integer
+          default:
+          - 64
+          minimum: 0
+          maximum: 255
+        metric_group:
+          description: |-
+            A unique name is used to indicate to the system that the field may extend the metric row key and create an aggregate metric row for every unique value. To have metric group columns appear in the flow metric rows the flow metric request allows for the metric_group value to be specified as part of the request.
+          type: string
+        increment:
+          $ref: '#/components/schemas/Pattern.Flow.Mpls.TimeToLive.Counter'
+        decrement:
+          $ref: '#/components/schemas/Pattern.Flow.Mpls.TimeToLive.Counter'
