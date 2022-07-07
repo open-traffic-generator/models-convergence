@@ -6855,11 +6855,10 @@
                         "format": "mac"
                     },
                     "auto": {
+                        "description": "The OTG implementation can provide a system generated\nvalue for this property. If the OTG is unable to generate a value\nthe default value must be used.",
                         "type": "string",
-                        "enum": [
-                            "auto"
-                        ],
-                        "default": "auto"
+                        "default": "00:00:00:00:00:00",
+                        "format": "mac"
                     },
                     "metric_group": {
                         "description": "A unique name is used to indicate to the system that the field may extend the metric row key and create an aggregate metric row for every unique value. To have metric group columns appear in the flow metric rows the flow metric request allows for the metric_group value to be specified as part of the request.",
@@ -6996,11 +6995,11 @@
                         "maximum": 65535
                     },
                     "auto": {
-                        "type": "string",
-                        "enum": [
-                            "auto"
-                        ],
-                        "default": "auto"
+                        "description": "The OTG implementation can provide a system generated\nvalue for this property. If the OTG is unable to generate a value\nthe default value must be used.",
+                        "type": "integer",
+                        "default": 65535,
+                        "minimum": 0,
+                        "maximum": 65535
                     },
                     "metric_group": {
                         "description": "A unique name is used to indicate to the system that the field may extend the metric row key and create an aggregate metric row for every unique value. To have metric group columns appear in the flow metric rows the flow metric request allows for the metric_group value to be specified as part of the request.",
@@ -7545,11 +7544,11 @@
                         "maximum": 16777215
                     },
                     "auto": {
-                        "type": "string",
-                        "enum": [
-                            "auto"
-                        ],
-                        "default": "auto"
+                        "description": "The OTG implementation can provide a system generated\nvalue for this property. If the OTG is unable to generate a value\nthe default value must be used.",
+                        "type": "integer",
+                        "default": 0,
+                        "minimum": 0,
+                        "maximum": 16777215
                     },
                     "metric_group": {
                         "description": "A unique name is used to indicate to the system that the field may extend the metric row key and create an aggregate metric row for every unique value. To have metric group columns appear in the flow metric rows the flow metric request allows for the metric_group value to be specified as part of the request.",
@@ -7748,11 +7747,11 @@
                         "maximum": 15
                     },
                     "auto": {
-                        "type": "string",
-                        "enum": [
-                            "auto"
-                        ],
-                        "default": "auto"
+                        "description": "The OTG implementation can provide a system generated\nvalue for this property. If the OTG is unable to generate a value\nthe default value must be used.",
+                        "type": "integer",
+                        "default": 5,
+                        "minimum": 0,
+                        "maximum": 15
                     },
                     "metric_group": {
                         "description": "A unique name is used to indicate to the system that the field may extend the metric row key and create an aggregate metric row for every unique value. To have metric group columns appear in the flow metric rows the flow metric request allows for the metric_group value to be specified as part of the request.",
@@ -7821,11 +7820,11 @@
                         "maximum": 65535
                     },
                     "auto": {
-                        "type": "string",
-                        "enum": [
-                            "auto"
-                        ],
-                        "default": "auto"
+                        "description": "The OTG implementation can provide a system generated\nvalue for this property. If the OTG is unable to generate a value\nthe default value must be used.",
+                        "type": "integer",
+                        "default": 46,
+                        "minimum": 0,
+                        "maximum": 65535
                     },
                     "metric_group": {
                         "description": "A unique name is used to indicate to the system that the field may extend the metric row key and create an aggregate metric row for every unique value. To have metric group columns appear in the flow metric rows the flow metric request allows for the metric_group value to be specified as part of the request.",
@@ -8284,11 +8283,11 @@
                         "maximum": 255
                     },
                     "auto": {
-                        "type": "string",
-                        "enum": [
-                            "auto"
-                        ],
-                        "default": "auto"
+                        "description": "The OTG implementation can provide a system generated\nvalue for this property. If the OTG is unable to generate a value\nthe default value must be used.",
+                        "type": "integer",
+                        "default": 61,
+                        "minimum": 0,
+                        "maximum": 255
                     },
                     "metric_group": {
                         "description": "A unique name is used to indicate to the system that the field may extend the metric row key and create an aggregate metric row for every unique value. To have metric group columns appear in the flow metric rows the flow metric request allows for the metric_group value to be specified as part of the request.",
@@ -8305,9 +8304,6 @@
             "Pattern.Flow.Ipv4.HeaderChecksum": {
                 "description": "Header checksum",
                 "type": "object",
-                "required": [
-                    "choice"
-                ],
                 "properties": {
                     "choice": {
                         "description": "The type of checksum",
@@ -9402,11 +9398,11 @@
                         "maximum": 65535
                     },
                     "auto": {
-                        "type": "string",
-                        "enum": [
-                            "auto"
-                        ],
-                        "default": "auto"
+                        "description": "The OTG implementation can provide a system generated\nvalue for this property. If the OTG is unable to generate a value\nthe default value must be used.",
+                        "type": "integer",
+                        "default": 0,
+                        "minimum": 0,
+                        "maximum": 65535
                     },
                     "metric_group": {
                         "description": "A unique name is used to indicate to the system that the field may extend the metric row key and create an aggregate metric row for every unique value. To have metric group columns appear in the flow metric rows the flow metric request allows for the metric_group value to be specified as part of the request.",
@@ -9488,11 +9484,11 @@
                         "maximum": 255
                     },
                     "auto": {
-                        "type": "string",
-                        "enum": [
-                            "auto"
-                        ],
-                        "default": "auto"
+                        "description": "The OTG implementation can provide a system generated\nvalue for this property. If the OTG is unable to generate a value\nthe default value must be used.",
+                        "type": "integer",
+                        "default": 59,
+                        "minimum": 0,
+                        "maximum": 255
                     },
                     "metric_group": {
                         "description": "A unique name is used to indicate to the system that the field may extend the metric row key and create an aggregate metric row for every unique value. To have metric group columns appear in the flow metric rows the flow metric request allows for the metric_group value to be specified as part of the request.",
@@ -12045,9 +12041,6 @@
             "Pattern.Flow.Udp.Checksum": {
                 "description": "UDP checksum",
                 "type": "object",
-                "required": [
-                    "choice"
-                ],
                 "properties": {
                     "choice": {
                         "description": "The type of checksum",
@@ -12346,9 +12339,6 @@
             "Pattern.Flow.Gre.Checksum": {
                 "description": "Optional checksum of GRE header and payload. Only present if the checksum_present bit is set.",
                 "type": "object",
-                "required": [
-                    "choice"
-                ],
                 "properties": {
                     "choice": {
                         "description": "The type of checksum",
@@ -14733,9 +14723,6 @@
             "Pattern.Flow.Icmp.Echo.Checksum": {
                 "description": "ICMP checksum",
                 "type": "object",
-                "required": [
-                    "choice"
-                ],
                 "properties": {
                     "choice": {
                         "description": "The type of checksum",
@@ -14896,9 +14883,6 @@
             "Pattern.Flow.Icmp.Common.Checksum": {
                 "description": "ICMP checksum",
                 "type": "object",
-                "required": [
-                    "choice"
-                ],
                 "properties": {
                     "choice": {
                         "description": "The type of checksum",
@@ -15327,9 +15311,6 @@
             "Pattern.Flow.Icmpv6.Echo.Checksum": {
                 "description": "ICMPv6 checksum",
                 "type": "object",
-                "required": [
-                    "choice"
-                ],
                 "properties": {
                     "choice": {
                         "description": "The type of checksum",
@@ -15360,9 +15341,6 @@
             "Pattern.Flow.Icmpv6.Common.Checksum": {
                 "description": "ICMPv6 checksum",
                 "type": "object",
-                "required": [
-                    "choice"
-                ],
                 "properties": {
                     "choice": {
                         "description": "The type of checksum",
@@ -15587,11 +15565,11 @@
                         "maximum": 65535
                     },
                     "auto": {
-                        "type": "string",
-                        "enum": [
-                            "auto"
-                        ],
-                        "default": "auto"
+                        "description": "The OTG implementation can provide a system generated\nvalue for this property. If the OTG is unable to generate a value\nthe default value must be used.",
+                        "type": "integer",
+                        "default": 33,
+                        "minimum": 0,
+                        "maximum": 65535
                     },
                     "metric_group": {
                         "description": "A unique name is used to indicate to the system that the field may extend the metric row key and create an aggregate metric row for every unique value. To have metric group columns appear in the flow metric rows the flow metric request allows for the metric_group value to be specified as part of the request.",
@@ -15811,9 +15789,6 @@
             "Pattern.Flow.Igmpv1.Checksum": {
                 "description": "Checksum",
                 "type": "object",
-                "required": [
-                    "choice"
-                ],
                 "properties": {
                     "choice": {
                         "description": "The type of checksum",
@@ -15957,11 +15932,11 @@
                         "maximum": 1048575
                     },
                     "auto": {
-                        "type": "string",
-                        "enum": [
-                            "auto"
-                        ],
-                        "default": "auto"
+                        "description": "The OTG implementation can provide a system generated\nvalue for this property. If the OTG is unable to generate a value\nthe default value must be used.",
+                        "type": "integer",
+                        "default": 16,
+                        "minimum": 0,
+                        "maximum": 1048575
                     },
                     "metric_group": {
                         "description": "A unique name is used to indicate to the system that the field may extend the metric row key and create an aggregate metric row for every unique value. To have metric group columns appear in the flow metric rows the flow metric request allows for the metric_group value to be specified as part of the request.",
