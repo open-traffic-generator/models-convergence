@@ -1,1 +1,1 @@
-openapiart==0.1.20
+openapiart==0.1.45
