@@ -9,13 +9,26 @@ components:
           description: |-
             The state to set on the traffic generator.
           type: string
-          enum: [transmit, link, route, protocol]
           default: transmit
+          x-field-uid: 1
+          x-enum:
+            transmit:
+              x-field-uid: 1
+            link:
+              x-field-uid: 2
+            route:
+              x-field-uid: 3
+            protocol:
+              x-field-uid: 4
         transmit:
           $ref: '../models/control/control.yaml#/components/schemas/Transmit.State'
+          x-field-uid: 2
         link:
           $ref: '../models/control/control.yaml#/components/schemas/Link.State'
+          x-field-uid: 3
         route:
           $ref: '../models/control/control.yaml#/components/schemas/Route.State'
+          x-field-uid: 4
         protocol:
           $ref: '../models/control/control.yaml#/components/schemas/Protocol.State'
+          x-field-uid: 5

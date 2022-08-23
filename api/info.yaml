@@ -1,5 +1,4 @@
 openapi: 3.0.3
-
 info:
   title: Open Traffic Generator Convergence API
   description: |-
@@ -20,8 +19,6 @@ info:
     name: MIT
     url: https://raw.githubusercontent.com/open-traffic-generator/models-convergence/main/LICENSE
   x-model-guide: https://github.com/open-traffic-generator/models/blob/master/MODEL-GUIDE.md
-
-servers: 
-  - url: /
-
+servers:
+- url: /
 paths: {}
