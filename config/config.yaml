@@ -13,14 +13,17 @@ components:
           description: |-
             The core open traffic generator configuration
           $ref: '../models/config/config.yaml#/components/schemas/Config'
+          x-field-uid: 1
         event_location:
           description: |-
             The location from which events will be generated. 
           type: string
           default: ''
+          x-field-uid: 2
         rx_rate_threshold:
           description: |-
             Convergence will be calculated when the rx rate of a flow passes 
             below then above the threshold value. 
           type: number
           default: 95
+          x-field-uid: 3

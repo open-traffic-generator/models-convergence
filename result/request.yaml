@@ -7,18 +7,29 @@ components:
       properties:
         choice:
           type: string
-          enum: [metrics, convergence, bgpv4, bgpv6]
           default: metrics
+          x-field-uid: 1
+          x-enum:
+            metrics:
+              x-field-uid: 1
+            convergence:
+              x-field-uid: 2
+            bgpv4:
+              x-field-uid: 3
+            bgpv6:
+              x-field-uid: 4
         metrics:
           $ref: '../models/result/flow.yaml#/components/schemas/Flow.Metrics.Request'
+          x-field-uid: 2
         convergence:
           $ref: '#/components/schemas/Convergence.Flow.Request'
+          x-field-uid: 3
         bgpv4:
           $ref: '../models/result/bgpv4.yaml#/components/schemas/Bgpv4.Metrics.Request'
+          x-field-uid: 4
         bgpv6:
           $ref: '../models/result/bgpv6.yaml#/components/schemas/Bgpv6.Metrics.Request'
-        
-
+          x-field-uid: 5
     Convergence.Flow.Request:
       description: |-
         The container for a flow measurement request.
@@ -29,13 +40,15 @@ components:
             Flow metrics will be retrieved for these flow names.
             If no flow names are specified then all flows will be returned.
           type: array
-          items: 
+          items:
             type: string
           x-constraint:
           - "/components/schemas/Flow/properties/name"
+          x-field-uid: 1
         metric_groups:
           description: >-
             A list of metric groups used to disaggregate flows.
             A metric group that does not exist for a flow group MUST return
             an error.
           $ref: '../models/result/flow.yaml#/components/schemas/Flow.MetricGroup.Request'
+          x-field-uid: 2

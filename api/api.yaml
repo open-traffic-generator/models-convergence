@@ -14,11 +14,13 @@ paths:
       responses:
         '200':
           $ref: '../models/result/request.yaml#/components/responses/Success'
+          x-field-uid: 1
         '400':
           $ref: '../models/result/request.yaml#/components/responses/BadRequest'
+          x-field-uid: 2
         '500':
           $ref: '../models/result/request.yaml#/components/responses/InternalServerError'
-
+          x-field-uid: 3
   /control/routes:
     post:
       tags: ['Control']
@@ -34,11 +36,13 @@ paths:
       responses:
         '200':
           $ref: '../models/result/request.yaml#/components/responses/Success'
+          x-field-uid: 1
         '400':
           $ref: '../models/result/request.yaml#/components/responses/BadRequest'
+          x-field-uid: 2
         '500':
           $ref: '../models/result/request.yaml#/components/responses/InternalServerError'
-
+          x-field-uid: 3
   /control/ping:
     post:
       tags: ['Control']
@@ -62,11 +66,13 @@ paths:
             application/json:
               schema:
                 $ref: '../models/control/ping.yaml#/components/schemas/Ping.Response'
+          x-field-uid: 1
         '400':
           $ref: '../models/result/request.yaml#/components/responses/BadRequest'
+          x-field-uid: 2
         '500':
           $ref: '../models/result/request.yaml#/components/responses/InternalServerError'
-
+          x-field-uid: 3
   /results:
     post:
       tags: ['Results']
@@ -87,8 +93,10 @@ paths:
             application/json:
               schema:
                 $ref: '../result/response.yaml#/components/schemas/Convergence.Response'
+          x-field-uid: 1
         '400':
           $ref: '../models/result/request.yaml#/components/responses/BadRequest'
+          x-field-uid: 2
         '500':
           $ref: '../models/result/request.yaml#/components/responses/InternalServerError'
-
+          x-field-uid: 3
