@@ -59,10 +59,10 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '../models/control/ping.yaml#/components/schemas/Response/result.success'
+                $ref: '../models/control/ping.yaml#/components/schemas/Response'
           x-field-uid: 1
         default:
-          $ref: '../models/result/request.yaml#/components/schemas/Response/result'
+          $ref: '../models/result/request.yaml#/components/responses/Failure'
           x-field-uid: 2
   /results:
     post:
