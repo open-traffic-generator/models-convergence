@@ -62,7 +62,7 @@ paths:
                 $ref: '../models/control/ping.yaml#/components/schemas/Response/result.success'
           x-field-uid: 1
         default:
-          $ref: '../models/result/request.yaml#/components/schemas/Response/result.failure'
+          $ref: '../models/result/request.yaml#/components/schemas/Response/result'
           x-field-uid: 2
   /results:
     post:
