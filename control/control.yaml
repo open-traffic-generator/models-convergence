@@ -21,14 +21,14 @@ components:
             protocol:
               x-field-uid: 4
         transmit:
-          $ref: '../models/control/control.yaml#/components/schemas/Transmit.State'
+          $ref: '../models/control/traffic.yaml#/components/schemas/State.Traffic.FlowTransmit'
           x-field-uid: 2
         link:
-          $ref: '../models/control/control.yaml#/components/schemas/Link.State'
+          $ref: '../models/control/port.yaml#/components/schemas/State.Port.Link'
           x-field-uid: 3
         route:
-          $ref: '../models/control/control.yaml#/components/schemas/Route.State'
+          $ref: '../models/control/protocol.yaml#/components/schemas/State.Protocol.Route'
           x-field-uid: 4
         protocol:
-          $ref: '../models/control/control.yaml#/components/schemas/Protocol.State'
+          $ref: '../models/control/protocol.yaml#/components/schemas/State.Protocol.All'
           x-field-uid: 5
