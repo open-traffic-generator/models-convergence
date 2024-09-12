@@ -124,16 +124,16 @@ components:
           - '/components/schemas/Device.Bgpv4Route/properties/name'
           - '/components/schemas/Device.Bgpv6Route/properties/name'
           example: Bgpv4 Route Range 1
-          x-field-uid: 1
+          x-field-uid: 2
         begin_timestamp_ns:
           description: |-
             The time in nanoseconds at which the event began
           type: number
           format: double
-          x-field-uid: 2
+          x-field-uid: 3
         end_timestamp_ns:
           description: |-
             The time in nanoseconds at which the event ended
           type: number
           format: double
-          x-field-uid: 3
+          x-field-uid: 4

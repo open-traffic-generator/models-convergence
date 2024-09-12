@@ -13,10 +13,10 @@ paths:
               $ref: '../config/config.yaml#/components/schemas/Convergence.Config'
       responses:
         '200':
-          $ref: '../models/result/request.yaml#/components/schemas/Warning'
+          $ref: '../models/result/request.yaml#/components/responses/Success'
           x-field-uid: 1
-        '400':
-          $ref: '../models/result/request.yaml#/components/schemas/Error'
+        default:
+          $ref: '../models/result/request.yaml#/components/responses/Failure'
           x-field-uid: 2
   /control/routes:
     post:
@@ -32,10 +32,10 @@ paths:
               $ref: '../control/control.yaml#/components/schemas/Convergence.State'
       responses:
         '200':
-          $ref: '../models/result/request.yaml#/components/schemas/Warning'
+          $ref: '../models/result/request.yaml#/components/responses/Success'
           x-field-uid: 1
-        '400':
-          $ref: '../models/result/request.yaml#/components/schemas/Error'
+        default:
+          $ref: '../models/result/request.yaml#/components/responses/Failure'
           x-field-uid: 2
   /control/ping:
     post:
@@ -59,10 +59,10 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '../models/control/ping.yaml#/components/schemas/Warning'
+                $ref: '../models/control/ping.yaml#/components/schemas/Response.Result.Success'
           x-field-uid: 1
-        '400':
-          $ref: '../models/result/request.yaml#/components/schemas/Error'
+        default:
+          $ref: '../models/result/request.yaml#/components/schemas/Response.Result.Failure'
           x-field-uid: 2
   /results:
     post:
@@ -85,6 +85,6 @@ paths:
               schema:
                 $ref: '../result/response.yaml#/components/schemas/Convergence.Response'
           x-field-uid: 1
-        '400':
-          $ref: '../models/result/request.yaml#/components/schemas/Error'
+        default:
+          $ref: '../models/result/request.yaml#/components/responses/Failure'
           x-field-uid: 2
