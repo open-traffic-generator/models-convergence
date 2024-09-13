@@ -10339,71 +10339,134 @@ message Warning {
   repeated string warnings = 1;
 }
 
-// Container to specify convergence states.
-message ConvergenceState {
+// Request for updating specific attributes of resources in traffic generator
+message ConfigUpdate {
 
   message Choice {
     enum Enum {
       unspecified = 0;
-      transmit = 1;
-      link = 2;
-      route = 3;
-      protocol = 4;
+      flows = 1;
     }
   }
-  // The state to set on the traffic generator.
-  // default = Choice.Enum.transmit
+  // Description missing in models
   optional Choice.Enum choice = 1;
 
   // Description missing in models
-  StateTrafficFlowTransmit transmit = 2;
-
-  // Description missing in models
-  StatePortLink link = 3;
-
-  // Description missing in models
-  StateProtocolRoute route = 4;
-
-  // Description missing in models
-  StateProtocolAll protocol = 5;
+  FlowsUpdate flows = 2;
 }
 
-// Provides state control of flow transmission.
-message StateTrafficFlowTransmit {
+// A container of flows with associated properties to be updated without affecting the
+// flows current transmit state.
+message FlowsUpdate {
 
-  // The names of flows to which the transmit state will be applied to. If the list of
-  // flow_names is empty or null the state will be applied to all configured flows.
-  // If the list is not empty any flow that is not included in the list of flow_names
-  // MUST be ignored and not included in the state change.
-  // 
-  // x-constraint:
-  // - /components/schemas/Flow/properties/name
-  // 
-  repeated string flow_names = 1;
-
-  message State {
+  message PropertyNames {
     enum Enum {
       unspecified = 0;
-      start = 1;
-      stop = 2;
-      pause = 3;
-      resume = 4;
+      rate = 1;
+      size = 2;
     }
   }
-  // The transmit state.
-  // If the value of the state property is 'start' then all flows defined by the 'flow_names'
-  // property will be started and the metric counters MUST be cleared prior to starting
-  // the flow(s).
-  // If the value of the state property is 'stop' then all flows defined by the 'flow_names'
-  // property will be stopped and the metric counters MUST NOT be cleared.
-  // If the value of the state property is 'pause' then all flows defined by the 'flow_names'
-  // property will be paused and the metric counters MUST NOT be cleared.
-  // If the value of the state property is 'resume' then any paused flows defined by the
-  // 'flow_names' property will start transmit at the point at which they were paused.
-  // Any flow that is stopped will start transmit at the beginning of the flow. The flow(s)
-  // MUST NOT have their metric counters cleared.
+  // Flow properties to be updated without affecting the transmit state.
+  repeated PropertyNames.Enum property_names = 1;
+
+  // The list of configured flows for which given property will be updated.
+  repeated Flow flows = 2;
+}
+
+// Request for setting operational state of configured resources.
+message ControlState {
+
+  message Choice {
+    enum Enum {
+      unspecified = 0;
+      port = 1;
+      protocol = 2;
+      traffic = 3;
+    }
+  }
+  // Description missing in models
   // required = true
-  optional State.Enum state = 2;
+  optional Choice.Enum choice = 1;
+
+  // Description missing in models
+  StatePort port = 2;
+
+  // Description missing in models
+  StateProtocol protocol = 3;
+
+  // Description missing in models
+  StateTraffic traffic = 4;
+}
+
+// States associated with configured ports.
+message StatePort {
+
+  message Choice {
+    enum Enum {
+      unspecified = 0;
+      link = 1;
+      capture = 2;
+    }
+  }
+  // Description missing in models
+  // required = true
+  optional Choice.Enum choice = 1;
+
+  // Description missing in models
+  StatePortLink link = 2;
+
+  // Description missing in models
+  StatePortCapture capture = 3;
+}
+
+// States associated with configured flows
+message StateTraffic {
+
+  message Choice {
+    enum Enum {
+      unspecified = 0;
+      flow_transmit = 1;
+    }
+  }
+  // Description missing in models
+  // required = true
+  optional Choice.Enum choice = 1;
+
+  // Description missing in models
+  StateTrafficFlowTransmit flow_transmit = 2;
+}
+
+// States associated with protocols on configured resources.
+message StateProtocol {
+
+  message Choice {
+    enum Enum {
+      unspecified = 0;
+      all = 1;
+      route = 2;
+      lacp = 3;
+      bgp = 4;
+      isis = 5;
+    }
+  }
+  // Description missing in models
+  // required = true
+  optional Choice.Enum choice = 1;
+
+  // Description missing in models
+  StateProtocolAll all = 2;
+
+  // Description missing in models
+  StateProtocolRoute route = 3;
+
+  // Description missing in models
+  StateProtocolLacp lacp = 4;
+
+  // Description missing in models
+  StateProtocolBgp bgp = 5;
+
+  // Description missing in models
+  StateProtocolIsis isis = 6;
 }
 
 // Sets the link of configured ports.
@@ -10449,6 +10512,44 @@ message StatePortCapture {
     }
   }
   // The capture state.
+  // required = true
+  optional State.Enum state = 2;
+}
+
+// Provides state control of flow transmission.
+message StateTrafficFlowTransmit {
+
+  // The names of flows to which the transmit state will be applied to. If the list of
+  // flow_names is empty or null the state will be applied to all configured flows.
+  // If the list is not empty any flow that is not included in the list of flow_names
+  // MUST be ignored and not included in the state change.
+  // 
+  // x-constraint:
+  // - /components/schemas/Flow/properties/name
+  // 
+  repeated string flow_names = 1;
+
+  message State {
+    enum Enum {
+      unspecified = 0;
+      start = 1;
+      stop = 2;
+      pause = 3;
+      resume = 4;
+    }
+  }
+  // The transmit state.
+  // If the value of the state property is 'start' then all flows defined by the 'flow_names'
+  // property will be started and the metric counters MUST be cleared prior to starting
+  // the flow(s).
+  // If the value of the state property is 'stop' then all flows defined by the 'flow_names'
+  // property will be stopped and the metric counters MUST NOT be cleared.
+  // If the value of the state property is 'pause' then all flows defined by the 'flow_names'
+  // property will be paused and the metric counters MUST NOT be cleared.
+  // If the value of the state property is 'resume' then any paused flows defined by the
+  // 'flow_names' property will start transmit at the point at which they were paused.
+  // Any flow that is stopped will start transmit at the beginning of the flow. The flow(s)
+  // MUST NOT have their metric counters cleared.
   // required = true
   optional State.Enum state = 2;
 }
@@ -10653,8 +10754,77 @@ message StateProtocolIsisRouters {
   optional State.Enum state = 2;
 }
 
-// Description missing in models
-message Ping {
+// Request for triggering action against configured resources.
+message ControlAction {
+
+  message Choice {
+    enum Enum {
+      unspecified = 0;
+      protocol = 1;
+    }
+  }
+  // Description missing in models
+  // required = true
+  optional Choice.Enum choice = 1;
+
+  // Description missing in models
+  ActionProtocol protocol = 2;
+}
+
+// Response for action triggered against configured resources along with warnings.
+message ControlActionResponse {
+
+  // List of warnings generated while triggering specified action
+  repeated string warnings = 1;
+
+  // Description missing in models
+  ActionResponse response = 2;
+}
+
+// Response for action triggered against configured resources.
+message ActionResponse {
+
+  message Choice {
+    enum Enum {
+      unspecified = 0;
+      protocol = 1;
+    }
+  }
+  // Description missing in models
+  // required = true
+  optional Choice.Enum choice = 1;
+
+  // Description missing in models
+  ActionResponseProtocol protocol = 2;
+}
+
+// Actions associated with protocols on configured resources.
+message ActionProtocol {
+
+  message Choice {
+    enum Enum {
+      unspecified = 0;
+      ipv4 = 1;
+      ipv6 = 2;
+      bgp = 3;
+    }
+  }
+  // Description missing in models
+  // required = true
+  optional Choice.Enum choice = 1;
+
+  // Description missing in models
+  ActionProtocolIpv4 ipv4 = 2;
+
+  // Description missing in models
+  ActionProtocolIpv6 ipv6 = 3;
+
+  // Description missing in models
+  ActionProtocolBgp bgp = 4;
+}
+
+// Response for actions associated with protocols on configured resources.
+message ActionResponseProtocol {
 
   message Choice {
     enum Enum {
@@ -10663,83 +10833,363 @@ message Ping {
       ipv6 = 2;
     }
   }
-  // IPv4 or IPv6 ping.
-  // default = Choice.Enum.ipv4
+  // Description missing in models
+  // required = true
   optional Choice.Enum choice = 1;
 
   // Description missing in models
-  PingIpv4 ipv4 = 2;
+  ActionResponseProtocolIpv4 ipv4 = 2;
 
   // Description missing in models
-  PingIpv6 ipv6 = 3;
+  ActionResponseProtocolIpv6 ipv6 = 3;
 }
 
-// Description missing in models
-message PingIpv4 {
+// Actions associated with IPv4 on configured resources.
+message ActionProtocolIpv4 {
 
-  // A base IPv4 interface
+  message Choice {
+    enum Enum {
+      unspecified = 0;
+      ping = 1;
+    }
+  }
+  // Description missing in models
+  // required = true
+  optional Choice.Enum choice = 1;
+
+  // Description missing in models
+  ActionProtocolIpv4Ping ping = 2;
+}
+
+// Response for actions associated with IPv4 on configured resources.
+message ActionResponseProtocolIpv4 {
+
+  message Choice {
+    enum Enum {
+      unspecified = 0;
+      ping = 1;
+    }
+  }
+  // Description missing in models
+  // required = true
+  optional Choice.Enum choice = 1;
+
+  // Description missing in models
+  ActionResponseProtocolIpv4Ping ping = 2;
+}
+
+// Request for initiating ping between multiple source and destination pairs.
+message ActionProtocolIpv4Ping {
+
+  // List of IPv4 ping requests.
+  repeated ActionProtocolIpv4PingRequest requests = 1;
+}
+
+// Under Review: Most ping request parameters are still TBD.
+// 
+// Request for initiating ping between a single source and destination pair.
+// For ping request, 1 IPv4 ICMP Echo Request shall be sent and wait for ping response
+// to either succeed or time out. The API wait timeout for each request shall be 300ms.
+message ActionProtocolIpv4PingRequest {
+
+  // Name of source IPv4 interface to be used.
   // 
   // x-constraint:
   // - /components/schemas/Device.Ipv4/properties/name
   // 
   optional string src_name = 1;
 
-  // IPv4 address to ping
+  // Destination IPv4 address to ping.
   optional string dst_ip = 2;
 }
 
-// Description missing in models
-message PingIpv6 {
+// Response for ping initiated between multiple source and destination pairs.
+message ActionResponseProtocolIpv4Ping {
 
-  // A base IPv6 interface
-  // 
-  // x-constraint:
-  // - /components/schemas/Device.Ipv6/properties/name
-  // 
-  optional string src_name = 1;
-
-  // IPv6 addresses to ping.
-  optional string dst_ip = 2;
+  // List of responses for IPv4 ping responses.
+  repeated ActionResponseProtocolIpv4PingResponse responses = 1;
 }
 
-// Ping request details
-message PingRequest {
+// Response for ping initiated between a single source and destination pair.
+message ActionResponseProtocolIpv4PingResponse {
 
-  // Array of ping requests
-  repeated Ping endpoints = 1;
-}
-
-// A container for ping responses.
-message PingResponse {
-
-  // Description missing in models
-  repeated Response responses = 1;
-}
-
-// Description missing in models
-message Response {
-
-  // The name of the source IPv4 or IPv6 interface from which ping was sent.
+  // Name of source IPv4 interface used for ping.
   // 
   // x-constraint:
   // - /components/schemas/Device.Ipv4/properties/name
-  // - /components/schemas/Device.Ipv6/properties/name
   // 
+  // required = true
   optional string src_name = 1;
 
-  // Destination address.
+  // Destination IPv4 address used for ping.
+  // required = true
   optional string dst_ip = 2;
 
   message Result {
     enum Enum {
       unspecified = 0;
-      success = 1;
-      failure = 2;
+      succeeded = 1;
+      failed = 2;
     }
   }
   // Result of the ping request.
-  // default = Result.Enum.failure
+  // required = true
   optional Result.Enum result = 3;
+}
+
+// Actions associated with IPv6 on configured resources.
+message ActionProtocolIpv6 {
+
+  message Choice {
+    enum Enum {
+      unspecified = 0;
+      ping = 1;
+    }
+  }
+  // Description missing in models
+  // required = true
+  optional Choice.Enum choice = 1;
+
+  // Description missing in models
+  ActionProtocolIpv6Ping ping = 2;
+}
+
+// Response for actions associated with IPv6 on configured resources.
+message ActionResponseProtocolIpv6 {
+
+  message Choice {
+    enum Enum {
+      unspecified = 0;
+      ping = 1;
+    }
+  }
+  // Description missing in models
+  // required = true
+  optional Choice.Enum choice = 1;
+
+  // Description missing in models
+  ActionResponseProtocolIpv6Ping ping = 2;
+}
+
+// Request for initiating ping between multiple source and destination pairs.
+message ActionProtocolIpv6Ping {
+
+  // List of IPv6 ping requests.
+  repeated ActionProtocolIpv6PingRequest requests = 1;
+}
+
+// Under Review: Most ping request parameters are still TBD.
+// 
+// Request for initiating ping between a single source and destination pair.
+// For ping request, 1 IPv6 ICMP Echo Request shall be sent and wait for ping response
+// to either succeed or time out. The API wait timeout for each request shall be 300ms.
+message ActionProtocolIpv6PingRequest {
+
+  // Name of source IPv6 interface to be used.
+  // 
+  // x-constraint:
+  // - /components/schemas/Device.Ipv6/properties/name
+  // 
+  optional string src_name = 1;
+
+  // Destination IPv6 address to ping.
+  optional string dst_ip = 2;
+}
+
+// Response for ping initiated between multiple source and destination pairs.
+message ActionResponseProtocolIpv6Ping {
+
+  // List of responses for IPv6 ping responses.
+  repeated ActionResponseProtocolIpv6PingResponse responses = 1;
+}
+
+// Response for ping initiated between a single source and destination pair.
+message ActionResponseProtocolIpv6PingResponse {
+
+  // Name of source IPv6 interface used for ping.
+  // 
+  // x-constraint:
+  // - /components/schemas/Device.Ipv6/properties/name
+  // 
+  // required = true
+  optional string src_name = 1;
+
+  // Destination IPv6 address used for ping.
+  // required = true
+  optional string dst_ip = 2;
+
+  message Result {
+    enum Enum {
+      unspecified = 0;
+      succeeded = 1;
+      failed = 2;
+    }
+  }
+  // Result of the ping request.
+  // required = true
+  optional Result.Enum result = 3;
+}
+
+// Actions associated with BGP on configured resources.
+message ActionProtocolBgp {
+
+  message Choice {
+    enum Enum {
+      unspecified = 0;
+      notification = 1;
+      initiate_graceful_restart = 2;
+    }
+  }
+  // Description missing in models
+  // required = true
+  optional Choice.Enum choice = 1;
+
+  // Description missing in models
+  ActionProtocolBgpNotification notification = 2;
+
+  // Description missing in models
+  ActionProtocolBgpInitiateGracefulRestart initiate_graceful_restart = 3;
+}
+
+// A NOTIFICATION message is sent when an error is detected with the BGP session, such
+// as hold timer expiring, misconfigured AS number  or a BGP session reset is requested.
+// This causes the BGP connection to close. Send explicit NOTIFICATIONs for list of
+// specified  BGP peers. If a user wants to send custom Error Code and Error Subcode
+// the custom object should be configured. A user can send IANA defined BGP NOTIFICATIONs
+// according to https://www.iana.org/assignments/bgp-parameters/bgp-parameters.xhtml.
+// 
+message ActionProtocolBgpNotification {
+
+  // The names of BGP Peers to send NOTIFICATION to. If no name is specified then NOTIFICATION
+  // will be sent to all configured BGP peers.
+  // 
+  // x-constraint:
+  // - /components/schemas/Bgp.V4Peer/properties/name
+  // - /components/schemas/Bgp.V6Peer/properties/name
+  // 
+  repeated string names = 1;
+
+  message Choice {
+    enum Enum {
+      unspecified = 0;
+      cease = 1;
+      message_header_error = 2;
+      open_message_error = 3;
+      update_message_error = 4;
+      hold_timer_expired = 5;
+      finite_state_machine_error = 6;
+      custom = 7;
+    }
+  }
+  // Each BGP NOTIFICATION message includes an Error Code field indicating what type of
+  // problem occurred. For certain Error Codes, an Error  Subcode field provides additional
+  // details about the specific nature of the problem.  The choice value will provide
+  // the Error Code used in NOTIFICATION message.  The Subcode can be set for each of
+  // the corresponding errors except for Hold Timer Expired error and BGP Finite State
+  // Machine error.  In both of these cases Subcode 0 will be sent. If a user wants to
+  // use non zero Sub Code then custom choice can be used.
+  // default = Choice.Enum.cease
+  optional Choice.Enum choice = 2;
+
+  // Description missing in models
+  DeviceBgpCeaseError cease = 3;
+
+  // Description missing in models
+  DeviceBgpMessageHeaderError message_header_error = 4;
+
+  // Description missing in models
+  DeviceBgpOpenMessageError open_message_error = 5;
+
+  // Description missing in models
+  DeviceBgpUpdateMessageError update_message_error = 6;
+
+  // Description missing in models
+  DeviceBgpHoldTimerExpired hold_timer_expired = 7;
+
+  // Description missing in models
+  DeviceBgpFiniteStateMachineError finite_state_machine_error = 8;
+
+  // Description missing in models
+  DeviceBgpCustomError custom = 9;
+}
+
+// Initiates BGP Graceful Restart process for the selected BGP peers. If no name is
+// specified then Graceful Restart will be sent to all configured BGP peers. To emulate
+// scenarios where a peer sends a Notification and stops the session, an optional Notification
+// object is included. If the remote peer and the local peer are both configured to
+// perform Graceful Restart for Notification triggered session , this will result in
+// Graceful Restart scenario to be triggered as per RFC8538.
+message ActionProtocolBgpInitiateGracefulRestart {
+
+  // The names of device BGP peers objects to control.
+  // 
+  // x-constraint:
+  // - /components/schemas/Bgp.V4Peer/properties/name
+  // - /components/schemas/Bgp.V6Peer/properties/name
+  // 
+  repeated string peer_names = 1;
+
+  // Duration (in seconds) after which selected BGP peers will initiate
+  // Graceful restart by sending the Open Message with Restart State bit set in the Graceful
+  // Restart capability.
+  // default = 30
+  optional uint32 restart_delay = 2;
+
+  // Send a Notification to the peer as per configured parameters when initially bringing
+  // down a session as per
+  // configured parameters.
+  ActionProtocolBgpGracefulRestartNotification notification = 3;
+}
+
+// Defines the explicit contents of the NOTIFICATION message to be sent when executing
+// InitiateGracefulRestart trigger.  This causes the BGP connection to close.If a user
+// wants to send custom Error Code and Error Subcode the custom object should be configured.
+// A user can send IANA defined BGP NOTIFICATIONs according to https://www.iana.org/assignments/bgp-parameters/bgp-parameters.xhtml.
+// 
+message ActionProtocolBgpGracefulRestartNotification {
+
+  message Choice {
+    enum Enum {
+      unspecified = 0;
+      cease = 1;
+      message_header_error = 2;
+      open_message_error = 3;
+      update_message_error = 4;
+      hold_timer_expired = 5;
+      finite_state_machine_error = 6;
+      custom = 7;
+    }
+  }
+  // Each BGP NOTIFICATION message includes an Error Code field indicating what type of
+  // problem occurred. For certain Error Codes, an Error  Subcode field provides additional
+  // details about the specific nature of the problem.  The choice value will provide
+  // the Error Code used in NOTIFICATION message.  The Subcode can be set for each of
+  // the corresponding errors except for Hold Timer Expired error and BGP Finite State
+  // Machine error.  In both of these cases Subcode 0 will be sent. If a user wants to
+  // use non zero Sub Code then custom choice can be used.
+  // default = Choice.Enum.cease
+  optional Choice.Enum choice = 2;
+
+  // Description missing in models
+  DeviceBgpCeaseError cease = 3;
+
+  // Description missing in models
+  DeviceBgpMessageHeaderError message_header_error = 4;
+
+  // Description missing in models
+  DeviceBgpOpenMessageError open_message_error = 5;
+
+  // Description missing in models
+  DeviceBgpUpdateMessageError update_message_error = 6;
+
+  // Description missing in models
+  DeviceBgpHoldTimerExpired hold_timer_expired = 7;
+
+  // Description missing in models
+  DeviceBgpFiniteStateMachineError finite_state_machine_error = 8;
+
+  // Description missing in models
+  DeviceBgpCustomError custom = 9;
 }
 
 // The request container for flow metrics or flow convergence measurements.
@@ -11360,6 +11810,1555 @@ message ConvergenceEvent {
 
   // The time in nanoseconds at which the event ended
   optional double end_timestamp_ns = 4;
+}
+
+// Container to specify convergence states.
+message ConvergenceState {
+
+  message Choice {
+    enum Enum {
+      unspecified = 0;
+      transmit = 1;
+      link = 2;
+      route = 3;
+      protocol = 4;
+    }
+  }
+  // The state to set on the traffic generator.
+  // default = Choice.Enum.transmit
+  optional Choice.Enum choice = 1;
+
+  // Description missing in models
+  StateTrafficFlowTransmit transmit = 2;
+
+  // Description missing in models
+  StatePortLink link = 3;
+
+  // Description missing in models
+  StateProtocolRoute route = 4;
+
+  // Description missing in models
+  StateProtocolAll protocol = 5;
+}
+
+// Request to traffic generator for states of choice
+message StatesRequest {
+
+  message Choice {
+    enum Enum {
+      unspecified = 0;
+      ipv4_neighbors = 1;
+      ipv6_neighbors = 2;
+      bgp_prefixes = 3;
+      isis_lsps = 4;
+      lldp_neighbors = 5;
+      rsvp_lsps = 6;
+      dhcpv4_interfaces = 7;
+      dhcpv4_leases = 8;
+      dhcpv6_interfaces = 9;
+      dhcpv6_leases = 10;
+    }
+  }
+  // Description missing in models
+  // default = Choice.Enum.ipv4_neighbors
+  optional Choice.Enum choice = 1;
+
+  // Description missing in models
+  Neighborsv4StatesRequest ipv4_neighbors = 2;
+
+  // Description missing in models
+  Neighborsv6StatesRequest ipv6_neighbors = 3;
+
+  // Description missing in models
+  BgpPrefixStateRequest bgp_prefixes = 4;
+
+  // Description missing in models
+  IsisLspsStateRequest isis_lsps = 5;
+
+  // Description missing in models
+  LldpNeighborsStateRequest lldp_neighbors = 6;
+
+  // Description missing in models
+  RsvpLspsStateRequest rsvp_lsps = 7;
+
+  // Description missing in models
+  Dhcpv4InterfaceStateRequest dhcpv4_interfaces = 8;
+
+  // Description missing in models
+  Dhcpv4LeaseStateRequest dhcpv4_leases = 9;
+
+  // Description missing in models
+  Dhcpv6InterfaceStateRequest dhcpv6_interfaces = 10;
+
+  // Description missing in models
+  Dhcpv6LeaseStateRequest dhcpv6_leases = 11;
+}
+
+// Response containing chosen traffic generator states
+message StatesResponse {
+
+  message Choice {
+    enum Enum {
+      unspecified = 0;
+      ipv4_neighbors = 1;
+      ipv6_neighbors = 2;
+      bgp_prefixes = 3;
+      isis_lsps = 4;
+      lldp_neighbors = 5;
+      rsvp_lsps = 6;
+      dhcpv4_interfaces = 7;
+      dhcpv4_leases = 8;
+      dhcpv6_interfaces = 9;
+      dhcpv6_leases = 10;
+    }
+  }
+  // Description missing in models
+  // default = Choice.Enum.ipv4_neighbors
+  optional Choice.Enum choice = 1;
+
+  // Description missing in models
+  repeated Neighborsv4State ipv4_neighbors = 2;
+
+  // Description missing in models
+  repeated Neighborsv6State ipv6_neighbors = 3;
+
+  // Description missing in models
+  repeated BgpPrefixesState bgp_prefixes = 4;
+
+  // Description missing in models
+  repeated IsisLspsState isis_lsps = 5;
+
+  // Description missing in models
+  repeated LldpNeighborsState lldp_neighbors = 6;
+
+  // Description missing in models
+  repeated RsvpLspsState rsvp_lsps = 7;
+
+  // Description missing in models
+  repeated Dhcpv4InterfaceState dhcpv4_interfaces = 8;
+
+  // Description missing in models
+  repeated Dhcpv4LeasesState dhcpv4_leases = 9;
+
+  // Description missing in models
+  repeated Dhcpv6InterfaceState dhcpv6_interfaces = 10;
+
+  // Description missing in models
+  repeated Dhcpv6LeasesState dhcpv6_leases = 11;
+}
+
+// The request to retrieve IPv4 Neighbor state (ARP cache entries) of a network interface(s).
+message Neighborsv4StatesRequest {
+
+  // The names of Ethernet interfaces for which Neighbor state (ARP cache entries) will
+  // be retrieved. If no names are specified then the results will contain Neighbor state
+  // (ARP cache entries) for all available Ethernet interfaces.
+  // 
+  // x-constraint:
+  // - /components/schemas/Device.Ethernet/properties/name
+  // 
+  repeated string ethernet_names = 1;
+}
+
+// IPv4 Neighbor state (ARP cache entry).
+message Neighborsv4State {
+
+  // The name of the Ethernet interface associated with the Neighbor state (ARP cache
+  // entry).
+  // required = true
+  optional string ethernet_name = 1;
+
+  // The IPv4 address of the neighbor.
+  // required = true
+  optional string ipv4_address = 2;
+
+  // The link-layer address (MAC) of the neighbor.
+  optional string link_layer_address = 3;
+}
+
+// The request to retrieve IPv6 Neighbor state (NDISC cache entries) of a network interface(s).
+message Neighborsv6StatesRequest {
+
+  // The names of Ethernet interfaces for which Neighbor state (NDISC cache entries) will
+  // be retrieved. If no names are specified then the results will contain Neighbor state
+  // (NDISC cache entries) for all available Ethernet interfaces.
+  // 
+  // x-constraint:
+  // - /components/schemas/Device.Ethernet/properties/name
+  // 
+  repeated string ethernet_names = 1;
+}
+
+// IPv6 Neighbor state (NDISC cache entry).
+message Neighborsv6State {
+
+  // The name of the Ethernet interface associated with the Neighbor state (NDISC cache
+  // entry).
+  // required = true
+  optional string ethernet_name = 1;
+
+  // The IPv6 address of the neighbor.
+  // required = true
+  optional string ipv6_address = 2;
+
+  // The link-layer address (MAC) of the neighbor.
+  optional string link_layer_address = 3;
+}
+
+// The request to retrieve BGP peer prefix information.
+message BgpPrefixStateRequest {
+
+  // The names of BGP peers for which prefix information will be retrieved. If no names
+  // are specified then the results will contain prefix information for all configured
+  // BGP peers.
+  // 
+  // x-constraint:
+  // - /components/schemas/Bgp.V4Peer/properties/name
+  // - /components/schemas/Bgp.V6Peer/properties/name
+  // 
+  repeated string bgp_peer_names = 1;
+
+  message PrefixFilters {
+    enum Enum {
+      unspecified = 0;
+      ipv4_unicast = 1;
+      ipv6_unicast = 2;
+    }
+  }
+  // Specify which prefixes to return. If the list is empty or missing then all prefixes
+  // will be returned.
+  repeated PrefixFilters.Enum prefix_filters = 2;
+
+  // The IPv4 unicast results can be filtered by specifying additional prefix search criteria.
+  // If the ipv4_unicast_filters property is missing or empty then all IPv4 prefixes will
+  // be returned.
+  repeated BgpPrefixIpv4UnicastFilter ipv4_unicast_filters = 3;
+
+  // The IPv6 unicast results can be filtered by specifying additional prefix search criteria.
+  // If the ipv6_unicast_filters property is missing or empty then all IPv6 prefixes will
+  // be returned.
+  repeated BgpPrefixIpv6UnicastFilter ipv6_unicast_filters = 4;
+}
+
+// Description missing in models
+message BgpPrefixIpv4UnicastFilter {
+
+  // The addresses to match. If the addresses property is missing or empty then all addresses
+  // will match.
+  repeated string addresses = 1;
+
+  // The prefix length to match. If the prefix length is missing then all prefix lengths
+  // will match.
+  optional uint32 prefix_length = 2;
+
+  message Origin {
+    enum Enum {
+      unspecified = 0;
+      igp = 1;
+      egp = 2;
+      incomplete = 3;
+    }
+  }
+  // The origin to match. If the origin is missing then all origins will match.
+  optional Origin.Enum origin = 3;
+
+  // The path id to match. If the path id is missing then all path ids will match.
+  optional uint32 path_id = 4;
+}
+
+// Description missing in models
+message BgpPrefixIpv6UnicastFilter {
+
+  // The addresses to match. If the addresses property is missing or empty then all addresses
+  // will match.
+  repeated string addresses = 1;
+
+  // The prefix length to match. If the prefix length is missing then all prefix lengths
+  // will match.
+  optional uint32 prefix_length = 2;
+
+  message Origin {
+    enum Enum {
+      unspecified = 0;
+      igp = 1;
+      egp = 2;
+      incomplete = 3;
+    }
+  }
+  // The origin to match. If the origin is missing then all origins will match.
+  optional Origin.Enum origin = 3;
+
+  // The path id to match. If the path id is missing then all path ids will match.
+  optional uint32 path_id = 4;
+}
+
+// BGP peer prefixes.
+message BgpPrefixesState {
+
+  // The name of a BGP peer.
+  optional string bgp_peer_name = 1;
+
+  // Description missing in models
+  repeated BgpPrefixIpv4UnicastState ipv4_unicast_prefixes = 2;
+
+  // Description missing in models
+  repeated BgpPrefixIpv6UnicastState ipv6_unicast_prefixes = 3;
+}
+
+// IPv4 unicast prefix.
+message BgpPrefixIpv4UnicastState {
+
+  // An IPv4 unicast address
+  optional string ipv4_address = 1;
+
+  // The length of the prefix.
+  optional uint32 prefix_length = 2;
+
+  message Origin {
+    enum Enum {
+      unspecified = 0;
+      igp = 1;
+      egp = 2;
+      incomplete = 3;
+    }
+  }
+  // The origin of the prefix.
+  optional Origin.Enum origin = 3;
+
+  // The path id.
+  optional uint32 path_id = 4;
+
+  // The IPv4 address of the egress interface.
+  optional string ipv4_next_hop = 5;
+
+  // The IPv6 address of the egress interface.
+  optional string ipv6_next_hop = 6;
+
+  // Optional community attributes.
+  repeated ResultBgpCommunity communities = 7;
+
+  // Optional received Extended Community attributes. Each received Extended Community
+  // attribute is available for retrieval in two forms. Support of the 'raw' format in
+  // which all 8 bytes (16 hex characters) is always present and available for use. In
+  // addition, if supported by the implementation, the Extended Community attribute may
+  // also be retrieved in the  'structured' format which is an optional field.
+  repeated ResultExtendedCommunity extended_communities = 11;
+
+  // Description missing in models
+  ResultBgpAsPath as_path = 8;
+
+  // The local preference is a well-known attribute and the value is used for route selection.
+  // The route with the highest local preference value is preferred.
+  optional uint32 local_preference = 9;
+
+  // The multi exit discriminator (MED) is an optional non-transitive attribute and the
+  // value is used for route selection. The route with the lowest MED value is preferred.
+  optional uint32 multi_exit_discriminator = 10;
+}
+
+// IPv6 unicast prefix.
+message BgpPrefixIpv6UnicastState {
+
+  // An IPv6 unicast address
+  optional string ipv6_address = 1;
+
+  // The length of the prefix.
+  optional uint32 prefix_length = 2;
+
+  message Origin {
+    enum Enum {
+      unspecified = 0;
+      igp = 1;
+      egp = 2;
+      incomplete = 3;
+    }
+  }
+  // The origin of the prefix.
+  optional Origin.Enum origin = 3;
+
+  // The path id.
+  optional uint32 path_id = 4;
+
+  // The IPv4 address of the egress interface.
+  optional string ipv4_next_hop = 5;
+
+  // The IPv6 address of the egress interface.
+  optional string ipv6_next_hop = 6;
+
+  // Optional community attributes.
+  repeated ResultBgpCommunity communities = 7;
+
+  // Optional received Extended Community attributes. Each received Extended Community
+  // attribute is available for retrieval in two forms. Support of the 'raw' format in
+  // which all 8 bytes (16 hex characters) is always present and available for use. In
+  // addition, if supported by the implementation, the Extended Community attribute may
+  // also be retrieved in the  'structured' format which is an optional field.
+  repeated ResultExtendedCommunity extended_communities = 11;
+
+  // Description missing in models
+  ResultBgpAsPath as_path = 8;
+
+  // The local preference is a well-known attribute and the value is used for route selection.
+  // The route with the highest local preference value is preferred.
+  optional uint32 local_preference = 9;
+
+  // The multi exit discriminator (MED) is an optional non-transitive attribute and the
+  // value is used for route selection. The route with the lowest MED value is preferred.
+  optional uint32 multi_exit_discriminator = 10;
+}
+
+// Each received Extended Community attribute is available for retrieval in two forms.
+// Support of the 'raw' format in which all 8 bytes (16 hex characters) is always present
+// and available for use. In addition, if supported by the implementation, the Extended
+// Community attribute may also be retrieved in the 'structured' format which is an
+// optional field.
+message ResultExtendedCommunity {
+
+  // The raw byte contents of the 8 bytes received in the Extended Community as 16 hex
+  // characters.
+  optional string raw = 1;
+
+  // Description missing in models
+  ResultExtendedCommunityStructured structured = 2;
+}
+
+// The Extended Communities Attribute is a optional BGP attribute,defined in RFC4360
+// with the Type Code 16.
+// Community and Extended Communities  attributes are utilized to trigger routing decisions,
+// such as acceptance, rejection,  preference, or redistribution.
+// An extended community is an 8-bytes value. It is divided into two main parts. The
+// first 2 bytes of the community  encode a type and optonal sub-type field.
+// The last 6 bytes (or 7 bytes for types without a sub-type) carry a unique set of
+// data in a format defined by the type and optional sub-type field.
+// Extended communities provide a larger  range for grouping or categorizing communities.
+message ResultExtendedCommunityStructured {
+
+  message Choice {
+    enum Enum {
+      unspecified = 0;
+      transitive_2octet_as_type = 1;
+      transitive_ipv4_address_type = 2;
+      transitive_4octet_as_type = 3;
+      transitive_opaque_type = 4;
+      non_transitive_2octet_as_type = 5;
+    }
+  }
+  // Description missing in models
+  optional Choice.Enum choice = 1;
+
+  // Description missing in models
+  ResultExtendedCommunityTransitive2OctetAsType transitive_2octet_as_type = 2;
+
+  // Description missing in models
+  ResultExtendedCommunityTransitiveIpv4AddressType transitive_ipv4_address_type = 3;
+
+  // Description missing in models
+  ResultExtendedCommunityTransitive4OctetAsType transitive_4octet_as_type = 4;
+
+  // Description missing in models
+  ResultExtendedCommunityTransitiveOpaqueType transitive_opaque_type = 5;
+
+  // Description missing in models
+  ResultExtendedCommunityNonTransitive2OctetAsType non_transitive_2octet_as_type = 6;
+}
+
+// The Route Target Community identifies one or more routers that may receive a set
+// of routes (that carry this Community) carried by BGP Update message.  It is sent
+// with sub-type as 0x02.
+message ResultExtendedCommunityTransitive2OctetAsTypeRouteTarget {
+
+  // The two octet IANA assigned AS value assigned to the Autonomous System.
+  optional uint32 global_2byte_as = 1;
+
+  // The Local Administrator sub-field contains a number from a numbering space that is
+  // administered by the organization to which the Autonomous System number carried in
+  // the Global Administrator sub-field has been assigned by an appropriate authority.
+  optional uint32 local_4byte_admin = 2;
+}
+
+// The Route Origin Community identifies one or more routers that inject a set of routes
+// (that carry this Community) into BGP. It is sent with sub-type as 0x03 .
+message ResultExtendedCommunityTransitive2OctetAsTypeRouteOrigin {
+
+  // The two octet IANA assigned AS value assigned to the Autonomous System.
+  optional uint32 global_2byte_as = 1;
+
+  // The Local Administrator sub-field contains a number from a numbering space that is
+  // administered by the organization to which the Autonomous System number carried in
+  // the Global Administrator sub-field has been assigned by an appropriate authority.
+  optional uint32 local_4byte_admin = 2;
+}
+
+// The Transitive Two-Octet AS-Specific Extended Community is sent as type 0x00 .
+// 
+message ResultExtendedCommunityTransitive2OctetAsType {
+
+  message Choice {
+    enum Enum {
+      unspecified = 0;
+      route_target_subtype = 1;
+      route_origin_subtype = 2;
+    }
+  }
+  // Description missing in models
+  optional Choice.Enum choice = 1;
+
+  // Description missing in models
+  ResultExtendedCommunityTransitive2OctetAsTypeRouteTarget route_target_subtype = 2;
+
+  // Description missing in models
+  ResultExtendedCommunityTransitive2OctetAsTypeRouteOrigin route_origin_subtype = 3;
+}
+
+// The Route Origin Community identifies one or more routers that inject a set of routes
+// (that carry this Community) into BGP It is sent with sub-type as 0x03.
+message ResultExtendedCommunityTransitiveIpv4AddressTypeRouteOrigin {
+
+  // An IPv4 unicast address assigned by one of the Internet registries.
+  optional string global_ipv4_admin = 1;
+
+  // The Local Administrator sub-field contains a number from a numbering space that is
+  // administered by the organization to which  the IP address carried in the Global Administrator
+  // sub-field has been assigned by an appropriate authority.
+  optional uint32 local_2byte_admin = 2;
+}
+
+// The Route Target Community identifies one or more routers that may receive a set
+// of routes (that carry this Community) carried by BGP.  It is sent with sub-type as
+// 0x02.
+message ResultExtendedCommunityTransitiveIpv4AddressTypeRouteTarget {
+
+  // An IPv4 unicast address assigned by one of the Internet registries.
+  optional string global_ipv4_admin = 1;
+
+  // The Local Administrator sub-field contains a number from a numbering space that is
+  // administered by the organization to which  the IP address carried in the Global Administrator
+  // sub-field has been assigned by an appropriate authority.
+  optional uint32 local_2byte_admin = 2;
+}
+
+// The Transitive IPv4 Address Specific Extended Community is sent as type 0x01.
+message ResultExtendedCommunityTransitiveIpv4AddressType {
+
+  message Choice {
+    enum Enum {
+      unspecified = 0;
+      route_target_subtype = 1;
+      route_origin_subtype = 2;
+    }
+  }
+  // Description missing in models
+  optional Choice.Enum choice = 1;
+
+  // Description missing in models
+  ResultExtendedCommunityTransitiveIpv4AddressTypeRouteTarget route_target_subtype = 2;
+
+  // Description missing in models
+  ResultExtendedCommunityTransitiveIpv4AddressTypeRouteOrigin route_origin_subtype = 3;
+}
+
+// The Route Target Community identifies one or more routers that may receive a set
+// of routes (that carry this Community) carried by BGP.  It is sent with sub-type as
+// 0x02
+message ResultExtendedCommunityTransitive4OctetAsTypeRouteTarget {
+
+  // The four octet IANA assigned AS value assigned to the Autonomous System.
+  optional uint32 global_4byte_as = 1;
+
+  // The Local Administrator sub-field contains a number from a numbering space that is
+  // administered by the organization to which the Autonomous System number carried in
+  // the Global Administrator sub-field has been assigned by an appropriate authority.
+  optional uint32 local_2byte_admin = 2;
+}
+
+// The Route Origin Community identifies one or more routers that inject a set of routes
+// (that carry this Community) into BGP. It is sent with sub-type as 0x03.
+message ResultExtendedCommunityTransitive4OctetAsTypeRouteOrigin {
+
+  // The four octet IANA assigned AS value assigned to the Autonomous System.
+  optional uint32 global_4byte_as = 1;
+
+  // The Local Administrator sub-field contains a number from a numbering space that is
+  // administered by the organization to which the Autonomous System number carried in
+  // the Global Administrator sub-field has been assigned by an appropriate authority.
+  optional uint32 local_2byte_admin = 2;
+}
+
+// The Transitive Four-Octet AS-Specific Extended Community is sent as type 0x02. It
+// is defined in RFC 5668.
+message ResultExtendedCommunityTransitive4OctetAsType {
+
+  message Choice {
+    enum Enum {
+      unspecified = 0;
+      route_target_subtype = 1;
+      route_origin_subtype = 2;
+    }
+  }
+  // Description missing in models
+  optional Choice.Enum choice = 1;
+
+  // Description missing in models
+  ResultExtendedCommunityTransitive4OctetAsTypeRouteTarget route_target_subtype = 2;
+
+  // Description missing in models
+  ResultExtendedCommunityTransitive4OctetAsTypeRouteOrigin route_origin_subtype = 3;
+}
+
+// The Color Community contains locally administrator defined 'color' value which is
+// used in conjunction with Encapsulation  attribute to decide whether a data packet
+// can be transmitted on a certain tunnel or not. It is defined in RFC9012 and sent
+// with sub-type as 0x0b.
+message ResultExtendedCommunityTransitiveOpaqueTypeColor {
+
+  // Two octet flag values.
+  optional uint32 flags = 1;
+
+  // The color value is user defined and configured locally and used to determine whether
+  // a data packet can be transmitted on a certain tunnel or not
+  // in conjunction with the Encapsulation attribute. It is defined in RFC9012.
+  // 
+  optional uint32 color = 2;
+}
+
+// This identifies the type of tunneling technology being signalled. It is defined in
+// RFC9012 and sent with sub-type as 0x0c.
+message ResultExtendedCommunityTransitiveOpaqueTypeEncapsulation {
+
+  // Four bytes of reserved values. Normally set to 0 on transmit and ignored on receive.
+  // 
+  optional uint32 reserved = 1;
+
+  // Identifies the type of tunneling technology being signalled. Initially defined in
+  // RFC5512 and extended in RFC9012.
+  // Some of the important tunnel types include
+  // - 1 L2TPv3 over IP	[RFC9012],
+  // - 2	GRE	[RFC9012],
+  // - 7	IP in IP	[RFC9012],
+  // - 8	VXLAN Encapsulation	[RFC8365],
+  // - 9	NVGRE Encapsulation	[RFC8365],
+  // - 10	MPLS Encapsulation	[RFC8365],
+  // - 15	SR TE Policy Type	[draft-ietf-idr-segment-routing-te-policy],
+  // - 19	Geneve Encapsulation	[RFC8926]
+  optional uint32 tunnel_type = 2;
+}
+
+// The Transitive Opaque Extended Community is sent as type 0x03.
+message ResultExtendedCommunityTransitiveOpaqueType {
+
+  message Choice {
+    enum Enum {
+      unspecified = 0;
+      color_subtype = 1;
+      encapsulation_subtype = 2;
+    }
+  }
+  // Description missing in models
+  optional Choice.Enum choice = 1;
+
+  // Description missing in models
+  ResultExtendedCommunityTransitiveOpaqueTypeColor color_subtype = 2;
+
+  // Description missing in models
+  ResultExtendedCommunityTransitiveOpaqueTypeEncapsulation encapsulation_subtype = 3;
+}
+
+// The Link Bandwidth Extended Community attribute is defined in draft-ietf-idr-link-bandwidth.
+// It is sent with sub-type as 0x04.
+message ResultExtendedCommunityNonTransitive2OctetAsTypeLinkBandwidth {
+
+  // The value of the Global Administrator subfield should represent the Autonomous System
+  // of the router that attaches the Link Bandwidth Community. If four octet AS numbering
+  // scheme is used, AS_TRANS (23456) should be used.
+  optional uint32 global_2byte_as = 1;
+
+  // Bandwidth of the link in bytes per second. ( 1 Kbps is 1000 bytes per second and
+  // 1 Mbps is 1000 Kbps per second )
+  optional float bandwidth = 2;
+}
+
+// The Non-Transitive Two-Octet AS-Specific Extended Community is sent as type 0x40.
+// 
+message ResultExtendedCommunityNonTransitive2OctetAsType {
+
+  message Choice {
+    enum Enum {
+      unspecified = 0;
+      link_bandwidth_subtype = 1;
+    }
+  }
+  // Description missing in models
+  optional Choice.Enum choice = 1;
+
+  // Description missing in models
+  ResultExtendedCommunityNonTransitive2OctetAsTypeLinkBandwidth link_bandwidth_subtype = 2;
+}
+
+// BGP communities provide additional capability for tagging routes and  for modifying
+// BGP routing policy on upstream and downstream routers. BGP community is a 32-bit
+// number which is broken into 16-bit AS number and  a 16-bit custom value.
+message ResultBgpCommunity {
+
+  message Type {
+    enum Enum {
+      unspecified = 0;
+      manual_as_number = 1;
+      no_export = 2;
+      no_advertised = 3;
+      no_export_subconfed = 4;
+      llgr_stale = 5;
+      no_llgr = 6;
+    }
+  }
+  // The type of community AS number. If community type is manual_as_number then as_number
+  // and as_custom will be available.
+  optional Type.Enum type = 1;
+
+  // First two octets of 32 bit community AS number.
+  optional uint32 as_number = 2;
+
+  // Last two octets of the community value.
+  optional uint32 as_custom = 3;
+}
+
+// This attribute identifies the autonomous systems through  which routing information
+// carried in this UPDATE message has passed.
+message ResultBgpAsPath {
+
+  // AS Path segments present in the received AS Path attribute.
+  repeated ResultBgpAsPathSegment segments = 1;
+}
+
+// Configuration for a single BGP AS path segment
+message ResultBgpAsPathSegment {
+
+  message Type {
+    enum Enum {
+      unspecified = 0;
+      as_seq = 1;
+      as_set = 2;
+      as_confed_seq = 3;
+      as_confed_set = 4;
+    }
+  }
+  // AS sequence is the most common type of AS_PATH, it contains the  list of ASNs starting
+  // with the most recent ASN being added read  from left to right.
+  // The other three AS_PATH types are used for Confederations - AS_SET is the type of
+  // AS_PATH attribute that summarizes routes using using the aggregate-address command,
+  // allowing AS_PATHs to be  summarized in the update as well. - AS_CONFED_SEQ gives
+  // the list of ASNs in the path starting with the  most recent ASN to be added reading
+  // left to right - AS_CONFED_SET will allow summarization of multiple AS PATHs to be
+  // sent in BGP Updates.
+  optional Type.Enum type = 1;
+
+  // The AS numbers in this AS path segment.
+  repeated uint32 as_numbers = 2;
+}
+
+// The request to retrieve ISIS Link State PDU (LSP) information learned by the router.
+message IsisLspsStateRequest {
+
+  // The names of ISIS routers for which learned information is requested. An empty list
+  // will return results for all ISIS routers.
+  // 
+  // x-constraint:
+  // - /components/schemas/Device.IsisRouter/properties/name
+  // 
+  repeated string isis_router_names = 1;
+}
+
+// The result of ISIS LSP information that are retrieved.
+message IsisLspsState {
+
+  // The name of the ISIS Router.
+  optional string isis_router_name = 1;
+
+  // One or more LSPs that are learned by this ISIS router.
+  repeated IsisLspState lsps = 2;
+}
+
+// ISIS LSP.
+message IsisLspState {
+
+  // LSP ID in the format, e.g. '640000000001-00-00'. LSP ID consists of the System ID
+  // of a neighbor, the Pseudonode ID, and the LSP number. The last two bytes represent
+  // Pseudonode ID and LSP number respectively. A pseudonode is a logical representation
+  // of the LAN which is generated by a Designated Intermediate System (DIS) on a LAN
+  // segment. If one LSP exceeds the maximum LSP size then it is sent in another LSP with
+  // the LSP number incremented by one. A router's learned LSP gets refreshed by 'remaining_lifetime'.
+  // Then the sequence number is incremented by 1.
+  // required = true
+  optional string lsp_id = 1;
+
+  message PduType {
+    enum Enum {
+      unspecified = 0;
+      level_1 = 1;
+      level_2 = 2;
+    }
+  }
+  // Link State PDU type.
+  optional PduType.Enum pdu_type = 2;
+
+  // Remaining lifetime in seconds before LSP expires.
+  optional uint32 remaining_lifetime = 3;
+
+  // Sequence number of the LSP.
+  optional uint64 sequence_number = 4;
+
+  // Total length of the LSP.
+  optional uint32 pdu_length = 5;
+
+  // LSP Type-Block flags.
+  IsisLspFlags flags = 6;
+
+  // IS Type - bits 1 and 2 indicate the type of Intermediate System.
+  // 1 - ( i.e. bit 1 set) Level 1 Intermediate system.
+  // 2 - Unused value.
+  // 3 - (i.e. bits 1 and 2 set) Level 2 Intermediate system.
+  optional uint32 is_type = 7;
+
+  // It refers to Link State PDU State TLVs container.
+  IsisLspTlvs tlvs = 8;
+}
+
+// This contains the list of TLVs present in one LSP.
+message IsisLspTlvs {
+
+  // Array of Hostname TLVs ( type 137) present in this LSP.
+  repeated IsisLspHostname hostname_tlvs = 1;
+
+  // Array of IS-Reachability TLVs (type 2) present in this LSP.
+  repeated IsisLspIsReachabilityTlv is_reachability_tlvs = 2;
+
+  // Array of Extended IS-Reachability TLVs (type 22) present in this LSP.
+  repeated IsisLspExtendedIsReachabilityTlv extended_is_reachability_tlvs = 3;
+
+  // Array of IPv4 Internal Reachability TLVs (type 128) present in this LSP.
+  repeated IsisLspIpv4InternalReachabilityTlv ipv4_internal_reachability_tlvs = 4;
+
+  // Array of IPv4 External Reachability TLVs (type 130) present in this LSP.
+  repeated IsisLspIpv4ExternalReachabilityTlv ipv4_external_reachability_tlvs = 5;
+
+  // Array of IPv4 Extended Reachability TLVs (type 135) present in this LSP.
+  repeated IsisLspExtendedIpv4ReachabilityTlv extended_ipv4_reachability_tlvs = 6;
+
+  // Array of IPv6 Reachability TLVs (type 236) present in this LSP.
+  repeated IsisLspIpv6ReachabilityTlv ipv6_reachability_tlvs = 7;
+}
+
+// It contains Hostname for the TLV 137.
+message IsisLspHostname {
+
+  // Hostname for an ISIS router.
+  optional string hostname = 1;
+}
+
+// LSP Type flags.
+message IsisLspFlags {
+
+  // When set, the originator supports partition repair.
+  optional bool partition_repair = 1;
+
+  // When set, the originator is attached to another area using the referred metric.
+  optional bool attached_error = 2;
+
+  // When set, the originator is attached to another
+  // area using the referred metric.
+  optional bool attached_expense = 3;
+
+  // Delay Metric - when set, the originator is attached to another
+  // area using the referred metric.
+  optional bool attached_delay = 4;
+
+  // Default Metric - when set, the originator is attached to another
+  // area using the referred metric.
+  optional bool attached_default = 5;
+
+  // Overload bit - when set, the originator is overloaded, and must
+  // be avoided in path calculation.
+  optional bool overload = 6;
+}
+
+// This container describes list of ISIS neighbors and attributes in IS-Reachability
+// TLV (type 2).
+message IsisLspIsReachabilityTlv {
+
+  // This container describes Intermediate System (IS) neighbors.
+  repeated IsisLspneighbor neighbors = 1;
+}
+
+// This is list of ISIS neighbors and attributes in Extended-IS-Reachability TLV (type
+// 22).
+message IsisLspExtendedIsReachabilityTlv {
+
+  // This container describes IS neighbors.
+  repeated IsisLspneighbor neighbors = 1;
+}
+
+// This contains IS neighbors.
+message IsisLspneighbor {
+
+  // The System ID for this emulated ISIS router, e.g. 640100010000.
+  optional string system_id = 1;
+}
+
+// This container defines list of IPv4 internal reachability information in one IPv4
+// internal reachability TLV.
+// This is advertised when the origin-type is set 'internal' in route range configurations.
+message IsisLspIpv4InternalReachabilityTlv {
+
+  // Describes list of IPv4 prefixes in this TLV.
+  repeated IsisLspV4Prefix prefixes = 1;
+}
+
+// This container defines list of IPv4 external reachability information in one IPv4
+// external reachability TLV.
+// This is advertised when the origin-type is set 'external' in route range configurations.
+message IsisLspIpv4ExternalReachabilityTlv {
+
+  // Describes list of IPv4 prefixes in this TLV..
+  repeated IsisLspV4Prefix prefixes = 1;
+}
+
+// This group defines attributes of an IPv4 standard prefix.
+message IsisLspV4Prefix {
+
+  // An IPv4 unicast prefix reachable via the originator of this LSP.
+  optional string ipv4_address = 1;
+
+  // The length of the IPv4 prefix.
+  optional uint32 prefix_length = 2;
+
+  message RedistributionType {
+    enum Enum {
+      unspecified = 0;
+      up = 1;
+      down = 2;
+    }
+  }
+  // Up (0)-used when a prefix is initially advertised within the ISIS L3 hierarchy,
+  // and for all other prefixes in L1 and L2 LSPs. (default)
+  // Down (1)-used when an L1/L2 router advertises L2 prefixes in L1 LSPs.
+  // The prefixes are being advertised from a higher level (L2) down to a lower level
+  // (L1).
+  optional RedistributionType.Enum redistribution_type = 3;
+
+  // ISIS default metric value.
+  optional uint32 default_metric = 4;
+
+  message OriginType {
+    enum Enum {
+      unspecified = 0;
+      internal = 1;
+      external = 2;
+    }
+  }
+  // The origin of the advertised route-internal or external to the ISIS area. Options
+  // include the following:
+  // Internal-for intra-area routes, through Level 1 LSPs.
+  // External-for inter-area routes redistributed within L1, through Level
+  // 1 LSPs.
+  optional OriginType.Enum origin_type = 5;
+}
+
+// This container defines list of IPv4 extended reachability information in one Extended
+// IPv4 External Reachability TLV.
+// It is advertised when the 'wide metric' is enabled.
+message IsisLspExtendedIpv4ReachabilityTlv {
+
+  // IPv4 prefix contained within extended reachability TLVs.
+  repeated IsisLspExtendedV4Prefix prefixes = 1;
+}
+
+// This group defines attributes of an IPv4 standard prefix.
+message IsisLspExtendedV4Prefix {
+
+  // An IPv4 unicast prefix reachable via the originator of this LSP.
+  optional string ipv4_address = 1;
+
+  // The length of the IPv4 prefix.
+  optional uint32 prefix_length = 2;
+
+  // ISIS wide metric.
+  optional uint32 metric = 3;
+
+  message RedistributionType {
+    enum Enum {
+      unspecified = 0;
+      up = 1;
+      down = 2;
+    }
+  }
+  // Up (0)-used when a prefix is initially advertised within the ISIS L3 hierarchy,
+  // and for all other prefixes in L1 and L2 LSPs. (default)
+  // Down (1)-used when an L1/L2 router advertises L2 prefixes in L1 LSPs.
+  // The prefixes are being advertised from a higher level (L2) down to a lower level
+  // (L1).
+  optional RedistributionType.Enum redistribution_type = 4;
+
+  // Description missing in models
+  IsisLspPrefixAttributes prefix_attributes = 5;
+}
+
+// It defines list of IPv6 extended reachability information in one IPv6 Reachability
+// TLV.
+message IsisLspIpv6ReachabilityTlv {
+
+  // IPv6 prefix contained within reachability TLVs.
+  repeated IsisLspV6Prefix prefixes = 1;
+}
+
+// It defines attributes of an IPv6 standard prefix.
+message IsisLspV6Prefix {
+
+  // An IPv6 unicast prefix reachable via the originator of this LSP.
+  optional string ipv6_address = 1;
+
+  // The length of the IPv6 prefix.
+  optional uint32 prefix_length = 2;
+
+  // ISIS wide metric.
+  optional uint32 metric = 3;
+
+  message RedistributionType {
+    enum Enum {
+      unspecified = 0;
+      up = 1;
+      down = 2;
+    }
+  }
+  // Up (0)-used when a prefix is initially advertised within the ISIS L3 hierarchy,
+  // and for all other prefixes in L1 and L2 LSPs. (default)
+  // Down (1)-used when an L1/L2 router advertises L2 prefixes in L1 LSPs.
+  // The prefixes are being advertised from a higher level (L2) down to a lower level
+  // (L1).
+  optional RedistributionType.Enum redistribution_type = 4;
+
+  message OriginType {
+    enum Enum {
+      unspecified = 0;
+      internal = 1;
+      external = 2;
+    }
+  }
+  // The origin of the advertised route-internal or external to the ISIS area. Options
+  // include the following:
+  // Internal-for intra-area routes, through Level 1 LSPs.
+  // External-for inter-area routes redistributed within L1, through Level
+  // 1 LSPs.
+  optional OriginType.Enum origin_type = 5;
+
+  // Description missing in models
+  IsisLspPrefixAttributes prefix_attributes = 6;
+}
+
+// This contains the properties of ISIS Prefix attributes for  the extended IPv4 and
+// IPv6 reachability. https://www.rfc-editor.org/rfc/rfc7794.html
+message IsisLspPrefixAttributes {
+
+  // External Prefix Flag (Bit 0)
+  optional bool x_flag = 1;
+
+  // Re-advertisement Flag (Bit 1)
+  optional bool r_flag = 2;
+
+  // Node Flag (Bit 2)
+  optional bool n_flag = 3;
+}
+
+// The request to retrieve LLDP neighbor information for a given instance.
+message LldpNeighborsStateRequest {
+
+  // The names of LLDP instances for which neighbor information will be retrieved. If
+  // no names are specified then the results will contain neighbor information for all
+  // configured LLDP instances.
+  // 
+  // x-constraint:
+  // - /components/schemas/Lldp/properties/name
+  // 
+  repeated string lldp_names = 1;
+
+  // Specify the neighbors for which information will be returned. If empty  or missing
+  // then information for all neighbors will be returned.
+  repeated string neighbor_id_filters = 2;
+}
+
+// LLDP neighbor information.
+message LldpNeighborsState {
+
+  // The name of the LLDP instance.
+  optional string lldp_name = 1;
+
+  // The system name field shall contain an alpha-numeric string that  indicates the system's
+  // administratively assigned name. The system name  should be the system's fully qualified
+  // domain name. If implementations  support IETF RFC 3418, the sysName object should
+  // be used for this field.
+  optional string system_name = 2;
+
+  // The system description field shall contain an alpha-numeric string that  is the textual
+  // description of the network entity. The system description  should include the full
+  // name and version identification of the system's  hardware type, software operating
+  // system, and networking software. If  implementations support IETF RFC 3418, the sysDescr
+  // object should be used  for this field.
+  optional string system_description = 3;
+
+  // The Chassis ID is a mandatory TLV which identifies the chassis component of  the
+  // endpoint identifier associated with the transmitting LLDP agent.
+  optional string chassis_id = 4;
+
+  message ChassisIdType {
+    enum Enum {
+      unspecified = 0;
+      port_component = 1;
+      network_address = 2;
+      chassis_component = 3;
+      mac_address = 4;
+      interface_name = 5;
+      local = 6;
+      interface_alias = 7;
+    }
+  }
+  // This field identifies the format and source of the chassis identifier string.  It
+  // is an enumerator defined by the LldpChassisIdSubtype object from IEEE 802.1AB  MIB.
+  optional ChassisIdType.Enum chassis_id_type = 5;
+
+  // System generated identifier for the neighbor on the LLDP instance.
+  optional string neighbor_id = 6;
+
+  // Age since discovery in seconds.
+  optional uint32 age = 7;
+
+  // Seconds since last update received.
+  optional uint32 last_update = 8;
+
+  // The time-to-live (TTL) in seconds is a mandatory TLV which indicates how long information
+  // from the neighbor  should be considered valid.
+  optional uint32 ttl = 9;
+
+  // The Port ID is a mandatory TLV which identifies the port component of the endpoint
+  // identifier associated with  the transmitting LLDP agent. If the specified port is
+  // an IEEE 802.3 Repeater port, then this TLV is optional.
+  optional string port_id = 10;
+
+  message PortIdType {
+    enum Enum {
+      unspecified = 0;
+      port_component = 1;
+      network_address = 2;
+      agent_circuit_id = 3;
+      mac_address = 4;
+      interface_name = 5;
+      local = 6;
+      interface_alias = 7;
+    }
+  }
+  // This field identifies the format and source of the port identifier string. It is
+  // an enumerator defined by the PtopoPortIdType object from RFC2922.
+  optional PortIdType.Enum port_id_type = 11;
+
+  // The binary string containing the actual port identifier for the port which this LLDP
+  // PDU was transmitted. The source  and format of this field is defined by PtopoPortId
+  // from RFC2922.
+  optional string port_description = 12;
+
+  // The Management Address is a mandatory TLV which identifies a network address associated
+  // with the local LLDP agent, which  can be used to reach the agent on the port identified
+  // in the Port ID TLV.
+  optional string management_address = 13;
+
+  // The enumerated value for the network address type identified in this TLV. This enumeration
+  // is defined in the 'Assigned Numbers'  RFC [RFC3232] and the ianaAddressFamilyNumbers
+  // object.
+  optional string management_address_type = 14;
+
+  // Description missing in models
+  repeated LldpCustomTLVState custom_tlvs = 15;
+
+  // Description missing in models
+  repeated LldpCapabilityState capabilities = 16;
+}
+
+// Custom TLV received from a neighbor.Custom TLVs are organization specific TLVs advertised
+// with TLV type 127.
+message LldpCustomTLVState {
+
+  // The integer value identifying the type of information contained in the value field.
+  optional uint32 custom_type = 1;
+
+  // The organizationally unique identifier field shall contain the organization's OUI
+  // as defined in Clause 9 of IEEE Std 802. The high-order octet is 0 and the low-order
+  // 3 octets are the SMI Network Management Private Enterprise Code of the Vendor in
+  // network byte order,  as defined in the 'Assigned Numbers' RFC [RFC3232].
+  optional string oui = 2;
+
+  // The organizationally defined subtype field shall contain a unique subtype value assigned
+  // by the defining organization.
+  optional string oui_subtype = 3;
+}
+
+// LLDP system capability advertised by the neighbor
+message LldpCapabilityState {
+
+  message CapabilityName {
+    enum Enum {
+      unspecified = 0;
+      mac_bridge = 1;
+      two_port_mac_relay = 2;
+      repeater = 3;
+      docsis_cable_device = 4;
+      s_vlan = 5;
+      telephone = 6;
+      other = 7;
+      router = 8;
+      c_vlan = 9;
+      station_only = 10;
+      wlan_access_point = 11;
+    }
+  }
+  // Name of the system capability advertised by the neighbor. Capabilities are represented
+  // in a bitmap that defines the primary functions of the system.  The capabilities are
+  // defined in IEEE 802.1AB.
+  optional CapabilityName.Enum capability_name = 1;
+
+  // Indicates whether the corresponding system capability is enabled on the neighbor.
+  optional bool capability_enabled = 2;
+}
+
+// The request to retrieve RSVP Label Switched Path (LSP) information learned by the
+// router.
+message RsvpLspsStateRequest {
+
+  // The names of RSVP-TE routers for which learned information is requested. An empty
+  // list will return results for all RSVP=TE routers.
+  // 
+  // x-constraint:
+  // - /components/schemas/Device.Rsvp/properties/name
+  // 
+  repeated string rsvp_router_names = 1;
+}
+
+// Discovered IPv4 Point-to-Point LSPs of a RSVP-TE router.
+message RsvpLspsState {
+
+  // The name of the RSVP-TE Router.
+  optional string rsvp_router_name = 1;
+
+  // IPv4 Point-to-Point RSVP-TE Discovered LSPs.
+  repeated RsvpIPv4LspState ipv4_lsps = 2;
+}
+
+// IPv4 RSVP-TE Discovered LSPs.
+message RsvpIPv4LspState {
+
+  // The origin IPv4 address of RSVP session.
+  optional string source_address = 1;
+
+  // The IPv4 destination address of RSVP session.
+  optional string destination_address = 2;
+
+  // It refers to the RSVP LSP properties.
+  RsvpLspState lsp = 3;
+
+  // It refers to RSVP RRO objects container.
+  repeated RsvpLspIpv4Rro rros = 4;
+
+  // It refers to RSVP ERO objects container.
+  repeated RsvpLspIpv4Ero eros = 5;
+}
+
+// IPv4 RSVP-TE Discovered LSPs.
+message RsvpLspState {
+
+  // The tunnel id of RSVP session which acts as an identifier that remains constant over
+  // the life of the tunnel.
+  optional uint32 tunnel_id = 1;
+
+  // The lsp-id of RSVP session which acts as a differentiator for two lsps originating
+  // from the same headend, commonly used to distinguish RSVP sessions during make before
+  // break operations.
+  optional uint32 lsp_id = 2;
+
+  // The value of RSVP-TE Session Name field of the Session Attribute object.
+  optional string session_name = 3;
+
+  // The label received by RSVP-TE ingress.
+  optional uint32 label_in = 4;
+
+  // The label assigned by RSVP-TE egress.
+  optional uint32 label_out = 5;
+
+  message SessionStatus {
+    enum Enum {
+      unspecified = 0;
+      up = 1;
+      down = 2;
+    }
+  }
+  // Operational state of the RSVP LSP.
+  optional SessionStatus.Enum session_status = 6;
+
+  message LastFlapReason {
+    enum Enum {
+      unspecified = 0;
+      resv_tear = 1;
+      path_tear = 2;
+      path_timeout = 3;
+    }
+  }
+  // The reason for the last flap of this RSVP session.
+  optional LastFlapReason.Enum last_flap_reason = 7;
+
+  // The tunnel UP time in milli seconds. If the tunnel is DOWN the UP time will be zero.
+  optional uint64 up_time = 8;
+}
+
+// This contains the list of Record Route Object(RRO) objects associated with the traffic
+// engineering tunnel. The  Record Route Object(RRO) is used in RSVP-TE to record the
+// route traversed by the LSP. The RRO might be present in both   Path message and Resv
+// message, the RRO stores the IP addresses of the routers that the traffic engineering
+// tunnel  traversed and also the label generated and distributed by the routers. The
+// RROs in the Resv message mirrors that of  the Path message, the only difference is
+// that the RRO in a Resv message records the path information in the reverse  direction.
+// 
+message RsvpLspIpv4Rro {
+
+  // The IPv4 addresses of the routers that the traffic engineering tunnel traversed.
+  optional string address = 1;
+
+  // Label reported for RRO hop. When the Label_Recording flag is set in the Session Attribute
+  // object, nodes doing route recording should include the Label Record subobject containing
+  // the reported label.
+  optional uint32 reported_label = 2;
+}
+
+// This contains the list of sub-objects included in the Explicit Route Object(ERO)
+// object send in the PATH message from the ingress. These sub-objects contain the intermediate
+// hops to be traversed by the LSP while being forwarded  towards the egress endpoint.
+message RsvpLspIpv4Ero {
+
+  // The IPv4 prefix indicated by the ERO. Specified only when the ERO hop is an IPv4
+  // prefix.
+  optional string prefix = 1;
+
+  // The autonomous system number indicated by the ERO. Specified only when the ERO hop
+  // is an  2 or 4-byte AS number.
+  optional uint32 asn = 2;
+
+  message Type {
+    enum Enum {
+      unspecified = 0;
+      ipv4 = 1;
+      ipv6 = 2;
+      asn = 3;
+      asn4 = 4;
+      label = 5;
+      unnumbered_interface = 6;
+    }
+  }
+  // The type indicated by the ERO.
+  optional Type.Enum type = 3;
+}
+
+// The request for assigned IPv4 address information associated with DHCP Client sessions.
+message Dhcpv4InterfaceStateRequest {
+
+  // The names of DHCPv4 client to return results for. An empty list will return results
+  // for all DHCPv4 Client address information.
+  // 
+  // x-constraint:
+  // - /components/schemas/Device.Dhcpv4client/properties/name
+  // 
+  repeated string dhcp_client_names = 1;
+}
+
+// The IPv4 address associated with this DHCP Client session.
+message Dhcpv4InterfaceState {
+
+  // The name of a DHCPv4 Client.
+  optional string dhcp_client_name = 1;
+
+  // The IPv4 address associated with this DHCP Client session.
+  optional string ipv4_address = 2;
+
+  // The length of the prefix.
+  optional uint32 prefix_length = 3;
+
+  // The Gateway Ipv4 address associated with this DHCP Client session.
+  optional string gateway_address = 4;
+
+  // The duration of the IPv4 address lease, in seconds.
+  optional uint32 lease_time = 5;
+
+  // Time in seconds until the DHCPv4 client starts renewing the lease.
+  optional uint32 renew_time = 6;
+
+  // Time in seconds until the DHCPv4 client starts rebinding.
+  optional uint32 rebind_time = 7;
+}
+
+// The request to retrieve DHCP Server host allocated status.
+message Dhcpv4LeaseStateRequest {
+
+  // The names of DHCPv4 server to return results for. An empty list will return results
+  // for all DHCPv4 servers.
+  // 
+  // x-constraint:
+  // - /components/schemas/Device.Dhcpv4server/properties/name
+  // 
+  repeated string dhcp_server_names = 1;
+}
+
+// Lease information of DHCP Server.
+message Dhcpv4LeasesState {
+
+  // The name of a DHCP Server.
+  optional string dhcp_server_name = 1;
+
+  // Description missing in models
+  repeated Dhcpv4LeaseState leases = 2;
+}
+
+// IPv4 address lease state.
+message Dhcpv4LeaseState {
+
+  // The IPv4 address associated with this lease.
+  optional string address = 1;
+
+  // The time in seconds after which the IPv4 address lease will expire.
+  optional uint32 valid_time = 2;
+
+  // The elapsed time in seconds since the address has been renewed.
+  optional uint32 preferred_time = 3;
+
+  // Time in seconds until the DHCPv4 client starts renewing the lease.
+  optional uint32 renew_time = 4;
+
+  // Time in seconds until the DHCPv4 client starts rebinding.
+  optional uint32 rebind_time = 5;
+
+  // The ID of the DHCPv4 client holding this lease.
+  optional string client_id = 6;
+
+  // The Circuit ID option found in the last request message.
+  optional string circuit_id = 7;
+
+  // The Remote ID option found in the last request message.
+  optional string remote_id = 8;
+}
+
+// The request for assigned IPv6 address information associated with DHCP Client sessions.
+message Dhcpv6InterfaceStateRequest {
+
+  // The names of DHCPv6 client to return results for. An empty list will return results
+  // for all DHCPv6 Client address information.
+  // 
+  // x-constraint:
+  // - /components/schemas/Device.Dhcpv6client/properties/name
+  // 
+  repeated string dhcp_client_names = 1;
+}
+
+// The IPv6 address associated with this DHCP Client session.
+message Dhcpv6InterfaceState {
+
+  // The name of a DHCPv6 Client.
+  optional string dhcp_client_name = 1;
+
+  // The IPv6 IAPD addresses and prefixes associated with this DHCP Client session.
+  repeated Dhcpv6InterfaceIapd iapd_addresses = 2;
+
+  // The IPv6 IATA/IANA addresses and gateways associated with this DHCP Client session.
+  repeated Dhcpv6InterfaceIa ia_addresses = 3;
+}
+
+// The IPv6 IAPD address and prefix length associated with this DHCP Client session.
+message Dhcpv6InterfaceIapd {
+
+  // The IAPD address associated with this DHCPv6 Client session.
+  optional string address = 1;
+
+  // The prefix length of the IAPD address associated with this DHCPv6 Client session.
+  optional uint32 prefix_length = 2;
+
+  // The duration of the IPv6 address lease, in seconds.
+  optional uint32 lease_time = 3;
+}
+
+// The IPv6 IATA/IANA address and gateway associated with this DHCP Client session.
+message Dhcpv6InterfaceIa {
+
+  // The address associated with this DHCPv6 Client session.
+  optional string address = 1;
+
+  // The Gateway address associated with this DHCPv6 Client session.
+  optional string gateway = 2;
+
+  // The duration of the IPv6 address lease, in seconds.
+  optional uint32 lease_time = 3;
+}
+
+// The request to retrieve DHCP Server host allocated status.
+message Dhcpv6LeaseStateRequest {
+
+  // The names of DHCPv6 server to return results for. An empty list will return results
+  // for all DHCPv6 servers.
+  // 
+  // x-constraint:
+  // - /components/schemas/Device.Dhcpv6server/properties/name
+  // 
+  repeated string dhcp_server_names = 1;
+}
+
+// Lease information of DHCP Server.
+message Dhcpv6LeasesState {
+
+  // The name of a DHCP Server.
+  optional string dhcp_server_name = 1;
+
+  // Description missing in models
+  repeated Dhcpv6ServerLeaseState leases = 2;
+}
+
+// IPv6 unicast prefix.
+message Dhcpv6ServerLeaseState {
+
+  // The IPv6 address associated with this lease.
+  optional string address = 1;
+
+  // The time in seconds, IP address lease will expire.
+  optional uint32 valid_time = 2;
+
+  // The time in seconds, elapsed time since address has been renewed.
+  optional uint32 preferred_time = 3;
+
+  // Time in seconds until the DHCPv6 client starts renewing the lease.
+  optional uint32 renew_time = 4;
+
+  // Time in seconds until the DHCPv6 client starts rebinding.
+  optional uint32 rebind_time = 5;
+
+  // The ID of the DHCPv6 client holding this lease.
+  optional string client_id = 6;
+
+  // The Remote ID option found in the last request message.
+  optional string remote_id = 7;
+
+  // The Interface ID option found in the last request message.
+  optional string interface_id = 8;
+}
+
+// The capture result request to the traffic generator. Stops the port capture on the
+// port_name and returns the capture.
+message CaptureRequest {
+
+  // The name of a port a capture is started on.
+  // 
+  // x-constraint:
+  // - /components/schemas/Port/properties/name
+  // 
+  // required = true
+  optional string port_name = 1;
 }
 
 // mac counter pattern
@@ -24126,32 +26125,60 @@ message Failure {
 message SetConfigRequest {
   ConvergenceConfig convergence_config = 1;
 }
+
+message UpdateConfigRequest {
+  ConfigUpdate config_update = 1;
+}
 message SetConfigResponse {
   Warning warning = 1;
 }
 
-
-message SetStateRequest {
-  ConvergenceState convergence_state = 1;
+message GetConfigResponse {
+  Config config = 1;
 }
-message SetStateResponse {
+
+message UpdateConfigResponse {
   Warning warning = 1;
 }
 
 
-message SendPingRequest {
-  PingRequest ping_request = 1;
+message SetControlStateRequest {
+  ControlState control_state = 1;
 }
-message SendPingResponse {
-  PingResponse ping_response = 1;
+message SetControlStateResponse {
+  Warning warning = 1;
 }
 
 
-message GetResultsRequest {
+message SetControlActionRequest {
+  ControlAction control_action = 1;
+}
+message SetControlActionResponse {
+  ControlActionResponse control_action_response = 1;
+}
+
+
+message GetMetricsRequest {
   ConvergenceRequest convergence_request = 1;
 }
-message GetResultsResponse {
+message GetMetricsResponse {
   ConvergenceResponse convergence_response = 1;
+}
+
+
+message GetStatesRequest {
+  ConvergenceState convergence_state = 1;
+}
+message GetStatesResponse {
+  StatesResponse states_response = 1;
+}
+
+
+message GetCaptureRequest {
+  CaptureRequest capture_request = 1;
+}
+message GetCaptureResponse {
+  bytes response_bytes = 1;
 }
 
 
@@ -24163,14 +26190,24 @@ message GetResultsResponse {
 // in the representation
 service Openapi {
 
-  // Sets the configuration of a traffic generator for convergence measurements.
+  // Sets configuration resources on the traffic generator.
   rpc SetConfig(SetConfigRequest) returns (SetConfigResponse);
-  // Updates the state of the traffic generator.
-  rpc SetState(SetStateRequest) returns (SetStateResponse);
-  // API to send an IPv4 and/or IPv6 ICMP Echo Request(s) between endpoints. For each
-  // endpoint 1 ping packet will be sent and API shall wait for ping response to either
-  // be successful or timeout. The API wait timeout for each request is 300ms.
-  rpc SendPing(SendPingRequest) returns (SendPingResponse);
-  // Request flow metrics or flow convergence measurements.
-  rpc GetResults(GetResultsRequest) returns (GetResultsResponse);
+  // Description missing in models
+  rpc GetConfig(google.protobuf.Empty) returns (GetConfigResponse);
+  // Updates specific attributes of resources configured on the traffic generator. The
+  // fetched configuration shall reflect the updates applied successfully.
+  // The Response.Warnings in the Success response is available for implementers to disclose
+  // additional information about a state change including any implicit changes that are
+  // outside the scope of the state change.
+  rpc UpdateConfig(UpdateConfigRequest) returns (UpdateConfigResponse);
+  // Sets the operational state of configured resources.
+  rpc SetControlState(SetControlStateRequest) returns (SetControlStateResponse);
+  // Triggers actions against configured resources.
+  rpc SetControlAction(SetControlActionRequest) returns (SetControlActionResponse);
+  // Description missing in models
+  rpc GetMetrics(GetMetricsRequest) returns (GetMetricsResponse);
+  // Description missing in models
+  rpc GetStates(GetStatesRequest) returns (GetStatesResponse);
+  // Description missing in models
+  rpc GetCapture(GetCaptureRequest) returns (GetCaptureResponse);
 }
