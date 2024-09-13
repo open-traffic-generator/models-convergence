@@ -1,40 +1,112 @@
 components:
   schemas:
     Convergence.Response:
+      description: >-
+        Response containing chosen traffic generator metrics.
       type: object
       properties:
         choice:
           type: string
           x-field-uid: 1
           x-enum:
-            flow_metric:
+            flow_metrics:
               x-field-uid: 1
-            flow_convergence:
+            port_metrics:
               x-field-uid: 2
             bgpv4_metrics:
               x-field-uid: 3
             bgpv6_metrics:
               x-field-uid: 4
-        flow_metric:
+            isis_metrics:
+              x-field-uid: 5
+            lag_metrics:
+              x-field-uid: 6
+            lacp_metrics:
+              x-field-uid: 7
+            lldp_metrics:
+              x-field-uid: 8
+            rsvp_metrics:
+              x-field-uid: 9
+            dhcpv4_client:
+              x-field-uid: 10
+            dhcpv4_server:
+              x-field-uid: 11
+            dhcpv6_client:
+              x-field-uid: 12
+            dhcpv6_server:
+              x-field-uid: 13
+            flow_convergence:
+              x-field-uid: 14
+        port_metrics:
           type: array
           items:
-            $ref: '../models/result/flow.yaml#/components/schemas/Flow.Metric'
+            $ref: '../models/port.yaml#/components/schemas/Port.Metric'
           x-field-uid: 2
-        flow_convergence:
+        flow_metrics:
           type: array
           items:
-            $ref: '#/components/schemas/Convergence.Flow'
+            $ref: '../models/flow.yaml#/components/schemas/Flow.Metric'
           x-field-uid: 3
         bgpv4_metrics:
           type: array
           items:
-            $ref: '../models/result/bgpv4.yaml#/components/schemas/Bgpv4.Metric'
+            $ref: '../models/bgpv4.yaml#/components/schemas/Bgpv4.Metric'
           x-field-uid: 4
         bgpv6_metrics:
           type: array
           items:
-            $ref: '../models/result/bgpv6.yaml#/components/schemas/Bgpv6.Metric'
+            $ref: '../models/bgpv6.yaml#/components/schemas/Bgpv6.Metric'
           x-field-uid: 5
+        isis_metrics:
+          type: array
+          items:
+            $ref: '../models/isis.yaml#/components/schemas/Isis.Metric'
+          x-field-uid: 6
+        lag_metrics:
+          type: array
+          items:
+            $ref: '../models/lag.yaml#/components/schemas/Lag.Metric'
+          x-field-uid: 7
+        lacp_metrics:
+          type: array
+          items:
+            $ref: '../models/lacp.yaml#/components/schemas/Lacp.Metric'
+          x-field-uid: 8
+        lldp_metrics:
+          type: array
+          items:
+            $ref: '../models/lldp.yaml#/components/schemas/Lldp.Metric'
+          x-field-uid: 9
+        rsvp_metrics:
+          type: array
+          items:
+            $ref: '../models/rsvp.yaml#/components/schemas/Rsvp.Metric'
+          x-field-uid: 10
+        dhcpv4client_metrics:
+          type: array
+          items:
+            $ref: '../models/dhcpv4client.yaml#/components/schemas/Dhcpv4Client.Metric'
+          x-field-uid: 11
+        dhcpv4server_metrics:
+          type: array
+          items:
+            $ref: '../models/dhcpv4server.yaml#/components/schemas/Dhcpv4Server.Metric'
+          x-field-uid: 12
+        dhcpv6client_metrics:
+          type: array
+          items:
+            $ref: '../models/dhcpv6client.yaml#/components/schemas/Dhcpv6Client.Metric'
+          x-field-uid: 13
+        dhcpv6server_metrics:
+          type: array
+          items:
+            $ref: '../models/dhcpv6server.yaml#/components/schemas/Dhcpv6Server.Metric'
+          x-field-uid: 14
+        flow_convergence:
+          type: array
+          items:
+            $ref: '#/components/schemas/Convergence.Flow'
+          x-field-uid: 15
     Convergence.Flow:
       description: |-
         The container for convergence measurements

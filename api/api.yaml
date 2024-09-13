@@ -139,7 +139,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '../control/control.yaml#/components/schemas/Convergence.State'
+              $ref: '..models/result/states.yaml#/components/schemas/States.Request'
       responses:
         '200':
           description: >-
