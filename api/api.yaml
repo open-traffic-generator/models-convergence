@@ -1,10 +1,10 @@
 paths:
   /config:
     post:
-      tags: ['Config']
+      tags: ['Configuration']
       operationId: set_config
-      description: |-
-        Sets the configuration of a traffic generator for convergence measurements.
+      description: >-
+        Sets configuration resources on the traffic generator.
       requestBody:
         required: true
         content:
@@ -18,18 +18,38 @@ paths:
         default:
           $ref: '../models/result/request.yaml#/components/responses/Failure'
           x-field-uid: 2
-  /control/routes:
-    post:
-      tags: ['Control']
-      operationId: set_state
+    get:
+      tags: ['Configuration']
+      operationId: get_config
+      responses:
+        '200':
+          description: >-
+            Config response from the traffic generator
+          content:
+            application/json:
+              schema:
+                $ref: '../models/config/config.yaml#/components/schemas/Config'
+          x-field-uid: 1
+        default:
+          $ref: '../models/result/request.yaml#/components/responses/Failure'
+          x-field-uid: 2
+    patch:
+      tags: ['Configuration']
+      operationId: update_config
       description: >-
-        Updates the state of the traffic generator.
+        Updates specific attributes of resources configured on the traffic generator.
+        The fetched configuration shall reflect the updates applied successfully.
+
+        The Response.Warnings in the Success response is available for
+        implementers to disclose additional information about a state change
+        including any implicit changes that are outside the scope of the state
+        change.
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: '../control/control.yaml#/components/schemas/Convergence.State'
+              $ref: '../models/config/update.yaml#/components/schemas/Config.Update'
       responses:
         '200':
           $ref: '../models/result/request.yaml#/components/responses/Success'
@@ -37,40 +57,58 @@ paths:
         default:
           $ref: '../models/result/request.yaml#/components/responses/Failure'
           x-field-uid: 2
-  /control/ping:
+  /control/state:
     post:
       tags: ['Control']
-      operationId: send_ping
+      operationId: set_control_state
       description: >-
-        API to send an IPv4 and/or IPv6 ICMP Echo Request(s) between endpoints.
-        For each endpoint 1 ping packet will be sent and API shall wait for
-        ping response to either be successful or timeout.
-        The API wait timeout for each request is 300ms.
+        Sets the operational state of configured resources.
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: '../models/control/ping.yaml#/components/schemas/Ping.Request'
+              $ref: '../models/control/state.yaml#/components/schemas/Control.State'
       responses:
         '200':
-          description: >-
-            Responses for Ping
-          content:
-            application/json:
-              schema:
-                $ref: '../models/control/ping.yaml#/components/schemas/Ping.Response'
+          $ref: '../models/result/request.yaml#/components/responses/Success'
           x-field-uid: 1
         default:
           $ref: '../models/result/request.yaml#/components/responses/Failure'
           x-field-uid: 2
-  /results:
+  /control/action:
     post:
-      tags: ['Results']
-      operationId: get_results
-      description: |-
-        Request flow metrics or flow convergence measurements.
+      tags: ['Control']
+      operationId: set_control_action
+      description: >-
+        Triggers actions against configured resources.
       requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '../models/control/action.yaml#/components/schemas/Control.Action'
+      responses:
+        '200':
+          description: >-
+            Response for actions triggered against configured resources.
+          content:
+            application/json:
+              schema:
+                $ref: '../models/control/action.yaml#/components/schemas/Control.Action.Response'
+          x-field-uid: 1
+        default:
+          $ref: '../models/result/request.yaml#/components/responses/Failure'
+          x-field-uid: 2
+  /monitor/metrics:
+    description: >-
+      Metrics API
+    post:
+      tags: ['Monitor']
+      operationId: get_metrics
+      requestBody:
+        description: >-
+          Request to traffic generator for metrics of choice
         required: true
         content:
           application/json:
@@ -78,12 +116,65 @@ paths:
               $ref: '../result/request.yaml#/components/schemas/Convergence.Request'
       responses:
         '200':
-          description: |-
-            Returns flow metrics or flow convergence measurements response.
+          description: >-
+            Response from traffic generator for chosen metrics
           content:
             application/json:
               schema:
                 $ref: '../result/response.yaml#/components/schemas/Convergence.Response'
+          x-field-uid: 1
+        default:
+          $ref: '../models/result/request.yaml#/components/responses/Failure'
+          x-field-uid: 2
+  /monitor/states:
+    description: >-
+      States API
+    post:
+      tags: ['Monitor']
+      operationId: get_states
+      requestBody:
+        description: >-
+          Request to traffic generator for states of choice
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '../control/control.yaml#/components/schemas/Convergence.State'
+      responses:
+        '200':
+          description: >-
+            Response from traffic generator for chosen states
+          content:
+            application/json:
+              schema:
+                $ref: '../models/result/states.yaml#/components/schemas/States.Response'
+          x-field-uid: 1
+        default:
+          $ref: '../models/result/request.yaml#/components/responses/Failure'
+          x-field-uid: 2
+  /monitor/capture:
+    description: >-
+      Capture results API
+    post:
+      tags: ['Monitor']
+      operationId: get_capture
+      requestBody:
+        description: >-
+          Capture results request to the traffic generator.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '../models/result/capture.yaml#/components/schemas/Capture.Request'
+      responses:
+        '200':
+          description: >-
+            Capture results response from the traffic generator.
+          content:
+            application/octet-stream:
+              schema:
+                type: string
+                format: binary
           x-field-uid: 1
         default:
           $ref: '../models/result/request.yaml#/components/responses/Failure'
