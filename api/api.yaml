@@ -179,20 +179,4 @@ paths:
         default:
           $ref: '../models/result/request.yaml#/components/responses/Failure'
           x-field-uid: 2
-  /capabilities/version:
-    get:
-      tags:
-      - Capabilities
-      operationId: get_version
-      responses:
-        '200':
-          description: |-
-            Version details from API server
-          content:
-            application/json:
-              schema:
-                $ref: '../version.yaml#/components/schemas/Version'
-          x-field-uid: 1
-        default:
-          $ref: '../models/result/request.yaml#/components/responses/Failure'
-          x-field-uid: 2
+
