@@ -139,7 +139,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '..models/result/states.yaml#/components/schemas/States.Request'
+              $ref: '../models/result/states.yaml#/components/schemas/States.Request'
       responses:
         '200':
           description: >-
