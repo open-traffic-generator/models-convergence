@@ -17800,29 +17800,6 @@ components:
           x-constraint:
           - /components/schemas/Port/properties/name
           x-field-uid: 1
-    Version:
-      description: |-
-        Version details
-      type: object
-      properties:
-        api_spec_version:
-          description: |-
-            Version of API specification
-          type: string
-          default: ''
-          x-field-uid: 1
-        sdk_version:
-          description: |-
-            Version of SDK generated from API specification
-          type: string
-          default: ''
-          x-field-uid: 2
-        app_version:
-          description: |-
-            Version of application consuming or serving the API
-          type: string
-          default: ''
-          x-field-uid: 3
     Pattern.Flow.Ethernet.Dst.Counter:
       description: |-
         mac counter pattern
@@ -36137,3 +36114,26 @@ components:
         decrement:
           $ref: '#/components/schemas/Pattern.Flow.RSVP.PathObjectsCustom.Type.Counter'
           x-field-uid: 6
+    Version:
+      description: |-
+        Version details
+      type: object
+      properties:
+        api_spec_version:
+          description: |-
+            Version of API specification
+          type: string
+          default: ''
+          x-field-uid: 1
+        sdk_version:
+          description: |-
+            Version of SDK generated from API specification
+          type: string
+          default: ''
+          x-field-uid: 2
+        app_version:
+          description: |-
+            Version of application consuming or serving the API
+          type: string
+          default: ''
+          x-field-uid: 3
