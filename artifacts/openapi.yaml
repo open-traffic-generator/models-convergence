@@ -7,7 +7,7 @@ info:
     \ be made in the following ways:\n- [open an issue](https://github.com/open-traffic-generator/models-convergence/issues)\
     \ in the models repository\n- [fork the models repository](https://github.com/open-traffic-generator/models-convergence)\
     \ and submit a PR"
-  version: 0.1.0
+  version: 1.13.0
   contact:
     url: https://github.com/open-traffic-generator/models-convergence/issues
   license:
@@ -196,6 +196,23 @@ paths:
               schema:
                 type: string
                 format: binary
+          x-field-uid: 1
+        default:
+          $ref: '#/components/responses/Failure'
+          x-field-uid: 2
+  /capabilities/version:
+    get:
+      tags:
+      - Capabilities
+      operationId: get_version
+      responses:
+        '200':
+          description: |-
+            Version details from API server
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Version'
           x-field-uid: 1
         default:
           $ref: '#/components/responses/Failure'
@@ -17783,6 +17800,29 @@ components:
           x-constraint:
           - /components/schemas/Port/properties/name
           x-field-uid: 1
+    Version:
+      description: |-
+        Version details
+      type: object
+      properties:
+        api_spec_version:
+          description: |-
+            Version of API specification
+          type: string
+          default: ''
+          x-field-uid: 1
+        sdk_version:
+          description: |-
+            Version of SDK generated from API specification
+          type: string
+          default: ''
+          x-field-uid: 2
+        app_version:
+          description: |-
+            Version of application consuming or serving the API
+          type: string
+          default: ''
+          x-field-uid: 3
     Pattern.Flow.Ethernet.Dst.Counter:
       description: |-
         mac counter pattern

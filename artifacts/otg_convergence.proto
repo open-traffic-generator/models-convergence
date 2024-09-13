@@ -1,4 +1,4 @@
-/* Open Traffic Generator Convergence API 0.1.0
+/* Open Traffic Generator Convergence API 1.13.0
  * The Open Traffic Generator Convergence API consists of convergence
  * measurements and data such as:
  * - control plane convergence
@@ -13361,6 +13361,22 @@ message CaptureRequest {
   optional string port_name = 1;
 }
 
+// Version details
+message Version {
+
+  // Version of API specification
+  // default =
+  optional string api_spec_version = 1;
+
+  // Version of SDK generated from API specification
+  // default =
+  optional string sdk_version = 2;
+
+  // Version of application consuming or serving the API
+  // default =
+  optional string app_version = 3;
+}
+
 // mac counter pattern
 message PatternFlowEthernetDstCounter {
 
@@ -26181,6 +26197,10 @@ message GetCaptureResponse {
   bytes response_bytes = 1;
 }
 
+message GetVersionResponse {
+  Version version = 1;
+}
+
 
 // Description missing in models
 //
@@ -26210,4 +26230,6 @@ service Openapi {
   rpc GetStates(GetStatesRequest) returns (GetStatesResponse);
   // Description missing in models
   rpc GetCapture(GetCaptureRequest) returns (GetCaptureResponse);
+  // Description missing in models
+  rpc GetVersion(google.protobuf.Empty) returns (GetVersionResponse);
 }
