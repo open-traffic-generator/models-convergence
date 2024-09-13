@@ -40,67 +40,67 @@ components:
         port_metrics:
           type: array
           items:
-            $ref: '../models/port.yaml#/components/schemas/Port.Metric'
+            $ref: '../models/result/port.yaml#/components/schemas/Port.Metric'
           x-field-uid: 2
         flow_metrics:
           type: array
           items:
-            $ref: '../models/flow.yaml#/components/schemas/Flow.Metric'
+            $ref: '../models/result/flow.yaml#/components/schemas/Flow.Metric'
           x-field-uid: 3
         bgpv4_metrics:
           type: array
           items:
-            $ref: '../models/bgpv4.yaml#/components/schemas/Bgpv4.Metric'
+            $ref: '../models/result/bgpv4.yaml#/components/schemas/Bgpv4.Metric'
           x-field-uid: 4
         bgpv6_metrics:
           type: array
           items:
-            $ref: '../models/bgpv6.yaml#/components/schemas/Bgpv6.Metric'
+            $ref: '../models/result/bgpv6.yaml#/components/schemas/Bgpv6.Metric'
           x-field-uid: 5
         isis_metrics:
           type: array
           items:
-            $ref: '../models/isis.yaml#/components/schemas/Isis.Metric'
+            $ref: '../models/result/isis.yaml#/components/schemas/Isis.Metric'
           x-field-uid: 6
         lag_metrics:
           type: array
           items:
-            $ref: '../models/lag.yaml#/components/schemas/Lag.Metric'
+            $ref: '../models/result/lag.yaml#/components/schemas/Lag.Metric'
           x-field-uid: 7
         lacp_metrics:
           type: array
           items:
-            $ref: '../models/lacp.yaml#/components/schemas/Lacp.Metric'
+            $ref: '../models/result/lacp.yaml#/components/schemas/Lacp.Metric'
           x-field-uid: 8
         lldp_metrics:
           type: array
           items:
-            $ref: '../models/lldp.yaml#/components/schemas/Lldp.Metric'
+            $ref: '../models/result/lldp.yaml#/components/schemas/Lldp.Metric'
           x-field-uid: 9
         rsvp_metrics:
           type: array
           items:
-            $ref: '../models/rsvp.yaml#/components/schemas/Rsvp.Metric'
+            $ref: '../models/result/rsvp.yaml#/components/schemas/Rsvp.Metric'
           x-field-uid: 10
         dhcpv4client_metrics:
           type: array
           items:
-            $ref: '../models/dhcpv4client.yaml#/components/schemas/Dhcpv4Client.Metric'
+            $ref: '../models/result/dhcpv4client.yaml#/components/schemas/Dhcpv4Client.Metric'
           x-field-uid: 11
         dhcpv4server_metrics:
           type: array
           items:
-            $ref: '../models/dhcpv4server.yaml#/components/schemas/Dhcpv4Server.Metric'
+            $ref: '../models/result/dhcpv4server.yaml#/components/schemas/Dhcpv4Server.Metric'
           x-field-uid: 12
         dhcpv6client_metrics:
           type: array
           items:
-            $ref: '../models/dhcpv6client.yaml#/components/schemas/Dhcpv6Client.Metric'
+            $ref: '../models/result/dhcpv6client.yaml#/components/schemas/Dhcpv6Client.Metric'
           x-field-uid: 13
         dhcpv6server_metrics:
           type: array
           items:
-            $ref: '../models/dhcpv6server.yaml#/components/schemas/Dhcpv6Server.Metric'
+            $ref: '../models/result/dhcpv6server.yaml#/components/schemas/Dhcpv6Server.Metric'
           x-field-uid: 14
         flow_convergence:
           type: array
