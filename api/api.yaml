@@ -191,8 +191,8 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Version'
+                $ref: '../version.yaml#/components/schemas/Version'
           x-field-uid: 1
         default:
-          $ref: '#/components/responses/Failure'
+          $ref: '../models/result/request.yaml#/components/responses/Failure'
           x-field-uid: 2
