@@ -11192,33 +11192,73 @@ message ActionProtocolBgpGracefulRestartNotification {
   DeviceBgpCustomError custom = 9;
 }
 
-// The request container for flow metrics or flow convergence measurements.
+// Request to traffic generator for metrics of choice.
 message ConvergenceRequest {
 
   message Choice {
     enum Enum {
       unspecified = 0;
-      metrics = 1;
-      convergence = 2;
+      port = 1;
+      flow = 2;
       bgpv4 = 3;
       bgpv6 = 4;
+      isis = 5;
+      lag = 6;
+      lacp = 7;
+      lldp = 8;
+      rsvp = 9;
+      dhcpv4_client = 10;
+      dhcpv4_server = 11;
+      dhcpv6_client = 12;
+      dhcpv6_server = 13;
+      convergence = 14;
     }
   }
   // Description missing in models
-  // default = Choice.Enum.metrics
+  // default = Choice.Enum.port
   optional Choice.Enum choice = 1;
 
   // Description missing in models
-  FlowMetricsRequest metrics = 2;
+  PortMetricsRequest port = 2;
 
   // Description missing in models
-  ConvergenceFlowRequest convergence = 3;
+  FlowMetricsRequest flow = 3;
 
   // Description missing in models
   Bgpv4MetricsRequest bgpv4 = 4;
 
   // Description missing in models
   Bgpv6MetricsRequest bgpv6 = 5;
+
+  // Description missing in models
+  IsisMetricsRequest isis = 6;
+
+  // Description missing in models
+  LagMetricsRequest lag = 7;
+
+  // Description missing in models
+  LacpMetricsRequest lacp = 8;
+
+  // Description missing in models
+  LldpMetricsRequest lldp = 9;
+
+  // Description missing in models
+  RsvpMetricsRequest rsvp = 10;
+
+  // Description missing in models
+  Dhcpv4ClientMetricsRequest dhcpv4_client = 11;
+
+  // Description missing in models
+  Dhcpv4ServerMetricsRequest dhcpv4_server = 12;
+
+  // Description missing in models
+  Dhcpv6ClientMetricsRequest dhcpv6_client = 13;
+
+  // Description missing in models
+  Dhcpv6ServerMetricsRequest dhcpv6_server = 14;
+
+  // Description missing in models
+  ConvergenceFlowRequest convergence = 15;
 }
 
 // The container for a flow measurement request.
@@ -11231,6 +11271,109 @@ message ConvergenceFlowRequest {
   // - /components/schemas/Flow/properties/name
   // 
   repeated string flow_names = 1;
+}
+
+// The port result request to the traffic generator
+message PortMetricsRequest {
+
+  // The names of objects to return results for. An empty list will return all port row
+  // results.
+  // 
+  // x-constraint:
+  // - /components/schemas/Port/properties/name
+  // 
+  repeated string port_names = 1;
+
+  message ColumnNames {
+    enum Enum {
+      unspecified = 0;
+      transmit = 1;
+      location = 2;
+      link = 3;
+      capture = 4;
+      frames_tx = 5;
+      frames_rx = 6;
+      bytes_tx = 7;
+      bytes_rx = 8;
+      frames_tx_rate = 9;
+      frames_rx_rate = 10;
+      bytes_tx_rate = 11;
+      bytes_rx_rate = 12;
+    }
+  }
+  // The list of column names that the returned result set will contain. If the list is
+  // empty then all columns will be returned. The name of the port cannot be excluded.
+  repeated ColumnNames.Enum column_names = 2;
+}
+
+// Description missing in models
+message PortMetric {
+
+  // The name of a configured port
+  // 
+  // x-constraint:
+  // - /components/schemas/Port/properties/name
+  // 
+  optional string name = 1;
+
+  // The state of the connection to the test port location. The format should be the configured
+  // port location along with  any custom connection state message.
+  optional string location = 2;
+
+  message Link {
+    enum Enum {
+      unspecified = 0;
+      up = 1;
+      down = 2;
+    }
+  }
+  // The state of the test port link The string can be up, down or a custom error message.
+  optional Link.Enum link = 3;
+
+  message Capture {
+    enum Enum {
+      unspecified = 0;
+      started = 1;
+      stopped = 2;
+    }
+  }
+  // The state of the test port capture infrastructure. The string can be started, stopped
+  // or a custom error message.
+  optional Capture.Enum capture = 4;
+
+  // The current total number of frames transmitted
+  optional uint64 frames_tx = 5;
+
+  // The current total number of valid frames received
+  optional uint64 frames_rx = 6;
+
+  // The current total number of bytes transmitted
+  optional uint64 bytes_tx = 7;
+
+  // The current total number of valid bytes received
+  optional uint64 bytes_rx = 8;
+
+  // The current rate of frames transmitted
+  optional float frames_tx_rate = 9;
+
+  // The current rate of valid frames received
+  optional float frames_rx_rate = 10;
+
+  // The current rate of bytes transmitted
+  optional float bytes_tx_rate = 11;
+
+  // The current rate of bytes received
+  optional float bytes_rx_rate = 12;
+
+  message Transmit {
+    enum Enum {
+      unspecified = 0;
+      started = 1;
+      stopped = 2;
+    }
+  }
+  // The transmit state of the flow.
+  optional Transmit.Enum transmit = 13;
 }
 
 // The container for a flow metric request.
@@ -11715,32 +11858,911 @@ message Bgpv6Metric {
   optional uint64 end_of_rib_received = 17;
 }
 
+// The request to retrieve ISIS per Router metrics/statistics.
+message IsisMetricsRequest {
+
+  // The names of ISIS Routers to return results for. An empty list will return results
+  // for all ISIS router.
+  // 
+  // x-constraint:
+  // - /components/schemas/Device.IsisRouter/properties/name
+  // 
+  repeated string router_names = 1;
+
+  message ColumnNames {
+    enum Enum {
+      unspecified = 0;
+      l1_sessions_up = 1;
+      l1_session_flap = 2;
+      l1_database_size = 3;
+      l1_broadcast_hellos_sent = 4;
+      l1_broadcast_hellos_received = 5;
+      l1_point_to_point_hellos_sent = 6;
+      l1_point_to_point_hellos_received = 7;
+      l1_psnp_sent = 8;
+      l1_psnp_received = 9;
+      l1_csnp_sent = 10;
+      l1_csnp_received = 11;
+      l1_lsp_sent = 12;
+      l1_lsp_received = 13;
+      l2_sessions_up = 14;
+      l2_session_flap = 15;
+      l2_database_size = 16;
+      l2_broadcast_hellos_sent = 17;
+      l2_broadcast_hellos_received = 18;
+      l2_point_to_point_hellos_sent = 19;
+      l2_point_to_point_hellos_received = 20;
+      l2_psnp_sent = 21;
+      l2_psnp_received = 22;
+      l2_csnp_sent = 23;
+      l2_csnp_received = 24;
+      l2_lsp_sent = 25;
+      l2_lsp_received = 26;
+    }
+  }
+  // The list of column names that the returned result set will contain. If the list is
+  // empty then all columns will be returned except for any result_groups. The name of
+  // the ISIS Router cannot be excluded.
+  repeated ColumnNames.Enum column_names = 2;
+}
+
+// ISIS per router statistics information.
+message IsisMetric {
+
+  // The name of a configured ISIS router.
+  optional string name = 1;
+
+  // The number of Level 1 (L1) sessions that are fully up.
+  optional uint32 l1_sessions_up = 2;
+
+  // The number of Level 1 Sessions Flap.
+  optional uint64 l1_session_flap = 3;
+
+  // Number of Level 1 Hello messages sent.
+  optional uint64 l1_broadcast_hellos_sent = 4;
+
+  // Number of Level 1 Hello messages received.
+  optional uint64 l1_broadcast_hellos_received = 5;
+
+  // Number of Level 1 Point-to-Point(P2P) Hello messages sent.
+  optional uint64 l1_point_to_point_hellos_sent = 6;
+
+  // Number of Level 1 Point-to-Point(P2P) Hello messages received.
+  optional uint64 l1_point_to_point_hellos_received = 7;
+
+  // Number of Link State Updates (LSPs) in the Level 1 LSP Databases.
+  optional uint64 l1_database_size = 8;
+
+  // Number of Level 1 (L1) Partial Sequence Number Packet (PSNPs) sent.
+  optional uint64 l1_psnp_sent = 9;
+
+  // Number of Level 1 (L1) Complete Sequence Number Packet (PSNPs) received.
+  optional uint64 l1_psnp_received = 10;
+
+  // Number of Level 1 (L1) Complete Sequence Number Packet (CSNPs) sent.
+  optional uint64 l1_csnp_sent = 11;
+
+  // Number of Level 1 (L1) Complete Sequence Number Packet (CSNPs) received.
+  optional uint64 l1_csnp_received = 12;
+
+  // Number of Level 1 (L1) Link State Protocol Data Units (LSPs) sent.
+  optional uint64 l1_lsp_sent = 13;
+
+  // Number of Level 1 (L1) Link State Protocol Data Units (LSPs) received.
+  optional uint64 l1_lsp_received = 14;
+
+  // The number of Level 2 (L2) sessions that are fully up.
+  optional uint32 l2_sessions_up = 15;
+
+  // The number of Level 2 Sessions Flap.
+  optional uint64 l2_session_flap = 16;
+
+  // Number of Level 2 Hello messages sent.
+  optional uint64 l2_broadcast_hellos_sent = 17;
+
+  // Number of Level 2 Hello messages received.
+  optional uint64 l2_broadcast_hellos_received = 18;
+
+  // Number of Level 2 Point-to-Point(P2P) Hello messages sent.
+  optional uint64 l2_point_to_point_hellos_sent = 19;
+
+  // Number of Level 2 Point-to-Point(P2P) Hello messages received.
+  optional uint64 l2_point_to_point_hellos_received = 20;
+
+  // Number of Link State Updates (LSPs) in the Level 2 LSP Databases.
+  optional uint64 l2_database_size = 21;
+
+  // Number of Level 2 (L2) Partial Sequence Number Packet (PSNPs) sent.
+  optional uint64 l2_psnp_sent = 22;
+
+  // Number of Level 2 (L2) Complete Sequence Number Packet (PSNPs) received.
+  optional uint64 l2_psnp_received = 23;
+
+  // Number of Level 2 (L2) Complete Sequence Number Packet (CSNPs) sent.
+  optional uint64 l2_csnp_sent = 24;
+
+  // Number of Level 2 (L2) Complete Sequence Number Packet (CSNPs) received.
+  optional uint64 l2_csnp_received = 25;
+
+  // Number of Level 2 (L2) Link State Protocol Data Units (LSPs) sent.
+  optional uint64 l2_lsp_sent = 26;
+
+  // Number of Level 2 (L2) Link State Protocol Data Units (LSPs) received.
+  optional uint64 l2_lsp_received = 27;
+}
+
+// The request to retrieve per LAG metrics/statistics.
+message LagMetricsRequest {
+
+  // The names of LAGs to return results for. An empty list will return results for all
+  // LAGs.
+  // 
+  // x-constraint:
+  // - /components/schemas/Lag/properties/name
+  // 
+  repeated string lag_names = 1;
+
+  message ColumnNames {
+    enum Enum {
+      unspecified = 0;
+      oper_status = 1;
+      member_ports_up = 2;
+      frames_tx = 3;
+      frames_rx = 4;
+      bytes_tx = 5;
+      bytes_rx = 6;
+      frames_tx_rate = 7;
+      frames_rx_rate = 8;
+      bytes_tx_rate = 9;
+      bytes_rx_rate = 10;
+    }
+  }
+  // The list of column names that the returned result set will contain. If the list is
+  // empty then all columns will be returned. The name of the LAG cannot be excluded.
+  repeated ColumnNames.Enum column_names = 2;
+}
+
 // Description missing in models
+message LagMetric {
+
+  // The name of a configured LAG
+  // 
+  // x-constraint:
+  // - /components/schemas/Lag/properties/name
+  // 
+  optional string name = 1;
+
+  message OperStatus {
+    enum Enum {
+      unspecified = 0;
+      up = 1;
+      down = 2;
+    }
+  }
+  // The current operational state of the LAG. The state can be up or down. State 'up'
+  // indicates member_ports_up >= min_links.
+  optional OperStatus.Enum oper_status = 2;
+
+  // The number of LAG member ports up.
+  optional uint32 member_ports_up = 3;
+
+  // The current total number of frames transmitted.
+  optional uint64 frames_tx = 4;
+
+  // The current total number of valid frames received.
+  optional uint64 frames_rx = 5;
+
+  // The current total number of bytes transmitted.
+  optional uint64 bytes_tx = 6;
+
+  // The current total number of valid bytes received.
+  optional uint64 bytes_rx = 7;
+
+  // The current rate of frames transmitted.
+  optional float frames_tx_rate = 8;
+
+  // The current rate of valid frames received.
+  optional float frames_rx_rate = 9;
+
+  // The current rate of bytes transmitted.
+  optional float bytes_tx_rate = 10;
+
+  // The current rate of bytes received.
+  optional float bytes_rx_rate = 11;
+}
+
+// The request to retrieve LACP per LAG member metrics/statistics.
+message LacpMetricsRequest {
+
+  // The names of LAG (ports group) for which LACP metrics to be returned. An empty list
+  // will return metrics for all LAGs.
+  // 
+  // x-constraint:
+  // - /components/schemas/Lag/properties/name
+  // 
+  repeated string lag_names = 1;
+
+  // The names of LAG members (ports) for which LACP metrics to be returned. An empty
+  // list will return metrics for all LAG members.
+  // 
+  // x-constraint:
+  // - /components/schemas/Port/properties/name
+  // 
+  repeated string lag_member_port_names = 2;
+
+  message ColumnNames {
+    enum Enum {
+      unspecified = 0;
+      lacp_packets_rx = 1;
+      lacp_packets_tx = 2;
+      lacp_rx_errors = 3;
+      activity = 4;
+      timeout = 5;
+      synchronization = 6;
+      aggregatable = 7;
+      collecting = 8;
+      distributing = 9;
+      system_id = 10;
+      oper_key = 11;
+      partner_id = 12;
+      partner_key = 13;
+      port_num = 14;
+      partner_port_num = 15;
+    }
+  }
+  // The list of column names that the returned result set will contain. If the list is
+  // empty then all columns will be returned. The name of LAG and LAG member can not be
+  // excluded.
+  repeated ColumnNames.Enum column_names = 3;
+}
+
+// LACP metrics (statistics) per LAG member.
+message LacpMetric {
+
+  // The name of a LAG (ports group) configured with LACP.
+  optional string lag_name = 1;
+
+  // The name of a LAG member (port) configured with LACP.
+  optional string lag_member_port_name = 2;
+
+  // Number of LACPDUs received.
+  optional uint64 lacp_packets_rx = 3;
+
+  // Number of LACPDUs transmitted.
+  optional uint64 lacp_packets_tx = 4;
+
+  // Number of LACPDUs receive packet errors.
+  optional uint64 lacp_rx_errors = 5;
+
+  message Activity {
+    enum Enum {
+      unspecified = 0;
+      active = 1;
+      passive = 2;
+    }
+  }
+  // Indicates participant is active or passive.
+  optional Activity.Enum activity = 6;
+
+  message Timeout {
+    enum Enum {
+      unspecified = 0;
+      short = 1;
+      long = 2;
+    }
+  }
+  // The timeout type (short or long) used by the participant.
+  optional Timeout.Enum timeout = 7;
+
+  message Synchronization {
+    enum Enum {
+      unspecified = 0;
+      in_sync = 1;
+      out_sync = 2;
+    }
+  }
+  // Indicates whether the participant is in-sync or out-of-sync.
+  optional Synchronization.Enum synchronization = 8;
+
+  // A true value indicates that the participant will allow the link to be used as part
+  // of the aggregate. A false value indicates the link should be used as an  individual
+  // link.
+  optional bool aggregatable = 9;
+
+  // If true, the participant is collecting incoming frames on the link, otherwise false.
+  optional bool collecting = 10;
+
+  // When true, the participant is distributing outgoing frames; when false, distribution
+  // is disabled.
+  optional bool distributing = 11;
+
+  // MAC address that defines the local system ID for the aggregate interface.
+  optional string system_id = 12;
+
+  // Current operational value of the key for the aggregate interface.
+  optional uint32 oper_key = 13;
+
+  // MAC address representing the protocol partner's interface system ID.
+  optional string partner_id = 14;
+
+  // Operational value of the protocol partner's key.
+  optional uint32 partner_key = 15;
+
+  // Port number of the local (actor) aggregation member.
+  optional uint32 port_num = 16;
+
+  // Port number of the partner (remote) port for this member port.
+  optional uint32 partner_port_num = 17;
+}
+
+// The request to retrieve LLDP per instance metrics/statistics.
+message LldpMetricsRequest {
+
+  // The names of LLDP instances to return results for. An empty list will return results
+  // for all LLDP instances.
+  // 
+  // x-constraint:
+  // - /components/schemas/Lldp/properties/name
+  // 
+  repeated string lldp_names = 1;
+
+  message ColumnNames {
+    enum Enum {
+      unspecified = 0;
+      frames_rx = 1;
+      frames_tx = 2;
+      frames_error_rx = 3;
+      frames_discard = 4;
+      tlvs_discard = 5;
+      tlvs_unknown = 6;
+    }
+  }
+  // The requested list of column names for the result set. If the list is empty then
+  // metrics for all columns will be returned. The name of LLDP instance can not be excluded.
+  repeated ColumnNames.Enum column_names = 2;
+}
+
+// LLDP per instance statistics information.
+message LldpMetric {
+
+  // The name of the configured LLDP instance.
+  optional string name = 1;
+
+  // Number of LLDP frames received.
+  optional uint64 frames_rx = 2;
+
+  // Number of LLDP frames transmitted.
+  optional uint64 frames_tx = 3;
+
+  // Number of LLDP frames received with packet errors. This stat should be incremented
+  // based on statsFramesInErrorsTotal increment rule in section 10.3.2 of IEEE Std 802.1
+  // AB-2005.
+  optional uint64 frames_error_rx = 4;
+
+  // Number of LLDP frames received that are discarded. This stat should be incremented
+  // when one or more of the three mandatory  TLVs at the beginning of the LLDPDU is missing,
+  // out of order or  contains an out of range information string length. This stat should
+  // follow the validation rules in section 10.3.2 of IEEE  Std 802.1 AB-2005.
+  optional uint64 frames_discard = 5;
+
+  // Number of LLDP tlvs received that are discarded. If any TLV contains  an error condition
+  // specific for that particular TLV or if any TLV  extends past the physical end of
+  // the frame then these TLVs will be discarded.
+  optional uint64 tlvs_discard = 6;
+
+  // Number of LLDP unknown tlvs received. If the OUI of the organizationlly specific
+  // TLV and/or organizationally defined subtype are not recognized,or if TLV type  value
+  // is in the range of reserved TLV types then these TLVs will be considered as  unknown
+  // TLVs.
+  optional uint64 tlvs_unknown = 7;
+}
+
+// The request to retrieve RSVP-TE per Router metrics/statistics.
+message RsvpMetricsRequest {
+
+  // The names of RSVP-TE Routers to return results for. An empty list as input will return
+  // results for all RSVP-TE routers.
+  // 
+  // x-constraint:
+  // - /components/schemas/Device.Rsvp/properties/name
+  // 
+  repeated string router_names = 1;
+
+  message ColumnNames {
+    enum Enum {
+      unspecified = 0;
+      ingress_p2p_lsps_configured = 1;
+      ingress_p2p_lsps_up = 2;
+      egress_p2p_lsps_up = 3;
+      lsp_flap_count = 4;
+      paths_tx = 5;
+      paths_rx = 6;
+      resvs_tx = 7;
+      resvs_rx = 8;
+      path_tears_tx = 9;
+      path_tears_rx = 10;
+      resv_tears_tx = 11;
+      resv_tears_rx = 12;
+      path_errors_tx = 13;
+      path_errors_rx = 14;
+      resv_errors_tx = 15;
+      resv_errors_rx = 16;
+      resv_conf_tx = 17;
+      resv_conf_rx = 18;
+      hellos_tx = 19;
+      hellos_rx = 20;
+      acks_tx = 21;
+      acks_rx = 22;
+      nacks_tx = 23;
+      nacks_rx = 24;
+      srefresh_tx = 25;
+      srefresh_rx = 26;
+      bundle_tx = 27;
+      bundle_rx = 28;
+      path_reevaluation_request_tx = 29;
+      path_reoptimizations = 30;
+    }
+  }
+  // The list of column names that the returned result set will contain. If the input
+  // list is empty then all columns will be returned except for any result_groups.
+  // 
+  repeated ColumnNames.Enum column_names = 2;
+}
+
+// RSVP-TE per router statistics information.
+message RsvpMetric {
+
+  // The name of a configured RSVP router.
+  optional string name = 1;
+
+  // The number of ingress point-to-point LSPs configured or transiting through the RSVP
+  // router which have been initated from the test port.
+  optional uint32 ingress_p2p_lsps_configured = 2;
+
+  // The number of ingress point-to-point LSPs for which Resv has been received and is
+  // currently up.
+  optional uint32 ingress_p2p_lsps_up = 3;
+
+  // The number of egress point-to-point LSPs for which Path requests were successfully
+  // processed and is currently up.
+  optional uint32 egress_p2p_lsps_up = 4;
+
+  // The number of times an LSP went from up to down state either because it timed out
+  // while waiting for Refreshes or  a PathTear or ResvTear message was received which
+  // caused the LSP to flap.
+  optional uint64 lsp_flap_count = 5;
+
+  // The number of Path messages sent by this RSVP router.
+  optional uint64 paths_tx = 6;
+
+  // The number of Path messages received by this RSVP router.
+  optional uint64 paths_rx = 7;
+
+  // The number of Resv messages sent by this RSVP router.
+  optional uint64 resvs_tx = 8;
+
+  // The number of Resv messages received by this RSVP router.
+  optional uint64 resvs_rx = 9;
+
+  // The number of  Path Tear messages sent by this RSVP router.
+  optional uint64 path_tears_tx = 10;
+
+  // The number of Path Tear messages received by this RSVP router.
+  optional uint64 path_tears_rx = 11;
+
+  // The number of  Resv Tear messages sent by this RSVP router.
+  optional uint64 resv_tears_tx = 12;
+
+  // The number of Resv Tear messages received by this RSVP router.
+  optional uint64 resv_tears_rx = 13;
+
+  // The number of Path Error messages sent by this RSVP router.
+  optional uint64 path_errors_tx = 14;
+
+  // The number of Path Error messages received by this RSVP router.
+  optional uint64 path_errors_rx = 15;
+
+  // The number of Resv Error messages sent by this RSVP router.
+  optional uint64 resv_errors_tx = 16;
+
+  // The number of Resv Error messages received by this RSVP router.
+  optional uint64 resv_errors_rx = 17;
+
+  // The number of ResvConf messages sent by this RSVP router.
+  optional uint64 resv_conf_tx = 18;
+
+  // The number of ResvConf messages received by this RSVP router.
+  optional uint64 resv_conf_rx = 19;
+
+  // The number of Hello messages sent by this RSVP router.
+  optional uint64 hellos_tx = 20;
+
+  // The number of Hello messages received by this RSVP router.
+  optional uint64 hellos_rx = 21;
+
+  // The number of Ack messages sent by this RSVP router.
+  optional uint64 acks_tx = 22;
+
+  // The number of Ack messages received by this RSVP router.
+  optional uint64 acks_rx = 23;
+
+  // The number of Nack messages sent by this RSVP router.
+  optional uint64 nacks_tx = 24;
+
+  // The number of Nack messages received by this RSVP router.
+  optional uint64 nacks_rx = 25;
+
+  // The number of SRefresh messages sent by this RSVP router.
+  optional uint64 srefresh_tx = 26;
+
+  // The number of SRefresh messages received by this RSVP router.
+  optional uint64 srefresh_rx = 27;
+
+  // The number of Bundle messages sent by this RSVP router.
+  optional uint64 bundle_tx = 28;
+
+  // The number of Bundle messages received by this RSVP router.
+  optional uint64 bundle_rx = 29;
+
+  // The number of Path messages with Path Re-evaluation Request enabled sent by this
+  // RSVP router.
+  optional uint64 path_reevaluation_request_tx = 30;
+
+  // The number of successfully completed Make-Before-Break operations on LSPs on this
+  // RSVP router.
+  optional uint64 path_reoptimizations = 31;
+}
+
+// The request to retrieve DHCPv4 per client metrics/statistics.
+message Dhcpv4ClientMetricsRequest {
+
+  // The names of DHCPv4 clients to return results for. An empty list will return results
+  // for all DHCPv4 client.
+  // 
+  // x-constraint:
+  // - /components/schemas/Device.Dhcpv4client/properties/name
+  // 
+  repeated string client_names = 1;
+
+  message ColumnNames {
+    enum Enum {
+      unspecified = 0;
+      discovers_sent = 1;
+      offers_received = 2;
+      requests_sent = 3;
+      acks_received = 4;
+      nacks_received = 5;
+      releases_sent = 6;
+      declines_sent = 7;
+    }
+  }
+  // The list of column names that the returned result set will contain. If the list is
+  // empty then all columns will be returned.  The name of the DHCPv4 client cannot be
+  // excluded.
+  repeated ColumnNames.Enum column_names = 2;
+}
+
+// DHCPv4 per peer statistics information.
+message Dhcpv4ClientMetric {
+
+  // The name of a configured DHCPv4 client.
+  optional string name = 1;
+
+  // Number of DHCPDISCOVER messages sent.
+  optional uint64 discovers_sent = 2;
+
+  // Number of DHCPOFFER messages received.
+  optional uint64 offers_received = 3;
+
+  // Number of DHCPREQUEST messages sent.
+  optional uint64 requests_sent = 4;
+
+  // Number of lease DHCPACK messages received.
+  optional uint64 acks_received = 5;
+
+  // Number of negative lease DHCPNACK messages received.
+  optional uint64 nacks_received = 6;
+
+  // Number of DHCPRELEASE messages sent.
+  optional uint64 releases_sent = 7;
+
+  // Number of DHCPDECLINE messages sent.
+  optional uint64 declines_sent = 8;
+}
+
+// The request to retrieve DHCPv4 per Server metrics/statistics.
+message Dhcpv4ServerMetricsRequest {
+
+  // The names of DHCPv4 Servers to return results for. An empty list will return results
+  // for all DHCPv4 Server.
+  // 
+  // x-constraint:
+  // - /components/schemas/Device.Dhcpv4Server/properties/name
+  // 
+  repeated string server_names = 1;
+
+  message ColumnNames {
+    enum Enum {
+      unspecified = 0;
+      discovers_received = 1;
+      offers_sent = 2;
+      requests_received = 3;
+      acks_sent = 4;
+      nacks_sent = 5;
+      releases_received = 6;
+      declines_received = 7;
+    }
+  }
+  // The list of column names that the returned result set will contain. If the list is
+  // empty then all columns will be returned.  The name of the DHCPv4 server cannot be
+  // excluded.
+  repeated ColumnNames.Enum column_names = 2;
+}
+
+// DHCPv4 per peer statistics information.
+message Dhcpv4ServerMetric {
+
+  // The name of a configured DHCPv4 Server.
+  optional string name = 1;
+
+  // Number of DHCPDISCOVER messages received.
+  optional uint64 discovers_received = 2;
+
+  // Number of DHCPOFFER messages sent.
+  optional uint64 offers_sent = 3;
+
+  // Number of DHCPOFFER messages received.
+  optional uint64 requests_received = 4;
+
+  // Number of lease DHCPACK messages sent.
+  optional uint64 acks_sent = 5;
+
+  // Number of negative lease DHCPNACK messages sent.
+  optional uint64 nacks_sent = 6;
+
+  // Number of DHCPRELEASE messages received.
+  optional uint64 releases_received = 7;
+
+  // Number of DHCPDECLINE messages received.
+  optional uint64 declines_received = 8;
+}
+
+// The request to retrieve DHCPv6 per client metrics/statistics.
+message Dhcpv6ClientMetricsRequest {
+
+  // The names of DHCPv6 clients to return results for. An empty list will return results
+  // for all DHCPv6 client.
+  // 
+  // x-constraint:
+  // - /components/schemas/Device.Dhcpv6client/properties/name
+  // 
+  repeated string client_names = 1;
+
+  message ColumnNames {
+    enum Enum {
+      unspecified = 0;
+      solicits_sent = 1;
+      advertisements_received = 2;
+      advertisements_ignored = 3;
+      requests_sent = 4;
+      nacks_received = 5;
+      replies_received = 6;
+      information_requests_sent = 7;
+      renews_sent = 8;
+      rebinds_sent = 9;
+      releases_sent = 10;
+      reconfigures_received = 11;
+      rapid_commit_solicits_sent = 12;
+      rapid_commit_replies_received = 13;
+    }
+  }
+  // The list of column names that the returned result set will contain. If the list is
+  // empty then all columns will be returned except for any result_groups. The name of
+  // the DHCPv6 client cannot be excluded.
+  repeated ColumnNames.Enum column_names = 2;
+}
+
+// DHCPv6 per peer statistics information.
+message Dhcpv6ClientMetric {
+
+  // The name of a configured DHCPv6 client.
+  optional string name = 1;
+
+  // Number of DHCPSOLICIT messages sent.
+  optional uint64 solicits_sent = 2;
+
+  // Number of DHCPADVERTISE messages received.
+  optional uint64 advertisements_received = 3;
+
+  // Number of DHCPADVERTISE messages ignored.
+  optional uint64 advertisements_ignored = 4;
+
+  // Number of DHCPREQUEST messages sent.
+  optional uint64 requests_sent = 5;
+
+  // Number of negative lease DHCPNACK messages received.
+  optional uint64 nacks_received = 6;
+
+  // Number of DHCPOFFER messages received.
+  optional uint64 replies_received = 7;
+
+  // Number of DHCP Inform requests sent.
+  optional uint64 information_requests_sent = 8;
+
+  // Number of DHCP renew messages sent.
+  optional uint64 renews_sent = 9;
+
+  // Number of DHCP rebind messages sent.
+  optional uint64 rebinds_sent = 10;
+
+  // Number of DHCP Release messages sent.
+  optional uint64 releases_sent = 11;
+
+  // Number of DHCP Reconfigure messages received.
+  optional uint64 reconfigures_received = 12;
+
+  // Number of rapid commit DHCPSOLICIT messages sent.
+  optional uint64 rapid_commit_solicits_sent = 13;
+
+  // Number of rapid commit DHCP Reply messages received.
+  optional uint64 rapid_commit_replies_received = 14;
+}
+
+// The request to retrieve DHCPv6 per Server metrics/statistics.
+message Dhcpv6ServerMetricsRequest {
+
+  // The names of DHCPv6 Servers to return results for. An empty list will return results
+  // for all DHCPv6 Server.
+  // 
+  // x-constraint:
+  // - /components/schemas/Device.Dhcpv6Server/properties/name
+  // 
+  repeated string server_names = 1;
+
+  message ColumnNames {
+    enum Enum {
+      unspecified = 0;
+      solicits_received = 1;
+      solicits_ignored = 2;
+      advertisements_sent = 3;
+      requests_received = 4;
+      nacks_sent = 5;
+      confirms_received = 6;
+      renewals_received = 7;
+      rebinds_received = 8;
+      replies_sent = 9;
+      releases_received = 10;
+      declines_received = 11;
+      information_requests_received = 12;
+      relay_forwards_received = 13;
+      relay_replies_sent = 14;
+      reconfigures_sent = 15;
+    }
+  }
+  // The list of column names that the returned result set will contain. If the list is
+  // empty then all columns will be returned except for any result_groups. The name of
+  // the DHCPv6 server cannot be excluded.
+  repeated ColumnNames.Enum column_names = 2;
+}
+
+// DHCPv6 per server statistics information.
+message Dhcpv6ServerMetric {
+
+  // The name of a configured DHCPv6 Server.
+  optional string name = 1;
+
+  // Number of DHCPSOLICIT messages received.
+  optional uint64 solicits_received = 2;
+
+  // Number of DHCPSOLICIT messages ignored.
+  optional uint64 solicits_ignored = 3;
+
+  // Number of DHCP Advertise messages sent.
+  optional uint64 advertisements_sent = 4;
+
+  // Number of DHCPREQUEST messages received.
+  optional uint64 requests_received = 5;
+
+  // Number of naks sent for DHCPREQUEST messages.
+  optional uint64 nacks_sent = 6;
+
+  // Number of DHCP Confirm messages received.
+  optional uint64 confirms_received = 7;
+
+  // Number of DHCP Renewal messages received.
+  optional uint64 renewals_received = 8;
+
+  // Number of DHCP Rebind messages received.
+  optional uint64 rebinds_received = 9;
+
+  // Number of DHCP Reply messages sent.
+  optional uint64 replies_sent = 10;
+
+  // Number of DHCP Release messages received.
+  optional uint64 releases_received = 11;
+
+  // Number of DHCP Decline messages received.
+  optional uint64 declines_received = 12;
+
+  // Number of DHCP Information Request messages received.
+  optional uint64 information_requests_received = 13;
+
+  // Number of DHCP Relay agent forward messages received.
+  optional uint64 relay_forwards_received = 14;
+
+  // Number of DHCP reply messages sent to Relay agent.
+  optional uint64 relay_replies_sent = 15;
+
+  // Number of DHCP Reconfigure messages sent.
+  optional uint64 reconfigures_sent = 16;
+}
+
+// Response containing chosen traffic generator metrics.
 message ConvergenceResponse {
 
   message Choice {
     enum Enum {
       unspecified = 0;
-      flow_metric = 1;
-      flow_convergence = 2;
+      flow_metrics = 1;
+      port_metrics = 2;
       bgpv4_metrics = 3;
       bgpv6_metrics = 4;
+      isis_metrics = 5;
+      lag_metrics = 6;
+      lacp_metrics = 7;
+      lldp_metrics = 8;
+      rsvp_metrics = 9;
+      dhcpv4_client = 10;
+      dhcpv4_server = 11;
+      dhcpv6_client = 12;
+      dhcpv6_server = 13;
+      flow_convergence = 14;
     }
   }
   // Description missing in models
   optional Choice.Enum choice = 1;
 
   // Description missing in models
-  repeated FlowMetric flow_metric = 2;
+  repeated PortMetric port_metrics = 2;
 
   // Description missing in models
-  repeated ConvergenceFlow flow_convergence = 3;
+  repeated FlowMetric flow_metrics = 3;
 
   // Description missing in models
   repeated Bgpv4Metric bgpv4_metrics = 4;
 
   // Description missing in models
   repeated Bgpv6Metric bgpv6_metrics = 5;
+
+  // Description missing in models
+  repeated IsisMetric isis_metrics = 6;
+
+  // Description missing in models
+  repeated LagMetric lag_metrics = 7;
+
+  // Description missing in models
+  repeated LacpMetric lacp_metrics = 8;
+
+  // Description missing in models
+  repeated LldpMetric lldp_metrics = 9;
+
+  // Description missing in models
+  repeated RsvpMetric rsvp_metrics = 10;
+
+  // Description missing in models
+  repeated Dhcpv4ClientMetric dhcpv4client_metrics = 11;
+
+  // Description missing in models
+  repeated Dhcpv4ServerMetric dhcpv4server_metrics = 12;
+
+  // Description missing in models
+  repeated Dhcpv6ClientMetric dhcpv6client_metrics = 13;
+
+  // Description missing in models
+  repeated Dhcpv6ServerMetric dhcpv6server_metrics = 14;
+
+  // Description missing in models
+  repeated ConvergenceFlow flow_convergence = 15;
 }
 
 // The container for convergence measurements
@@ -11810,35 +12832,6 @@ message ConvergenceEvent {
 
   // The time in nanoseconds at which the event ended
   optional double end_timestamp_ns = 4;
-}
-
-// Container to specify convergence states.
-message ConvergenceState {
-
-  message Choice {
-    enum Enum {
-      unspecified = 0;
-      transmit = 1;
-      link = 2;
-      route = 3;
-      protocol = 4;
-    }
-  }
-  // The state to set on the traffic generator.
-  // default = Choice.Enum.transmit
-  optional Choice.Enum choice = 1;
-
-  // Description missing in models
-  StateTrafficFlowTransmit transmit = 2;
-
-  // Description missing in models
-  StatePortLink link = 3;
-
-  // Description missing in models
-  StateProtocolRoute route = 4;
-
-  // Description missing in models
-  StateProtocolAll protocol = 5;
 }
 
 // Request to traffic generator for states of choice
@@ -26183,7 +27176,7 @@ message GetMetricsResponse {
 
 
 message GetStatesRequest {
-  ConvergenceState convergence_state = 1;
+  StatesRequest states_request = 1;
 }
 message GetStatesResponse {
   StatesResponse states_response = 1;

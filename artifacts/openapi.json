@@ -213,7 +213,7 @@
                     "content": {
                         "application/json": {
                             "schema": {
-                                "$ref": "#/components/schemas/Convergence.State"
+                                "$ref": "#/components/schemas/States.Request"
                             }
                         }
                     }
@@ -16270,18 +16270,18 @@
                 }
             },
             "Convergence.Request": {
-                "description": "The request container for flow metrics or flow convergence measurements.",
+                "description": "Request to traffic generator for metrics of choice.",
                 "type": "object",
                 "properties": {
                     "choice": {
                         "type": "string",
-                        "default": "metrics",
+                        "default": "port",
                         "x-field-uid": 1,
                         "x-enum": {
-                            "metrics": {
+                            "port": {
                                 "x-field-uid": 1
                             },
-                            "convergence": {
+                            "flow": {
                                 "x-field-uid": 2
                             },
                             "bgpv4": {
@@ -16289,21 +16289,61 @@
                             },
                             "bgpv6": {
                                 "x-field-uid": 4
+                            },
+                            "isis": {
+                                "x-field-uid": 5
+                            },
+                            "lag": {
+                                "x-field-uid": 6
+                            },
+                            "lacp": {
+                                "x-field-uid": 7
+                            },
+                            "lldp": {
+                                "x-field-uid": 8
+                            },
+                            "rsvp": {
+                                "x-field-uid": 9
+                            },
+                            "dhcpv4_client": {
+                                "x-field-uid": 10
+                            },
+                            "dhcpv4_server": {
+                                "x-field-uid": 11
+                            },
+                            "dhcpv6_client": {
+                                "x-field-uid": 12
+                            },
+                            "dhcpv6_server": {
+                                "x-field-uid": 13
+                            },
+                            "convergence": {
+                                "x-field-uid": 14
                             }
                         },
                         "enum": [
-                            "metrics",
-                            "convergence",
+                            "port",
+                            "flow",
                             "bgpv4",
-                            "bgpv6"
+                            "bgpv6",
+                            "isis",
+                            "lag",
+                            "lacp",
+                            "lldp",
+                            "rsvp",
+                            "dhcpv4_client",
+                            "dhcpv4_server",
+                            "dhcpv6_client",
+                            "dhcpv6_server",
+                            "convergence"
                         ]
                     },
-                    "metrics": {
-                        "$ref": "#/components/schemas/Flow.Metrics.Request",
+                    "port": {
+                        "$ref": "#/components/schemas/Port.Metrics.Request",
                         "x-field-uid": 2
                     },
-                    "convergence": {
-                        "$ref": "#/components/schemas/Convergence.Flow.Request",
+                    "flow": {
+                        "$ref": "#/components/schemas/Flow.Metrics.Request",
                         "x-field-uid": 3
                     },
                     "bgpv4": {
@@ -16313,6 +16353,46 @@
                     "bgpv6": {
                         "$ref": "#/components/schemas/Bgpv6.Metrics.Request",
                         "x-field-uid": 5
+                    },
+                    "isis": {
+                        "$ref": "#/components/schemas/Isis.Metrics.Request",
+                        "x-field-uid": 6
+                    },
+                    "lag": {
+                        "$ref": "#/components/schemas/Lag.Metrics.Request",
+                        "x-field-uid": 7
+                    },
+                    "lacp": {
+                        "$ref": "#/components/schemas/Lacp.Metrics.Request",
+                        "x-field-uid": 8
+                    },
+                    "lldp": {
+                        "$ref": "#/components/schemas/Lldp.Metrics.Request",
+                        "x-field-uid": 9
+                    },
+                    "rsvp": {
+                        "$ref": "#/components/schemas/Rsvp.Metrics.Request",
+                        "x-field-uid": 10
+                    },
+                    "dhcpv4_client": {
+                        "$ref": "#/components/schemas/Dhcpv4Client.Metrics.Request",
+                        "x-field-uid": 11
+                    },
+                    "dhcpv4_server": {
+                        "$ref": "#/components/schemas/Dhcpv4Server.Metrics.Request",
+                        "x-field-uid": 12
+                    },
+                    "dhcpv6_client": {
+                        "$ref": "#/components/schemas/Dhcpv6Client.Metrics.Request",
+                        "x-field-uid": 13
+                    },
+                    "dhcpv6_server": {
+                        "$ref": "#/components/schemas/Dhcpv6Server.Metrics.Request",
+                        "x-field-uid": 14
+                    },
+                    "convergence": {
+                        "$ref": "#/components/schemas/Convergence.Flow.Request",
+                        "x-field-uid": 15
                     }
                 }
             },
@@ -16330,6 +16410,196 @@
                             "/components/schemas/Flow/properties/name"
                         ],
                         "x-field-uid": 1
+                    }
+                }
+            },
+            "Port.Metrics.Request": {
+                "description": "The port result request to the traffic generator",
+                "type": "object",
+                "properties": {
+                    "port_names": {
+                        "description": "The names of objects to return results for. An empty list will return all port row results.\n\nx-constraint:\n- /components/schemas/Port/properties/name\n",
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "x-constraint": [
+                            "/components/schemas/Port/properties/name"
+                        ],
+                        "x-field-uid": 1
+                    },
+                    "column_names": {
+                        "description": "The list of column names that the returned result set will contain. If the list is empty then all columns will be returned. The name of the port cannot be excluded.",
+                        "type": "array",
+                        "items": {
+                            "type": "string",
+                            "x-enum": {
+                                "transmit": {
+                                    "x-field-uid": 1
+                                },
+                                "location": {
+                                    "x-field-uid": 2
+                                },
+                                "link": {
+                                    "x-field-uid": 3
+                                },
+                                "capture": {
+                                    "x-field-uid": 4
+                                },
+                                "frames_tx": {
+                                    "x-field-uid": 5
+                                },
+                                "frames_rx": {
+                                    "x-field-uid": 6
+                                },
+                                "bytes_tx": {
+                                    "x-field-uid": 7
+                                },
+                                "bytes_rx": {
+                                    "x-field-uid": 8
+                                },
+                                "frames_tx_rate": {
+                                    "x-field-uid": 9
+                                },
+                                "frames_rx_rate": {
+                                    "x-field-uid": 10
+                                },
+                                "bytes_tx_rate": {
+                                    "x-field-uid": 11
+                                },
+                                "bytes_rx_rate": {
+                                    "x-field-uid": 12
+                                }
+                            },
+                            "enum": [
+                                "transmit",
+                                "location",
+                                "link",
+                                "capture",
+                                "frames_tx",
+                                "frames_rx",
+                                "bytes_tx",
+                                "bytes_rx",
+                                "frames_tx_rate",
+                                "frames_rx_rate",
+                                "bytes_tx_rate",
+                                "bytes_rx_rate"
+                            ]
+                        },
+                        "x-field-uid": 2
+                    }
+                }
+            },
+            "Port.Metric": {
+                "type": "object",
+                "properties": {
+                    "name": {
+                        "description": "The name of a configured port\n\nx-constraint:\n- /components/schemas/Port/properties/name\n",
+                        "type": "string",
+                        "x-constraint": [
+                            "/components/schemas/Port/properties/name"
+                        ],
+                        "x-field-uid": 1
+                    },
+                    "location": {
+                        "description": "The state of the connection to the test port location. The format should be the configured port location along with  any custom connection state message.",
+                        "type": "string",
+                        "x-field-uid": 2
+                    },
+                    "link": {
+                        "description": "The state of the test port link The string can be up, down or a custom error message.",
+                        "type": "string",
+                        "x-field-uid": 3,
+                        "x-enum": {
+                            "up": {
+                                "x-field-uid": 1
+                            },
+                            "down": {
+                                "x-field-uid": 2
+                            }
+                        },
+                        "enum": [
+                            "up",
+                            "down"
+                        ]
+                    },
+                    "capture": {
+                        "description": "The state of the test port capture infrastructure. The string can be started, stopped or a custom error message.",
+                        "type": "string",
+                        "x-field-uid": 4,
+                        "x-enum": {
+                            "started": {
+                                "x-field-uid": 1
+                            },
+                            "stopped": {
+                                "x-field-uid": 2
+                            }
+                        },
+                        "enum": [
+                            "started",
+                            "stopped"
+                        ]
+                    },
+                    "frames_tx": {
+                        "description": "The current total number of frames transmitted",
+                        "type": "integer",
+                        "format": "uint64",
+                        "x-field-uid": 5
+                    },
+                    "frames_rx": {
+                        "description": "The current total number of valid frames received",
+                        "type": "integer",
+                        "format": "uint64",
+                        "x-field-uid": 6
+                    },
+                    "bytes_tx": {
+                        "description": "The current total number of bytes transmitted",
+                        "type": "integer",
+                        "format": "uint64",
+                        "x-field-uid": 7
+                    },
+                    "bytes_rx": {
+                        "description": "The current total number of valid bytes received",
+                        "type": "integer",
+                        "format": "uint64",
+                        "x-field-uid": 8
+                    },
+                    "frames_tx_rate": {
+                        "description": "The current rate of frames transmitted",
+                        "type": "number",
+                        "x-field-uid": 9
+                    },
+                    "frames_rx_rate": {
+                        "description": "The current rate of valid frames received",
+                        "type": "number",
+                        "x-field-uid": 10
+                    },
+                    "bytes_tx_rate": {
+                        "description": "The current rate of bytes transmitted",
+                        "type": "number",
+                        "x-field-uid": 11
+                    },
+                    "bytes_rx_rate": {
+                        "description": "The current rate of bytes received",
+                        "type": "number",
+                        "x-field-uid": 12
+                    },
+                    "transmit": {
+                        "description": "The transmit state of the flow.",
+                        "type": "string",
+                        "x-field-uid": 13,
+                        "x-enum": {
+                            "started": {
+                                "x-field-uid": 1
+                            },
+                            "stopped": {
+                                "x-field-uid": 2
+                            }
+                        },
+                        "enum": [
+                            "started",
+                            "stopped"
+                        ]
                     }
                 }
             },
@@ -17201,17 +17471,1724 @@
                     }
                 }
             },
+            "Isis.Metrics.Request": {
+                "description": "The request to retrieve ISIS per Router metrics/statistics.",
+                "type": "object",
+                "properties": {
+                    "router_names": {
+                        "description": "The names of ISIS Routers to return results for. An empty list will return results for all ISIS router.\n\nx-constraint:\n- /components/schemas/Device.IsisRouter/properties/name\n",
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "x-constraint": [
+                            "/components/schemas/Device.IsisRouter/properties/name"
+                        ],
+                        "x-field-uid": 1
+                    },
+                    "column_names": {
+                        "description": "The list of column names that the returned result set will contain. If the list is empty then all columns will be returned except for any result_groups. The name of the ISIS Router cannot be excluded.",
+                        "type": "array",
+                        "items": {
+                            "type": "string",
+                            "x-enum": {
+                                "l1_sessions_up": {
+                                    "x-field-uid": 1
+                                },
+                                "l1_session_flap": {
+                                    "x-field-uid": 2
+                                },
+                                "l1_database_size": {
+                                    "x-field-uid": 3
+                                },
+                                "l1_broadcast_hellos_sent": {
+                                    "x-field-uid": 4
+                                },
+                                "l1_broadcast_hellos_received": {
+                                    "x-field-uid": 5
+                                },
+                                "l1_point_to_point_hellos_sent": {
+                                    "x-field-uid": 6
+                                },
+                                "l1_point_to_point_hellos_received": {
+                                    "x-field-uid": 7
+                                },
+                                "l1_psnp_sent": {
+                                    "x-field-uid": 8
+                                },
+                                "l1_psnp_received": {
+                                    "x-field-uid": 9
+                                },
+                                "l1_csnp_sent": {
+                                    "x-field-uid": 10
+                                },
+                                "l1_csnp_received": {
+                                    "x-field-uid": 11
+                                },
+                                "l1_lsp_sent": {
+                                    "x-field-uid": 12
+                                },
+                                "l1_lsp_received": {
+                                    "x-field-uid": 13
+                                },
+                                "l2_sessions_up": {
+                                    "x-field-uid": 14
+                                },
+                                "l2_session_flap": {
+                                    "x-field-uid": 15
+                                },
+                                "l2_database_size": {
+                                    "x-field-uid": 16
+                                },
+                                "l2_broadcast_hellos_sent": {
+                                    "x-field-uid": 17
+                                },
+                                "l2_broadcast_hellos_received": {
+                                    "x-field-uid": 18
+                                },
+                                "l2_point_to_point_hellos_sent": {
+                                    "x-field-uid": 19
+                                },
+                                "l2_point_to_point_hellos_received": {
+                                    "x-field-uid": 20
+                                },
+                                "l2_psnp_sent": {
+                                    "x-field-uid": 21
+                                },
+                                "l2_psnp_received": {
+                                    "x-field-uid": 22
+                                },
+                                "l2_csnp_sent": {
+                                    "x-field-uid": 23
+                                },
+                                "l2_csnp_received": {
+                                    "x-field-uid": 24
+                                },
+                                "l2_lsp_sent": {
+                                    "x-field-uid": 25
+                                },
+                                "l2_lsp_received": {
+                                    "x-field-uid": 26
+                                }
+                            },
+                            "enum": [
+                                "l1_sessions_up",
+                                "l1_session_flap",
+                                "l1_database_size",
+                                "l1_broadcast_hellos_sent",
+                                "l1_broadcast_hellos_received",
+                                "l1_point_to_point_hellos_sent",
+                                "l1_point_to_point_hellos_received",
+                                "l1_psnp_sent",
+                                "l1_psnp_received",
+                                "l1_csnp_sent",
+                                "l1_csnp_received",
+                                "l1_lsp_sent",
+                                "l1_lsp_received",
+                                "l2_sessions_up",
+                                "l2_session_flap",
+                                "l2_database_size",
+                                "l2_broadcast_hellos_sent",
+                                "l2_broadcast_hellos_received",
+                                "l2_point_to_point_hellos_sent",
+                                "l2_point_to_point_hellos_received",
+                                "l2_psnp_sent",
+                                "l2_psnp_received",
+                                "l2_csnp_sent",
+                                "l2_csnp_received",
+                                "l2_lsp_sent",
+                                "l2_lsp_received"
+                            ]
+                        },
+                        "x-field-uid": 2
+                    }
+                }
+            },
+            "Isis.Metric": {
+                "description": "ISIS per router statistics information.",
+                "type": "object",
+                "properties": {
+                    "name": {
+                        "description": "The name of a configured ISIS router.",
+                        "type": "string",
+                        "x-field-uid": 1
+                    },
+                    "l1_sessions_up": {
+                        "description": "The number of Level 1 (L1) sessions that are fully up.",
+                        "type": "integer",
+                        "format": "uint32",
+                        "x-field-uid": 2
+                    },
+                    "l1_session_flap": {
+                        "description": "The number of Level 1 Sessions Flap.",
+                        "type": "integer",
+                        "format": "uint64",
+                        "x-field-uid": 3
+                    },
+                    "l1_broadcast_hellos_sent": {
+                        "description": "Number of Level 1 Hello messages sent.",
+                        "type": "integer",
+                        "format": "uint64",
+                        "x-field-uid": 4
+                    },
+                    "l1_broadcast_hellos_received": {
+                        "description": "Number of Level 1 Hello messages received.",
+                        "type": "integer",
+                        "format": "uint64",
+                        "x-field-uid": 5
+                    },
+                    "l1_point_to_point_hellos_sent": {
+                        "description": "Number of Level 1 Point-to-Point(P2P) Hello messages sent.",
+                        "type": "integer",
+                        "format": "uint64",
+                        "x-field-uid": 6
+                    },
+                    "l1_point_to_point_hellos_received": {
+                        "description": "Number of Level 1 Point-to-Point(P2P) Hello messages received.",
+                        "type": "integer",
+                        "format": "uint64",
+                        "x-field-uid": 7
+                    },
+                    "l1_database_size": {
+                        "description": "Number of Link State Updates (LSPs) in the Level 1 LSP Databases.",
+                        "type": "integer",
+                        "format": "uint64",
+                        "x-field-uid": 8
+                    },
+                    "l1_psnp_sent": {
+                        "description": "Number of Level 1 (L1) Partial Sequence Number Packet (PSNPs) sent.",
+                        "type": "integer",
+                        "format": "uint64",
+                        "x-field-uid": 9
+                    },
+                    "l1_psnp_received": {
+                        "description": "Number of Level 1 (L1) Complete Sequence Number Packet (PSNPs) received.",
+                        "type": "integer",
+                        "format": "uint64",
+                        "x-field-uid": 10
+                    },
+                    "l1_csnp_sent": {
+                        "description": "Number of Level 1 (L1) Complete Sequence Number Packet (CSNPs) sent.",
+                        "type": "integer",
+                        "format": "uint64",
+                        "x-field-uid": 11
+                    },
+                    "l1_csnp_received": {
+                        "description": "Number of Level 1 (L1) Complete Sequence Number Packet (CSNPs) received.",
+                        "type": "integer",
+                        "format": "uint64",
+                        "x-field-uid": 12
+                    },
+                    "l1_lsp_sent": {
+                        "description": "Number of Level 1 (L1) Link State Protocol Data Units (LSPs) sent.",
+                        "type": "integer",
+                        "format": "uint64",
+                        "x-field-uid": 13
+                    },
+                    "l1_lsp_received": {
+                        "description": "Number of Level 1 (L1) Link State Protocol Data Units (LSPs) received.",
+                        "type": "integer",
+                        "format": "uint64",
+                        "x-field-uid": 14
+                    },
+                    "l2_sessions_up": {
+                        "description": "The number of Level 2 (L2) sessions that are fully up.",
+                        "type": "integer",
+                        "format": "uint32",
+                        "x-field-uid": 15
+                    },
+                    "l2_session_flap": {
+                        "description": "The number of Level 2 Sessions Flap.",
+                        "type": "integer",
+                        "format": "uint64",
+                        "x-field-uid": 16
+                    },
+                    "l2_broadcast_hellos_sent": {
+                        "description": "Number of Level 2 Hello messages sent.",
+                        "type": "integer",
+                        "format": "uint64",
+                        "x-field-uid": 17
+                    },
+                    "l2_broadcast_hellos_received": {
+                        "description": "Number of Level 2 Hello messages received.",
+                        "type": "integer",
+                        "format": "uint64",
+                        "x-field-uid": 18
+                    },
+                    "l2_point_to_point_hellos_sent": {
+                        "description": "Number of Level 2 Point-to-Point(P2P) Hello messages sent.",
+                        "type": "integer",
+                        "format": "uint64",
+                        "x-field-uid": 19
+                    },
+                    "l2_point_to_point_hellos_received": {
+                        "description": "Number of Level 2 Point-to-Point(P2P) Hello messages received.",
+                        "type": "integer",
+                        "format": "uint64",
+                        "x-field-uid": 20
+                    },
+                    "l2_database_size": {
+                        "description": "Number of Link State Updates (LSPs) in the Level 2 LSP Databases.",
+                        "type": "integer",
+                        "format": "uint64",
+                        "x-field-uid": 21
+                    },
+                    "l2_psnp_sent": {
+                        "description": "Number of Level 2 (L2) Partial Sequence Number Packet (PSNPs) sent.",
+                        "type": "integer",
+                        "format": "uint64",
+                        "x-field-uid": 22
+                    },
+                    "l2_psnp_received": {
+                        "description": "Number of Level 2 (L2) Complete Sequence Number Packet (PSNPs) received.",
+                        "type": "integer",
+                        "format": "uint64",
+                        "x-field-uid": 23
+                    },
+                    "l2_csnp_sent": {
+                        "description": "Number of Level 2 (L2) Complete Sequence Number Packet (CSNPs) sent.",
+                        "type": "integer",
+                        "format": "uint64",
+                        "x-field-uid": 24
+                    },
+                    "l2_csnp_received": {
+                        "description": "Number of Level 2 (L2) Complete Sequence Number Packet (CSNPs) received.",
+                        "type": "integer",
+                        "format": "uint64",
+                        "x-field-uid": 25
+                    },
+                    "l2_lsp_sent": {
+                        "description": "Number of Level 2 (L2) Link State Protocol Data Units (LSPs) sent.",
+                        "type": "integer",
+                        "format": "uint64",
+                        "x-field-uid": 26
+                    },
+                    "l2_lsp_received": {
+                        "description": "Number of Level 2 (L2) Link State Protocol Data Units (LSPs) received.",
+                        "type": "integer",
+                        "format": "uint64",
+                        "x-field-uid": 27
+                    }
+                }
+            },
+            "Lag.Metrics.Request": {
+                "description": "The request to retrieve per LAG metrics/statistics.",
+                "type": "object",
+                "properties": {
+                    "lag_names": {
+                        "description": "The names of LAGs to return results for. An empty list will return results for all LAGs.\n\nx-constraint:\n- /components/schemas/Lag/properties/name\n",
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "x-constraint": [
+                            "/components/schemas/Lag/properties/name"
+                        ],
+                        "x-field-uid": 1
+                    },
+                    "column_names": {
+                        "description": "The list of column names that the returned result set will contain. If the list is empty then all columns will be returned. The name of the LAG cannot be excluded.",
+                        "type": "array",
+                        "items": {
+                            "type": "string",
+                            "x-enum": {
+                                "oper_status": {
+                                    "x-field-uid": 1
+                                },
+                                "member_ports_up": {
+                                    "x-field-uid": 2
+                                },
+                                "frames_tx": {
+                                    "x-field-uid": 3
+                                },
+                                "frames_rx": {
+                                    "x-field-uid": 4
+                                },
+                                "bytes_tx": {
+                                    "x-field-uid": 5
+                                },
+                                "bytes_rx": {
+                                    "x-field-uid": 6
+                                },
+                                "frames_tx_rate": {
+                                    "x-field-uid": 7
+                                },
+                                "frames_rx_rate": {
+                                    "x-field-uid": 8
+                                },
+                                "bytes_tx_rate": {
+                                    "x-field-uid": 9
+                                },
+                                "bytes_rx_rate": {
+                                    "x-field-uid": 10
+                                }
+                            },
+                            "enum": [
+                                "oper_status",
+                                "member_ports_up",
+                                "frames_tx",
+                                "frames_rx",
+                                "bytes_tx",
+                                "bytes_rx",
+                                "frames_tx_rate",
+                                "frames_rx_rate",
+                                "bytes_tx_rate",
+                                "bytes_rx_rate"
+                            ]
+                        },
+                        "x-field-uid": 2
+                    }
+                }
+            },
+            "Lag.Metric": {
+                "type": "object",
+                "properties": {
+                    "name": {
+                        "description": "The name of a configured LAG\n\nx-constraint:\n- /components/schemas/Lag/properties/name\n",
+                        "type": "string",
+                        "x-constraint": [
+                            "/components/schemas/Lag/properties/name"
+                        ],
+                        "x-field-uid": 1
+                    },
+                    "oper_status": {
+                        "description": "The current operational state of the LAG. The state can be up or down. State 'up' indicates member_ports_up >= min_links.",
+                        "type": "string",
+                        "x-field-uid": 2,
+                        "x-enum": {
+                            "up": {
+                                "x-field-uid": 1
+                            },
+                            "down": {
+                                "x-field-uid": 2
+                            }
+                        },
+                        "enum": [
+                            "up",
+                            "down"
+                        ]
+                    },
+                    "member_ports_up": {
+                        "description": "The number of LAG member ports up.",
+                        "type": "integer",
+                        "format": "uint32",
+                        "x-field-uid": 3
+                    },
+                    "frames_tx": {
+                        "description": "The current total number of frames transmitted.",
+                        "type": "integer",
+                        "format": "uint64",
+                        "x-field-uid": 4
+                    },
+                    "frames_rx": {
+                        "description": "The current total number of valid frames received.",
+                        "type": "integer",
+                        "format": "uint64",
+                        "x-field-uid": 5
+                    },
+                    "bytes_tx": {
+                        "description": "The current total number of bytes transmitted.",
+                        "type": "integer",
+                        "format": "uint64",
+                        "x-field-uid": 6
+                    },
+                    "bytes_rx": {
+                        "description": "The current total number of valid bytes received.",
+                        "type": "integer",
+                        "format": "uint64",
+                        "minimum": 0,
+                        "x-field-uid": 7
+                    },
+                    "frames_tx_rate": {
+                        "description": "The current rate of frames transmitted.",
+                        "type": "number",
+                        "x-field-uid": 8
+                    },
+                    "frames_rx_rate": {
+                        "description": "The current rate of valid frames received.",
+                        "type": "number",
+                        "x-field-uid": 9
+                    },
+                    "bytes_tx_rate": {
+                        "description": "The current rate of bytes transmitted.",
+                        "type": "number",
+                        "x-field-uid": 10
+                    },
+                    "bytes_rx_rate": {
+                        "description": "The current rate of bytes received.",
+                        "type": "number",
+                        "x-field-uid": 11
+                    }
+                }
+            },
+            "Lacp.Metrics.Request": {
+                "description": "The request to retrieve LACP per LAG member metrics/statistics.",
+                "type": "object",
+                "properties": {
+                    "lag_names": {
+                        "description": "The names of LAG (ports group) for which LACP metrics to be returned. An empty list will return metrics for all LAGs.\n\nx-constraint:\n- /components/schemas/Lag/properties/name\n",
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "x-constraint": [
+                            "/components/schemas/Lag/properties/name"
+                        ],
+                        "x-field-uid": 1
+                    },
+                    "lag_member_port_names": {
+                        "description": "The names of LAG members (ports) for which LACP metrics to be returned. An empty list will return metrics for all LAG members.\n\nx-constraint:\n- /components/schemas/Port/properties/name\n",
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "x-constraint": [
+                            "/components/schemas/Port/properties/name"
+                        ],
+                        "x-field-uid": 2
+                    },
+                    "column_names": {
+                        "description": "The list of column names that the returned result set will contain. If the list is empty then all columns will be returned. The name of LAG and LAG member can not be excluded.",
+                        "type": "array",
+                        "items": {
+                            "type": "string",
+                            "x-enum": {
+                                "lacp_packets_rx": {
+                                    "x-field-uid": 1
+                                },
+                                "lacp_packets_tx": {
+                                    "x-field-uid": 2
+                                },
+                                "lacp_rx_errors": {
+                                    "x-field-uid": 3
+                                },
+                                "activity": {
+                                    "x-field-uid": 4
+                                },
+                                "timeout": {
+                                    "x-field-uid": 5
+                                },
+                                "synchronization": {
+                                    "x-field-uid": 6
+                                },
+                                "aggregatable": {
+                                    "x-field-uid": 7
+                                },
+                                "collecting": {
+                                    "x-field-uid": 8
+                                },
+                                "distributing": {
+                                    "x-field-uid": 9
+                                },
+                                "system_id": {
+                                    "x-field-uid": 10
+                                },
+                                "oper_key": {
+                                    "x-field-uid": 11
+                                },
+                                "partner_id": {
+                                    "x-field-uid": 12
+                                },
+                                "partner_key": {
+                                    "x-field-uid": 13
+                                },
+                                "port_num": {
+                                    "x-field-uid": 14
+                                },
+                                "partner_port_num": {
+                                    "x-field-uid": 15
+                                }
+                            },
+                            "enum": [
+                                "lacp_packets_rx",
+                                "lacp_packets_tx",
+                                "lacp_rx_errors",
+                                "activity",
+                                "timeout",
+                                "synchronization",
+                                "aggregatable",
+                                "collecting",
+                                "distributing",
+                                "system_id",
+                                "oper_key",
+                                "partner_id",
+                                "partner_key",
+                                "port_num",
+                                "partner_port_num"
+                            ]
+                        },
+                        "x-field-uid": 3
+                    }
+                }
+            },
+            "Lacp.Metric": {
+                "description": "LACP metrics (statistics) per LAG member.",
+                "type": "object",
+                "properties": {
+                    "lag_name": {
+                        "description": "The name of a LAG (ports group) configured with LACP.",
+                        "type": "string",
+                        "x-field-uid": 1
+                    },
+                    "lag_member_port_name": {
+                        "description": "The name of a LAG member (port) configured with LACP.",
+                        "type": "string",
+                        "x-field-uid": 2
+                    },
+                    "lacp_packets_rx": {
+                        "description": "Number of LACPDUs received.",
+                        "type": "integer",
+                        "format": "uint64",
+                        "x-field-uid": 3
+                    },
+                    "lacp_packets_tx": {
+                        "description": "Number of LACPDUs transmitted.",
+                        "type": "integer",
+                        "format": "uint64",
+                        "x-field-uid": 4
+                    },
+                    "lacp_rx_errors": {
+                        "description": "Number of LACPDUs receive packet errors.",
+                        "type": "integer",
+                        "format": "uint64",
+                        "x-field-uid": 5
+                    },
+                    "activity": {
+                        "description": "Indicates participant is active or passive.",
+                        "type": "string",
+                        "x-field-uid": 6,
+                        "x-enum": {
+                            "active": {
+                                "x-field-uid": 1
+                            },
+                            "passive": {
+                                "x-field-uid": 2
+                            }
+                        },
+                        "enum": [
+                            "active",
+                            "passive"
+                        ]
+                    },
+                    "timeout": {
+                        "description": "The timeout type (short or long) used by the participant.",
+                        "type": "string",
+                        "x-field-uid": 7,
+                        "x-enum": {
+                            "short": {
+                                "x-field-uid": 1
+                            },
+                            "long": {
+                                "x-field-uid": 2
+                            }
+                        },
+                        "enum": [
+                            "short",
+                            "long"
+                        ]
+                    },
+                    "synchronization": {
+                        "description": "Indicates whether the participant is in-sync or out-of-sync.",
+                        "type": "string",
+                        "x-field-uid": 8,
+                        "x-enum": {
+                            "in_sync": {
+                                "x-field-uid": 1
+                            },
+                            "out_sync": {
+                                "x-field-uid": 2
+                            }
+                        },
+                        "enum": [
+                            "in_sync",
+                            "out_sync"
+                        ]
+                    },
+                    "aggregatable": {
+                        "description": "A true value indicates that the participant will allow the link to be used as part of the aggregate. A false value indicates the link should be used as an  individual link.",
+                        "type": "boolean",
+                        "x-field-uid": 9
+                    },
+                    "collecting": {
+                        "description": "If true, the participant is collecting incoming frames on the link, otherwise false.",
+                        "type": "boolean",
+                        "x-field-uid": 10
+                    },
+                    "distributing": {
+                        "description": "When true, the participant is distributing outgoing frames; when false, distribution is disabled.",
+                        "type": "boolean",
+                        "x-field-uid": 11
+                    },
+                    "system_id": {
+                        "description": "MAC address that defines the local system ID for the aggregate interface.",
+                        "type": "string",
+                        "format": "mac",
+                        "x-field-uid": 12
+                    },
+                    "oper_key": {
+                        "description": "Current operational value of the key for the aggregate interface.",
+                        "type": "integer",
+                        "format": "uint32",
+                        "x-field-uid": 13
+                    },
+                    "partner_id": {
+                        "description": "MAC address representing the protocol partner's interface system ID.",
+                        "type": "string",
+                        "format": "mac",
+                        "x-field-uid": 14
+                    },
+                    "partner_key": {
+                        "description": "Operational value of the protocol partner's key.",
+                        "type": "integer",
+                        "format": "uint32",
+                        "x-field-uid": 15
+                    },
+                    "port_num": {
+                        "description": "Port number of the local (actor) aggregation member.",
+                        "type": "integer",
+                        "format": "uint32",
+                        "x-field-uid": 16
+                    },
+                    "partner_port_num": {
+                        "description": "Port number of the partner (remote) port for this member port.",
+                        "type": "integer",
+                        "format": "uint32",
+                        "x-field-uid": 17
+                    }
+                }
+            },
+            "Lldp.Metrics.Request": {
+                "description": "The request to retrieve LLDP per instance metrics/statistics.",
+                "type": "object",
+                "properties": {
+                    "lldp_names": {
+                        "description": "The names of LLDP instances to return results for. An empty list will return results for all LLDP instances.\n\nx-constraint:\n- /components/schemas/Lldp/properties/name\n",
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "x-constraint": [
+                            "/components/schemas/Lldp/properties/name"
+                        ],
+                        "x-field-uid": 1
+                    },
+                    "column_names": {
+                        "description": "The requested list of column names for the result set. If the list is empty then metrics for all columns will be returned. The name of LLDP instance can not be excluded.",
+                        "type": "array",
+                        "items": {
+                            "type": "string",
+                            "x-enum": {
+                                "frames_rx": {
+                                    "x-field-uid": 1
+                                },
+                                "frames_tx": {
+                                    "x-field-uid": 2
+                                },
+                                "frames_error_rx": {
+                                    "x-field-uid": 3
+                                },
+                                "frames_discard": {
+                                    "x-field-uid": 4
+                                },
+                                "tlvs_discard": {
+                                    "x-field-uid": 5
+                                },
+                                "tlvs_unknown": {
+                                    "x-field-uid": 6
+                                }
+                            },
+                            "enum": [
+                                "frames_rx",
+                                "frames_tx",
+                                "frames_error_rx",
+                                "frames_discard",
+                                "tlvs_discard",
+                                "tlvs_unknown"
+                            ]
+                        },
+                        "x-field-uid": 2
+                    }
+                }
+            },
+            "Lldp.Metric": {
+                "description": "LLDP per instance statistics information.",
+                "type": "object",
+                "properties": {
+                    "name": {
+                        "description": "The name of the configured LLDP instance.",
+                        "type": "string",
+                        "x-field-uid": 1
+                    },
+                    "frames_rx": {
+                        "description": "Number of LLDP frames received.",
+                        "type": "integer",
+                        "format": "uint64",
+                        "x-field-uid": 2
+                    },
+                    "frames_tx": {
+                        "description": "Number of LLDP frames transmitted.",
+                        "type": "integer",
+                        "format": "uint64",
+                        "x-field-uid": 3
+                    },
+                    "frames_error_rx": {
+                        "description": "Number of LLDP frames received with packet errors. This stat should be incremented based on statsFramesInErrorsTotal increment rule in section 10.3.2 of IEEE Std 802.1 AB-2005.",
+                        "type": "integer",
+                        "format": "uint64",
+                        "x-field-uid": 4
+                    },
+                    "frames_discard": {
+                        "description": "Number of LLDP frames received that are discarded. This stat should be incremented when one or more of the three mandatory  TLVs at the beginning of the LLDPDU is missing, out of order or  contains an out of range information string length. This stat should follow the validation rules in section 10.3.2 of IEEE  Std 802.1 AB-2005.",
+                        "type": "integer",
+                        "format": "uint64",
+                        "x-field-uid": 5
+                    },
+                    "tlvs_discard": {
+                        "description": "Number of LLDP tlvs received that are discarded. If any TLV contains  an error condition specific for that particular TLV or if any TLV  extends past the physical end of the frame then these TLVs will be discarded.",
+                        "type": "integer",
+                        "format": "uint64",
+                        "x-field-uid": 6
+                    },
+                    "tlvs_unknown": {
+                        "description": "Number of LLDP unknown tlvs received. If the OUI of the organizationlly specific TLV and/or organizationally defined subtype are not recognized,or if TLV type  value is in the range of reserved TLV types then these TLVs will be considered as  unknown TLVs.",
+                        "type": "integer",
+                        "format": "uint64",
+                        "x-field-uid": 7
+                    }
+                }
+            },
+            "Rsvp.Metrics.Request": {
+                "description": "The request to retrieve RSVP-TE per Router metrics/statistics.",
+                "type": "object",
+                "properties": {
+                    "router_names": {
+                        "description": "The names of RSVP-TE Routers to return results for. An empty list as input will return results for all RSVP-TE routers.\n\nx-constraint:\n- /components/schemas/Device.Rsvp/properties/name\n",
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "x-constraint": [
+                            "/components/schemas/Device.Rsvp/properties/name"
+                        ],
+                        "x-field-uid": 1
+                    },
+                    "column_names": {
+                        "description": "The list of column names that the returned result set will contain. If the input list is empty then all columns will be returned except for any result_groups.            ",
+                        "type": "array",
+                        "items": {
+                            "type": "string",
+                            "x-enum": {
+                                "ingress_p2p_lsps_configured": {
+                                    "x-field-uid": 1
+                                },
+                                "ingress_p2p_lsps_up": {
+                                    "x-field-uid": 2
+                                },
+                                "egress_p2p_lsps_up": {
+                                    "x-field-uid": 3
+                                },
+                                "lsp_flap_count": {
+                                    "x-field-uid": 4
+                                },
+                                "paths_tx": {
+                                    "x-field-uid": 5
+                                },
+                                "paths_rx": {
+                                    "x-field-uid": 6
+                                },
+                                "resvs_tx": {
+                                    "x-field-uid": 7
+                                },
+                                "resvs_rx": {
+                                    "x-field-uid": 8
+                                },
+                                "path_tears_tx": {
+                                    "x-field-uid": 9
+                                },
+                                "path_tears_rx": {
+                                    "x-field-uid": 10
+                                },
+                                "resv_tears_tx": {
+                                    "x-field-uid": 11
+                                },
+                                "resv_tears_rx": {
+                                    "x-field-uid": 12
+                                },
+                                "path_errors_tx": {
+                                    "x-field-uid": 13
+                                },
+                                "path_errors_rx": {
+                                    "x-field-uid": 14
+                                },
+                                "resv_errors_tx": {
+                                    "x-field-uid": 15
+                                },
+                                "resv_errors_rx": {
+                                    "x-field-uid": 16
+                                },
+                                "resv_conf_tx": {
+                                    "x-field-uid": 17
+                                },
+                                "resv_conf_rx": {
+                                    "x-field-uid": 18
+                                },
+                                "hellos_tx": {
+                                    "x-field-uid": 19
+                                },
+                                "hellos_rx": {
+                                    "x-field-uid": 20
+                                },
+                                "acks_tx": {
+                                    "x-field-uid": 21
+                                },
+                                "acks_rx": {
+                                    "x-field-uid": 22
+                                },
+                                "nacks_tx": {
+                                    "x-field-uid": 23
+                                },
+                                "nacks_rx": {
+                                    "x-field-uid": 24
+                                },
+                                "srefresh_tx": {
+                                    "x-field-uid": 25
+                                },
+                                "srefresh_rx": {
+                                    "x-field-uid": 26
+                                },
+                                "bundle_tx": {
+                                    "x-field-uid": 27
+                                },
+                                "bundle_rx": {
+                                    "x-field-uid": 28
+                                },
+                                "path_reevaluation_request_tx": {
+                                    "x-field-uid": 29
+                                },
+                                "path_reoptimizations": {
+                                    "x-field-uid": 30
+                                }
+                            },
+                            "enum": [
+                                "ingress_p2p_lsps_configured",
+                                "ingress_p2p_lsps_up",
+                                "egress_p2p_lsps_up",
+                                "lsp_flap_count",
+                                "paths_tx",
+                                "paths_rx",
+                                "resvs_tx",
+                                "resvs_rx",
+                                "path_tears_tx",
+                                "path_tears_rx",
+                                "resv_tears_tx",
+                                "resv_tears_rx",
+                                "path_errors_tx",
+                                "path_errors_rx",
+                                "resv_errors_tx",
+                                "resv_errors_rx",
+                                "resv_conf_tx",
+                                "resv_conf_rx",
+                                "hellos_tx",
+                                "hellos_rx",
+                                "acks_tx",
+                                "acks_rx",
+                                "nacks_tx",
+                                "nacks_rx",
+                                "srefresh_tx",
+                                "srefresh_rx",
+                                "bundle_tx",
+                                "bundle_rx",
+                                "path_reevaluation_request_tx",
+                                "path_reoptimizations"
+                            ]
+                        },
+                        "x-field-uid": 2
+                    }
+                }
+            },
+            "Rsvp.Metric": {
+                "description": "RSVP-TE per router statistics information.",
+                "type": "object",
+                "properties": {
+                    "name": {
+                        "description": "The name of a configured RSVP router.",
+                        "type": "string",
+                        "x-field-uid": 1
+                    },
+                    "ingress_p2p_lsps_configured": {
+                        "description": "The number of ingress point-to-point LSPs configured or transiting through the RSVP router which have been initated from the test port.",
+                        "type": "integer",
+                        "format": "uint32",
+                        "x-field-uid": 2
+                    },
+                    "ingress_p2p_lsps_up": {
+                        "description": "The number of ingress point-to-point LSPs for which Resv has been received and is currently up. ",
+                        "type": "integer",
+                        "format": "uint32",
+                        "x-field-uid": 3
+                    },
+                    "egress_p2p_lsps_up": {
+                        "description": "The number of egress point-to-point LSPs for which Path requests were successfully processed and is currently up.",
+                        "type": "integer",
+                        "format": "uint32",
+                        "x-field-uid": 4
+                    },
+                    "lsp_flap_count": {
+                        "description": "The number of times an LSP went from up to down state either because it timed out while waiting for Refreshes or  a PathTear or ResvTear message was received which caused the LSP to flap.",
+                        "type": "integer",
+                        "format": "uint64",
+                        "x-field-uid": 5
+                    },
+                    "paths_tx": {
+                        "description": "The number of Path messages sent by this RSVP router.",
+                        "type": "integer",
+                        "format": "uint64",
+                        "x-field-uid": 6
+                    },
+                    "paths_rx": {
+                        "description": "The number of Path messages received by this RSVP router.",
+                        "type": "integer",
+                        "format": "uint64",
+                        "x-field-uid": 7
+                    },
+                    "resvs_tx": {
+                        "description": "The number of Resv messages sent by this RSVP router.",
+                        "type": "integer",
+                        "format": "uint64",
+                        "x-field-uid": 8
+                    },
+                    "resvs_rx": {
+                        "description": "The number of Resv messages received by this RSVP router.",
+                        "type": "integer",
+                        "format": "uint64",
+                        "x-field-uid": 9
+                    },
+                    "path_tears_tx": {
+                        "description": "The number of  Path Tear messages sent by this RSVP router.",
+                        "type": "integer",
+                        "format": "uint64",
+                        "x-field-uid": 10
+                    },
+                    "path_tears_rx": {
+                        "description": "The number of Path Tear messages received by this RSVP router. ",
+                        "type": "integer",
+                        "format": "uint64",
+                        "x-field-uid": 11
+                    },
+                    "resv_tears_tx": {
+                        "description": "The number of  Resv Tear messages sent by this RSVP router.",
+                        "type": "integer",
+                        "format": "uint64",
+                        "x-field-uid": 12
+                    },
+                    "resv_tears_rx": {
+                        "description": "The number of Resv Tear messages received by this RSVP router. ",
+                        "type": "integer",
+                        "format": "uint64",
+                        "x-field-uid": 13
+                    },
+                    "path_errors_tx": {
+                        "description": "The number of Path Error messages sent by this RSVP router.",
+                        "type": "integer",
+                        "format": "uint64",
+                        "x-field-uid": 14
+                    },
+                    "path_errors_rx": {
+                        "description": "The number of Path Error messages received by this RSVP router. ",
+                        "type": "integer",
+                        "format": "uint64",
+                        "x-field-uid": 15
+                    },
+                    "resv_errors_tx": {
+                        "description": "The number of Resv Error messages sent by this RSVP router.",
+                        "type": "integer",
+                        "format": "uint64",
+                        "x-field-uid": 16
+                    },
+                    "resv_errors_rx": {
+                        "description": "The number of Resv Error messages received by this RSVP router. ",
+                        "type": "integer",
+                        "format": "uint64",
+                        "x-field-uid": 17
+                    },
+                    "resv_conf_tx": {
+                        "description": "The number of ResvConf messages sent by this RSVP router.",
+                        "type": "integer",
+                        "format": "uint64",
+                        "x-field-uid": 18
+                    },
+                    "resv_conf_rx": {
+                        "description": "The number of ResvConf messages received by this RSVP router. ",
+                        "type": "integer",
+                        "format": "uint64",
+                        "x-field-uid": 19
+                    },
+                    "hellos_tx": {
+                        "description": "The number of Hello messages sent by this RSVP router.",
+                        "type": "integer",
+                        "format": "uint64",
+                        "x-field-uid": 20
+                    },
+                    "hellos_rx": {
+                        "description": "The number of Hello messages received by this RSVP router. ",
+                        "type": "integer",
+                        "format": "uint64",
+                        "x-field-uid": 21
+                    },
+                    "acks_tx": {
+                        "description": "The number of Ack messages sent by this RSVP router.",
+                        "type": "integer",
+                        "format": "uint64",
+                        "x-field-uid": 22
+                    },
+                    "acks_rx": {
+                        "description": "The number of Ack messages received by this RSVP router. ",
+                        "type": "integer",
+                        "format": "uint64",
+                        "x-field-uid": 23
+                    },
+                    "nacks_tx": {
+                        "description": "The number of Nack messages sent by this RSVP router.",
+                        "type": "integer",
+                        "format": "uint64",
+                        "x-field-uid": 24
+                    },
+                    "nacks_rx": {
+                        "description": "The number of Nack messages received by this RSVP router. ",
+                        "type": "integer",
+                        "format": "uint64",
+                        "x-field-uid": 25
+                    },
+                    "srefresh_tx": {
+                        "description": "The number of SRefresh messages sent by this RSVP router.",
+                        "type": "integer",
+                        "format": "uint64",
+                        "x-field-uid": 26
+                    },
+                    "srefresh_rx": {
+                        "description": "The number of SRefresh messages received by this RSVP router. ",
+                        "type": "integer",
+                        "format": "uint64",
+                        "x-field-uid": 27
+                    },
+                    "bundle_tx": {
+                        "description": "The number of Bundle messages sent by this RSVP router.",
+                        "type": "integer",
+                        "format": "uint64",
+                        "x-field-uid": 28
+                    },
+                    "bundle_rx": {
+                        "description": "The number of Bundle messages received by this RSVP router. ",
+                        "type": "integer",
+                        "format": "uint64",
+                        "x-field-uid": 29
+                    },
+                    "path_reevaluation_request_tx": {
+                        "description": "The number of Path messages with Path Re-evaluation Request enabled sent by this RSVP router.",
+                        "type": "integer",
+                        "format": "uint64",
+                        "x-field-uid": 30
+                    },
+                    "path_reoptimizations": {
+                        "description": "The number of successfully completed Make-Before-Break operations on LSPs on this RSVP router.",
+                        "type": "integer",
+                        "format": "uint64",
+                        "x-field-uid": 31
+                    }
+                }
+            },
+            "Dhcpv4Client.Metrics.Request": {
+                "description": "The request to retrieve DHCPv4 per client metrics/statistics.",
+                "type": "object",
+                "properties": {
+                    "client_names": {
+                        "description": "The names of DHCPv4 clients to return results for. An empty list will return results for all DHCPv4 client.\n\nx-constraint:\n- /components/schemas/Device.Dhcpv4client/properties/name\n",
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "x-constraint": [
+                            "/components/schemas/Device.Dhcpv4client/properties/name"
+                        ],
+                        "x-field-uid": 1
+                    },
+                    "column_names": {
+                        "description": "The list of column names that the returned result set will contain. If the list is empty then all columns will be returned.  The name of the DHCPv4 client cannot be excluded.",
+                        "type": "array",
+                        "items": {
+                            "type": "string",
+                            "x-enum": {
+                                "discovers_sent": {
+                                    "x-field-uid": 1
+                                },
+                                "offers_received": {
+                                    "x-field-uid": 2
+                                },
+                                "requests_sent": {
+                                    "x-field-uid": 3
+                                },
+                                "acks_received": {
+                                    "x-field-uid": 4
+                                },
+                                "nacks_received": {
+                                    "x-field-uid": 5
+                                },
+                                "releases_sent": {
+                                    "x-field-uid": 6
+                                },
+                                "declines_sent": {
+                                    "x-field-uid": 7
+                                }
+                            },
+                            "enum": [
+                                "discovers_sent",
+                                "offers_received",
+                                "requests_sent",
+                                "acks_received",
+                                "nacks_received",
+                                "releases_sent",
+                                "declines_sent"
+                            ]
+                        },
+                        "x-field-uid": 2
+                    }
+                }
+            },
+            "Dhcpv4Client.Metric": {
+                "description": "DHCPv4 per peer statistics information.",
+                "type": "object",
+                "properties": {
+                    "name": {
+                        "description": "The name of a configured DHCPv4 client.",
+                        "type": "string",
+                        "x-field-uid": 1
+                    },
+                    "discovers_sent": {
+                        "description": "Number of DHCPDISCOVER messages sent.",
+                        "type": "integer",
+                        "format": "uint64",
+                        "x-field-uid": 2
+                    },
+                    "offers_received": {
+                        "description": "Number of DHCPOFFER messages received.",
+                        "type": "integer",
+                        "format": "uint64",
+                        "x-field-uid": 3
+                    },
+                    "requests_sent": {
+                        "description": "Number of DHCPREQUEST messages sent.",
+                        "type": "integer",
+                        "format": "uint64",
+                        "x-field-uid": 4
+                    },
+                    "acks_received": {
+                        "description": "Number of lease DHCPACK messages received.",
+                        "type": "integer",
+                        "format": "uint64",
+                        "x-field-uid": 5
+                    },
+                    "nacks_received": {
+                        "description": "Number of negative lease DHCPNACK messages received.",
+                        "type": "integer",
+                        "format": "uint64",
+                        "x-field-uid": 6
+                    },
+                    "releases_sent": {
+                        "description": "Number of DHCPRELEASE messages sent.",
+                        "type": "integer",
+                        "format": "uint64",
+                        "x-field-uid": 7
+                    },
+                    "declines_sent": {
+                        "description": "Number of DHCPDECLINE messages sent.",
+                        "type": "integer",
+                        "format": "uint64",
+                        "x-field-uid": 8
+                    }
+                }
+            },
+            "Dhcpv4Server.Metrics.Request": {
+                "description": "The request to retrieve DHCPv4 per Server metrics/statistics.",
+                "type": "object",
+                "properties": {
+                    "server_names": {
+                        "description": "The names of DHCPv4 Servers to return results for. An empty list will return results for all DHCPv4 Server.\n\nx-constraint:\n- /components/schemas/Device.Dhcpv4Server/properties/name\n",
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "x-constraint": [
+                            "/components/schemas/Device.Dhcpv4Server/properties/name"
+                        ],
+                        "x-field-uid": 1
+                    },
+                    "column_names": {
+                        "description": "The list of column names that the returned result set will contain. If the list is empty then all columns will be returned.  The name of the DHCPv4 server cannot be excluded.",
+                        "type": "array",
+                        "items": {
+                            "type": "string",
+                            "x-enum": {
+                                "discovers_received": {
+                                    "x-field-uid": 1
+                                },
+                                "offers_sent": {
+                                    "x-field-uid": 2
+                                },
+                                "requests_received": {
+                                    "x-field-uid": 3
+                                },
+                                "acks_sent": {
+                                    "x-field-uid": 4
+                                },
+                                "nacks_sent": {
+                                    "x-field-uid": 5
+                                },
+                                "releases_received": {
+                                    "x-field-uid": 6
+                                },
+                                "declines_received": {
+                                    "x-field-uid": 7
+                                }
+                            },
+                            "enum": [
+                                "discovers_received",
+                                "offers_sent",
+                                "requests_received",
+                                "acks_sent",
+                                "nacks_sent",
+                                "releases_received",
+                                "declines_received"
+                            ]
+                        },
+                        "x-field-uid": 2
+                    }
+                }
+            },
+            "Dhcpv4Server.Metric": {
+                "description": "DHCPv4 per peer statistics information.",
+                "type": "object",
+                "properties": {
+                    "name": {
+                        "description": "The name of a configured DHCPv4 Server.",
+                        "type": "string",
+                        "x-field-uid": 1
+                    },
+                    "discovers_received": {
+                        "description": "Number of DHCPDISCOVER messages received.",
+                        "type": "integer",
+                        "format": "uint64",
+                        "x-field-uid": 2
+                    },
+                    "offers_sent": {
+                        "description": "Number of DHCPOFFER messages sent.",
+                        "type": "integer",
+                        "format": "uint64",
+                        "x-field-uid": 3
+                    },
+                    "requests_received": {
+                        "description": "Number of DHCPOFFER messages received.",
+                        "type": "integer",
+                        "format": "uint64",
+                        "x-field-uid": 4
+                    },
+                    "acks_sent": {
+                        "description": "Number of lease DHCPACK messages sent.",
+                        "type": "integer",
+                        "format": "uint64",
+                        "x-field-uid": 5
+                    },
+                    "nacks_sent": {
+                        "description": "Number of negative lease DHCPNACK messages sent.",
+                        "type": "integer",
+                        "format": "uint64",
+                        "x-field-uid": 6
+                    },
+                    "releases_received": {
+                        "description": "Number of DHCPRELEASE messages received.",
+                        "type": "integer",
+                        "format": "uint64",
+                        "x-field-uid": 7
+                    },
+                    "declines_received": {
+                        "description": "Number of DHCPDECLINE messages received.",
+                        "type": "integer",
+                        "format": "uint64",
+                        "x-field-uid": 8
+                    }
+                }
+            },
+            "Dhcpv6Client.Metrics.Request": {
+                "description": "The request to retrieve DHCPv6 per client metrics/statistics.",
+                "type": "object",
+                "properties": {
+                    "client_names": {
+                        "description": "The names of DHCPv6 clients to return results for. An empty list will return results for all DHCPv6 client.\n\nx-constraint:\n- /components/schemas/Device.Dhcpv6client/properties/name\n",
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "x-constraint": [
+                            "/components/schemas/Device.Dhcpv6client/properties/name"
+                        ],
+                        "x-field-uid": 1
+                    },
+                    "column_names": {
+                        "description": "The list of column names that the returned result set will contain. If the list is empty then all columns will be returned except for any result_groups. The name of the DHCPv6 client cannot be excluded.",
+                        "type": "array",
+                        "items": {
+                            "type": "string",
+                            "x-enum": {
+                                "solicits_sent": {
+                                    "x-field-uid": 1
+                                },
+                                "advertisements_received": {
+                                    "x-field-uid": 2
+                                },
+                                "advertisements_ignored": {
+                                    "x-field-uid": 3
+                                },
+                                "requests_sent": {
+                                    "x-field-uid": 4
+                                },
+                                "nacks_received": {
+                                    "x-field-uid": 5
+                                },
+                                "replies_received": {
+                                    "x-field-uid": 6
+                                },
+                                "information_requests_sent": {
+                                    "x-field-uid": 7
+                                },
+                                "renews_sent": {
+                                    "x-field-uid": 8
+                                },
+                                "rebinds_sent": {
+                                    "x-field-uid": 9
+                                },
+                                "releases_sent": {
+                                    "x-field-uid": 10
+                                },
+                                "reconfigures_received": {
+                                    "x-field-uid": 11
+                                },
+                                "rapid_commit_solicits_sent": {
+                                    "x-field-uid": 12
+                                },
+                                "rapid_commit_replies_received": {
+                                    "x-field-uid": 13
+                                }
+                            },
+                            "enum": [
+                                "solicits_sent",
+                                "advertisements_received",
+                                "advertisements_ignored",
+                                "requests_sent",
+                                "nacks_received",
+                                "replies_received",
+                                "information_requests_sent",
+                                "renews_sent",
+                                "rebinds_sent",
+                                "releases_sent",
+                                "reconfigures_received",
+                                "rapid_commit_solicits_sent",
+                                "rapid_commit_replies_received"
+                            ]
+                        },
+                        "x-field-uid": 2
+                    }
+                }
+            },
+            "Dhcpv6Client.Metric": {
+                "description": "DHCPv6 per peer statistics information.",
+                "type": "object",
+                "properties": {
+                    "name": {
+                        "description": "The name of a configured DHCPv6 client.",
+                        "type": "string",
+                        "x-field-uid": 1
+                    },
+                    "solicits_sent": {
+                        "description": "Number of DHCPSOLICIT messages sent.",
+                        "type": "integer",
+                        "format": "uint64",
+                        "x-field-uid": 2
+                    },
+                    "advertisements_received": {
+                        "description": "Number of DHCPADVERTISE messages received.",
+                        "type": "integer",
+                        "format": "uint64",
+                        "x-field-uid": 3
+                    },
+                    "advertisements_ignored": {
+                        "description": "Number of DHCPADVERTISE messages ignored.",
+                        "type": "integer",
+                        "format": "uint64",
+                        "x-field-uid": 4
+                    },
+                    "requests_sent": {
+                        "description": "Number of DHCPREQUEST messages sent.",
+                        "type": "integer",
+                        "format": "uint64",
+                        "x-field-uid": 5
+                    },
+                    "nacks_received": {
+                        "description": "Number of negative lease DHCPNACK messages received.",
+                        "type": "integer",
+                        "format": "uint64",
+                        "x-field-uid": 6
+                    },
+                    "replies_received": {
+                        "description": "Number of DHCPOFFER messages received.",
+                        "type": "integer",
+                        "format": "uint64",
+                        "x-field-uid": 7
+                    },
+                    "information_requests_sent": {
+                        "description": "Number of DHCP Inform requests sent.",
+                        "type": "integer",
+                        "format": "uint64",
+                        "x-field-uid": 8
+                    },
+                    "renews_sent": {
+                        "description": "Number of DHCP renew messages sent.",
+                        "type": "integer",
+                        "format": "uint64",
+                        "x-field-uid": 9
+                    },
+                    "rebinds_sent": {
+                        "description": "Number of DHCP rebind messages sent.",
+                        "type": "integer",
+                        "format": "uint64",
+                        "x-field-uid": 10
+                    },
+                    "releases_sent": {
+                        "description": "Number of DHCP Release messages sent.",
+                        "type": "integer",
+                        "format": "uint64",
+                        "x-field-uid": 11
+                    },
+                    "reconfigures_received": {
+                        "description": "Number of DHCP Reconfigure messages received.",
+                        "type": "integer",
+                        "format": "uint64",
+                        "x-field-uid": 12
+                    },
+                    "rapid_commit_solicits_sent": {
+                        "description": "Number of rapid commit DHCPSOLICIT messages sent.",
+                        "type": "integer",
+                        "format": "uint64",
+                        "x-field-uid": 13
+                    },
+                    "rapid_commit_replies_received": {
+                        "description": "Number of rapid commit DHCP Reply messages received.",
+                        "type": "integer",
+                        "format": "uint64",
+                        "x-field-uid": 14
+                    }
+                }
+            },
+            "Dhcpv6Server.Metrics.Request": {
+                "description": "The request to retrieve DHCPv6 per Server metrics/statistics.",
+                "type": "object",
+                "properties": {
+                    "server_names": {
+                        "description": "The names of DHCPv6 Servers to return results for. An empty list will return results for all DHCPv6 Server.\n\nx-constraint:\n- /components/schemas/Device.Dhcpv6Server/properties/name\n",
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "x-constraint": [
+                            "/components/schemas/Device.Dhcpv6Server/properties/name"
+                        ],
+                        "x-field-uid": 1
+                    },
+                    "column_names": {
+                        "description": "The list of column names that the returned result set will contain. If the list is empty then all columns will be returned except for any result_groups. The name of the DHCPv6 server cannot be excluded.",
+                        "type": "array",
+                        "items": {
+                            "type": "string",
+                            "x-enum": {
+                                "solicits_received": {
+                                    "x-field-uid": 1
+                                },
+                                "solicits_ignored": {
+                                    "x-field-uid": 2
+                                },
+                                "advertisements_sent": {
+                                    "x-field-uid": 3
+                                },
+                                "requests_received": {
+                                    "x-field-uid": 4
+                                },
+                                "nacks_sent": {
+                                    "x-field-uid": 5
+                                },
+                                "confirms_received": {
+                                    "x-field-uid": 6
+                                },
+                                "renewals_received": {
+                                    "x-field-uid": 7
+                                },
+                                "rebinds_received": {
+                                    "x-field-uid": 8
+                                },
+                                "replies_sent": {
+                                    "x-field-uid": 9
+                                },
+                                "releases_received": {
+                                    "x-field-uid": 10
+                                },
+                                "declines_received": {
+                                    "x-field-uid": 11
+                                },
+                                "information_requests_received": {
+                                    "x-field-uid": 12
+                                },
+                                "relay_forwards_received": {
+                                    "x-field-uid": 13
+                                },
+                                "relay_replies_sent": {
+                                    "x-field-uid": 14
+                                },
+                                "reconfigures_sent": {
+                                    "x-field-uid": 15
+                                }
+                            },
+                            "enum": [
+                                "solicits_received",
+                                "solicits_ignored",
+                                "advertisements_sent",
+                                "requests_received",
+                                "nacks_sent",
+                                "confirms_received",
+                                "renewals_received",
+                                "rebinds_received",
+                                "replies_sent",
+                                "releases_received",
+                                "declines_received",
+                                "information_requests_received",
+                                "relay_forwards_received",
+                                "relay_replies_sent",
+                                "reconfigures_sent"
+                            ]
+                        },
+                        "x-field-uid": 2
+                    }
+                }
+            },
+            "Dhcpv6Server.Metric": {
+                "description": "DHCPv6 per server statistics information.",
+                "type": "object",
+                "properties": {
+                    "name": {
+                        "description": "The name of a configured DHCPv6 Server.",
+                        "type": "string",
+                        "x-field-uid": 1
+                    },
+                    "solicits_received": {
+                        "description": "Number of DHCPSOLICIT messages received.",
+                        "type": "integer",
+                        "format": "uint64",
+                        "x-field-uid": 2
+                    },
+                    "solicits_ignored": {
+                        "description": "Number of DHCPSOLICIT messages ignored.",
+                        "type": "integer",
+                        "format": "uint64",
+                        "x-field-uid": 3
+                    },
+                    "advertisements_sent": {
+                        "description": "Number of DHCP Advertise messages sent.",
+                        "type": "integer",
+                        "format": "uint64",
+                        "x-field-uid": 4
+                    },
+                    "requests_received": {
+                        "description": "Number of DHCPREQUEST messages received.",
+                        "type": "integer",
+                        "format": "uint64",
+                        "x-field-uid": 5
+                    },
+                    "nacks_sent": {
+                        "description": "Number of naks sent for DHCPREQUEST messages.",
+                        "type": "integer",
+                        "format": "uint64",
+                        "x-field-uid": 6
+                    },
+                    "confirms_received": {
+                        "description": "Number of DHCP Confirm messages received.",
+                        "type": "integer",
+                        "format": "uint64",
+                        "x-field-uid": 7
+                    },
+                    "renewals_received": {
+                        "description": "Number of DHCP Renewal messages received.",
+                        "type": "integer",
+                        "format": "uint64",
+                        "x-field-uid": 8
+                    },
+                    "rebinds_received": {
+                        "description": "Number of DHCP Rebind messages received.",
+                        "type": "integer",
+                        "format": "uint64",
+                        "x-field-uid": 9
+                    },
+                    "replies_sent": {
+                        "description": "Number of DHCP Reply messages sent.",
+                        "type": "integer",
+                        "format": "uint64",
+                        "x-field-uid": 10
+                    },
+                    "releases_received": {
+                        "description": "Number of DHCP Release messages received.",
+                        "type": "integer",
+                        "format": "uint64",
+                        "x-field-uid": 11
+                    },
+                    "declines_received": {
+                        "description": "Number of DHCP Decline messages received.",
+                        "type": "integer",
+                        "format": "uint64",
+                        "x-field-uid": 12
+                    },
+                    "information_requests_received": {
+                        "description": "Number of DHCP Information Request messages received.",
+                        "type": "integer",
+                        "format": "uint64",
+                        "x-field-uid": 13
+                    },
+                    "relay_forwards_received": {
+                        "description": "Number of DHCP Relay agent forward messages received.",
+                        "type": "integer",
+                        "format": "uint64",
+                        "x-field-uid": 14
+                    },
+                    "relay_replies_sent": {
+                        "description": "Number of DHCP reply messages sent to Relay agent.",
+                        "type": "integer",
+                        "format": "uint64",
+                        "x-field-uid": 15
+                    },
+                    "reconfigures_sent": {
+                        "description": "Number of DHCP Reconfigure messages sent.",
+                        "type": "integer",
+                        "format": "uint64",
+                        "x-field-uid": 16
+                    }
+                }
+            },
             "Convergence.Response": {
+                "description": "Response containing chosen traffic generator metrics.",
                 "type": "object",
                 "properties": {
                     "choice": {
                         "type": "string",
                         "x-field-uid": 1,
                         "x-enum": {
-                            "flow_metric": {
+                            "flow_metrics": {
                                 "x-field-uid": 1
                             },
-                            "flow_convergence": {
+                            "port_metrics": {
                                 "x-field-uid": 2
                             },
                             "bgpv4_metrics": {
@@ -17219,26 +19196,66 @@
                             },
                             "bgpv6_metrics": {
                                 "x-field-uid": 4
+                            },
+                            "isis_metrics": {
+                                "x-field-uid": 5
+                            },
+                            "lag_metrics": {
+                                "x-field-uid": 6
+                            },
+                            "lacp_metrics": {
+                                "x-field-uid": 7
+                            },
+                            "lldp_metrics": {
+                                "x-field-uid": 8
+                            },
+                            "rsvp_metrics": {
+                                "x-field-uid": 9
+                            },
+                            "dhcpv4_client": {
+                                "x-field-uid": 10
+                            },
+                            "dhcpv4_server": {
+                                "x-field-uid": 11
+                            },
+                            "dhcpv6_client": {
+                                "x-field-uid": 12
+                            },
+                            "dhcpv6_server": {
+                                "x-field-uid": 13
+                            },
+                            "flow_convergence": {
+                                "x-field-uid": 14
                             }
                         },
                         "enum": [
-                            "flow_metric",
-                            "flow_convergence",
+                            "flow_metrics",
+                            "port_metrics",
                             "bgpv4_metrics",
-                            "bgpv6_metrics"
+                            "bgpv6_metrics",
+                            "isis_metrics",
+                            "lag_metrics",
+                            "lacp_metrics",
+                            "lldp_metrics",
+                            "rsvp_metrics",
+                            "dhcpv4_client",
+                            "dhcpv4_server",
+                            "dhcpv6_client",
+                            "dhcpv6_server",
+                            "flow_convergence"
                         ]
                     },
-                    "flow_metric": {
+                    "port_metrics": {
                         "type": "array",
                         "items": {
-                            "$ref": "#/components/schemas/Flow.Metric"
+                            "$ref": "#/components/schemas/Port.Metric"
                         },
                         "x-field-uid": 2
                     },
-                    "flow_convergence": {
+                    "flow_metrics": {
                         "type": "array",
                         "items": {
-                            "$ref": "#/components/schemas/Convergence.Flow"
+                            "$ref": "#/components/schemas/Flow.Metric"
                         },
                         "x-field-uid": 3
                     },
@@ -17255,6 +19272,76 @@
                             "$ref": "#/components/schemas/Bgpv6.Metric"
                         },
                         "x-field-uid": 5
+                    },
+                    "isis_metrics": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Isis.Metric"
+                        },
+                        "x-field-uid": 6
+                    },
+                    "lag_metrics": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Lag.Metric"
+                        },
+                        "x-field-uid": 7
+                    },
+                    "lacp_metrics": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Lacp.Metric"
+                        },
+                        "x-field-uid": 8
+                    },
+                    "lldp_metrics": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Lldp.Metric"
+                        },
+                        "x-field-uid": 9
+                    },
+                    "rsvp_metrics": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Rsvp.Metric"
+                        },
+                        "x-field-uid": 10
+                    },
+                    "dhcpv4client_metrics": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Dhcpv4Client.Metric"
+                        },
+                        "x-field-uid": 11
+                    },
+                    "dhcpv4server_metrics": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Dhcpv4Server.Metric"
+                        },
+                        "x-field-uid": 12
+                    },
+                    "dhcpv6client_metrics": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Dhcpv6Client.Metric"
+                        },
+                        "x-field-uid": 13
+                    },
+                    "dhcpv6server_metrics": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Dhcpv6Server.Metric"
+                        },
+                        "x-field-uid": 14
+                    },
+                    "flow_convergence": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Convergence.Flow"
+                        },
+                        "x-field-uid": 15
                     }
                 }
             },
@@ -17366,54 +19453,6 @@
                         "type": "number",
                         "format": "double",
                         "x-field-uid": 4
-                    }
-                }
-            },
-            "Convergence.State": {
-                "description": "Container to specify convergence states.",
-                "type": "object",
-                "properties": {
-                    "choice": {
-                        "description": "The state to set on the traffic generator.",
-                        "type": "string",
-                        "default": "transmit",
-                        "x-field-uid": 1,
-                        "x-enum": {
-                            "transmit": {
-                                "x-field-uid": 1
-                            },
-                            "link": {
-                                "x-field-uid": 2
-                            },
-                            "route": {
-                                "x-field-uid": 3
-                            },
-                            "protocol": {
-                                "x-field-uid": 4
-                            }
-                        },
-                        "enum": [
-                            "transmit",
-                            "link",
-                            "route",
-                            "protocol"
-                        ]
-                    },
-                    "transmit": {
-                        "$ref": "#/components/schemas/State.Traffic.FlowTransmit",
-                        "x-field-uid": 2
-                    },
-                    "link": {
-                        "$ref": "#/components/schemas/State.Port.Link",
-                        "x-field-uid": 3
-                    },
-                    "route": {
-                        "$ref": "#/components/schemas/State.Protocol.Route",
-                        "x-field-uid": 4
-                    },
-                    "protocol": {
-                        "$ref": "#/components/schemas/State.Protocol.All",
-                        "x-field-uid": 5
                     }
                 }
             },
