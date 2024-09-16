@@ -27203,7 +27203,7 @@ message GetVersionResponse {
 // in the representation
 service Openapi {
 
-  // Sets configuration resources on the traffic generator.
+  // Sets configuration resources on the traffic generator for convergence measurements.
   rpc SetConfig(SetConfigRequest) returns (SetConfigResponse);
   // Description missing in models
   rpc GetConfig(google.protobuf.Empty) returns (GetConfigResponse);

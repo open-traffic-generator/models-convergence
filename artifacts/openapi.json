@@ -25,7 +25,7 @@
                     "Configuration"
                 ],
                 "operationId": "set_config",
-                "description": "Sets configuration resources on the traffic generator.",
+                "description": "Sets configuration resources on the traffic generator for convergence measurements.",
                 "requestBody": {
                     "required": true,
                     "content": {
