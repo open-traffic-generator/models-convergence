@@ -11,6 +11,7 @@ openapiart.OpenApiArt(
     api_files=["./api/info.yaml", "./api/api.yaml"],
     protobuf_name="otg_convergence",
     artifact_dir="./artifacts",
+    generate_version_api=True,
 ).GeneratePythonSdk(
     package_name="otg_convergence"
 )

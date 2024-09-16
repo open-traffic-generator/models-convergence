@@ -2,27 +2,47 @@ components:
   schemas:
     Convergence.Request:
       description: >-
-        The request container for flow metrics or flow convergence measurements.
+        Request to traffic generator for metrics of choice.
       type: object
       properties:
         choice:
           type: string
-          default: metrics
+          default: port
           x-field-uid: 1
           x-enum:
-            metrics:
+            port:
               x-field-uid: 1
-            convergence:
+            flow:
               x-field-uid: 2
             bgpv4:
               x-field-uid: 3
             bgpv6:
               x-field-uid: 4
-        metrics:
-          $ref: '../models/result/flow.yaml#/components/schemas/Flow.Metrics.Request'
+            isis:
+              x-field-uid: 5
+            lag:
+              x-field-uid: 6
+            lacp:
+              x-field-uid: 7
+            lldp:
+              x-field-uid: 8
+            rsvp:
+              x-field-uid: 9
+            dhcpv4_client:
+              x-field-uid: 10
+            dhcpv4_server:
+              x-field-uid: 11
+            dhcpv6_client:
+              x-field-uid: 12
+            dhcpv6_server:
+              x-field-uid: 13
+            convergence:
+              x-field-uid: 14
+        port:
+          $ref: '../models/result/port.yaml#/components/schemas/Port.Metrics.Request'
           x-field-uid: 2
-        convergence:
-          $ref: '#/components/schemas/Convergence.Flow.Request'
+        flow:
+          $ref: '../models/result/flow.yaml#/components/schemas/Flow.Metrics.Request'
           x-field-uid: 3
         bgpv4:
           $ref: '../models/result/bgpv4.yaml#/components/schemas/Bgpv4.Metrics.Request'
@@ -30,6 +50,36 @@ components:
         bgpv6:
           $ref: '../models/result/bgpv6.yaml#/components/schemas/Bgpv6.Metrics.Request'
           x-field-uid: 5
+        isis:
+          $ref: '../models/result/isis.yaml#/components/schemas/Isis.Metrics.Request'
+          x-field-uid: 6
+        lag:
+          $ref: '../models/result/lag.yaml#/components/schemas/Lag.Metrics.Request'
+          x-field-uid: 7
+        lacp:
+          $ref: '../models/result/lacp.yaml#/components/schemas/Lacp.Metrics.Request'
+          x-field-uid: 8
+        lldp:
+          $ref: '../models/result/lldp.yaml#/components/schemas/Lldp.Metrics.Request'
+          x-field-uid: 9
+        rsvp:
+          $ref: '../models/result/rsvp.yaml#/components/schemas/Rsvp.Metrics.Request'
+          x-field-uid: 10
+        dhcpv4_client:
+          $ref: '../models/result/dhcpv4client.yaml#/components/schemas/Dhcpv4Client.Metrics.Request'
+          x-field-uid: 11
+        dhcpv4_server:
+          $ref: '../models/result/dhcpv4server.yaml#/components/schemas/Dhcpv4Server.Metrics.Request'
+          x-field-uid: 12
+        dhcpv6_client:
+          $ref: '../models/result/dhcpv6client.yaml#/components/schemas/Dhcpv6Client.Metrics.Request'
+          x-field-uid: 13
+        dhcpv6_server:
+          $ref: '../models/result/dhcpv6server.yaml#/components/schemas/Dhcpv6Server.Metrics.Request'
+          x-field-uid: 14
+        convergence:
+          $ref: '#/components/schemas/Convergence.Flow.Request'
+          x-field-uid: 15
     Convergence.Flow.Request:
       description: |-
         The container for a flow measurement request.
@@ -45,10 +95,3 @@ components:
           x-constraint:
           - "/components/schemas/Flow/properties/name"
           x-field-uid: 1
-        metric_groups:
-          description: >-
-            A list of metric groups used to disaggregate flows.
-            A metric group that does not exist for a flow group MUST return
-            an error.
-          $ref: '../models/result/flow.yaml#/components/schemas/Flow.MetricGroup.Request'
-          x-field-uid: 2

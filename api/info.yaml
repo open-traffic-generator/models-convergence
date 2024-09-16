@@ -12,7 +12,7 @@ info:
     Contributions can be made in the following ways:
     - [open an issue](https://github.com/open-traffic-generator/models-convergence/issues) in the models repository
     - [fork the models repository](https://github.com/open-traffic-generator/models-convergence) and submit a PR
-  version: 0.1.0
+  version: 1.13.0
   contact:
     url: https://github.com/open-traffic-generator/models-convergence/issues
   license:
